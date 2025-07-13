@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import type { FC } from 'react'
 
 interface SliderProps {
@@ -53,7 +53,7 @@ export const Slider: FC<SliderProps> = ({ slides, currentSlide, onSlideChange })
       currentDragPosition.current = e.clientX
       
       // Calculate position change based on drag movement
-      const positionChange = deltaX / slideWidth
+      // const positionChange = deltaX / slideWidth
       
       // Accumulate drag movement
       const totalDeltaX = e.clientX - startX.current
@@ -86,7 +86,7 @@ export const Slider: FC<SliderProps> = ({ slides, currentSlide, onSlideChange })
       currentDragPosition.current = e.touches[0].clientX
       
       // Calculate position change based on swipe movement
-      const positionChange = deltaX / slideWidth
+      // const positionChange = deltaX / slideWidth
       
       // Accumulate swipe movement
       const totalDeltaX = e.touches[0].clientX - startX.current
