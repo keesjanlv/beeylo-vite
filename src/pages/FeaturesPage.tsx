@@ -1,10 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import type { FC } from 'react'
 import { Slider } from '../components'
-import ticketorder from '../assets/ticketorder.webp'
-import brandsdef from '../assets/brandsdef.webp'
-import ticketbuttons from '../assets/ticketbuttons.webp'
-import ticketkwik from '../assets/ticketkwik.webp'
 
 interface Slide {
   id: number
@@ -16,25 +12,25 @@ interface Slide {
 const slides: Slide[] = [
   {
     id: 1,
-    image: ticketorder,
+    image: '/src/assets/ticketorder.webp',
     title: 'One ticket per order',
     description: 'Ten separate emails for one simple order — from confirmation to return? That\'s old school. Beeylo brings everything together in one smart overview.'
   },
   {
     id: 2,
-    image: brandsdef,
+    image: '/src/assets/brandsdef.webp',
     title: 'Inbox overload done',
     description: 'Every brand you interact with has its own clean hub inside Beeylo. So all your conversations stay exactly where they belong.'
   },
   {
     id: 3,
-    image: ticketbuttons,
+    image: '/src/assets/ticketbuttons.webp',
     title: 'No more switching apps',
     description: 'Beeylo lets you take action the moment you see a message. Return an item, download a receipt, check your warranty, ask a question and all from one place.'
   },
   {
     id: 4,
-    image: ticketkwik,
+    image: '/src/assets/ticketkwik.webp',
     title: 'No more long emails',
     description: 'Beeylo\'s smart AI summarizes your emails, so you instantly see what matters.'
   }
