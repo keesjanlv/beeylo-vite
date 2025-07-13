@@ -1,0 +1,5 @@
+export * from './HomePage'
+export * from './DashboardPage'
+export * from './FeaturesPage'
+export * from './AboutPage'
+export * from './MenuPage' 
