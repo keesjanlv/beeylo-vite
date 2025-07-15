@@ -1,32 +1,53 @@
 import { useState, useEffect } from 'react'
 import type { FC } from 'react'
+import type { TabType } from '../types'
 import { useUser } from '../contexts/UserContext'
 import beeyloLogo from '../assets/beeylologo.png'
 import tripleScreenImg from '../assets/triplescreenhomedef.webp'
 import inboxOverloadImg from '../assets/inboxoverload.webp'
 import homeDefImg from '../assets/homedef.webp'
+import ticketOrderImg from '../assets/ticketorder.webp'
 
 interface HomePageProps {
   isLoggedIn?: boolean
   emailFormHighlight?: boolean
+  onTabChange: (tab: TabType) => void
 }
 
 const slides = [
   {
     id: 1,
+    title: "Welcome to your inbox without the noise.",
+    description: "No spam, no ads and no useless updates. Beeylo only shows you the 10% that actually matters.",
+    image: tripleScreenImg
+  },
+  {
+    id: 2,
     title: "What's wrong with your inbox?",
     description: "You get 40+ emails a day — but only 4 actually matter. And they get lost in the noise.",
     image: inboxOverloadImg
   },
   {
-    id: 2,
+    id: 3,
+    title: "You order one thing... and your inbox explodes with 10 separate emails.",
+    description: "Every purchase becomes a flood of confirmations, shipping updates, and promotional follow-ups.",
+    image: ticketOrderImg
+  },
+  {
+    id: 4,
     title: "Meet your new inbox.",
     description: "Beeylo only shows you the 10% that actually matters. The rest? Gone.",
     image: homeDefImg
+  },
+  {
+    id: 5,
+    title: "One order = one smart overview.",
+    description: "Every update is added to that same view. No more hunting through dozens of emails.",
+    image: homeDefImg // Using placeholder image as requested
   }
 ]
 
-export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighlight = false }) => {
+export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighlight = false, onTabChange }) => {
   const { login, isLoading, error } = useUser()
   const [email, setEmail] = useState('')
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -36,12 +57,11 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (email.trim()) {
-      setLoginError(null)
-      const success = await login(email.trim())
-      if (!success) {
-        setLoginError(error || 'Login failed. Please try again.')
-      }
+    const emailToUse = email.trim() || 'sample@beeylo.com' // Use sample account if email is empty
+    setLoginError(null)
+    const success = await login(emailToUse)
+    if (!success) {
+      setLoginError(error || 'Login failed. Please try again.')
     }
   }
 
@@ -145,7 +165,9 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
         {/* Left column on desktop */}
         <div className="homepage-left">
           <h1 className="homepage-title">
-            Inbox noise is a <span className="highlight-yellow">choice</span>
+            <span className="title-big">The new free inbox with:</span>
+            <br />
+            <span className="title-small">No spam, no ads and no useless updates</span>
           </h1>
           
           {/* Login form */}
@@ -157,23 +179,21 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className={`email-input-compact ${emailFormHighlight ? 'highlight-animation' : ''}`}
-                required
                 disabled={isLoading}
               />
-              <button type="submit" className="cta-button-compact" disabled={isLoading}>
-                {isLoading ? 'Loading...' : 'Get Started'}
-              </button>
-              {import.meta.env.VITE_DEBUG_MODE === 'true' && (
-                <button
-                  type="button"
-                  className="cta-button-compact secondary"
-                  style={{ marginTop: '10px' }}
-                  onClick={() => login('test@beeylo.com')}
+              <div className="button-group">
+                <button type="submit" className="cta-button-compact primary" disabled={isLoading}>
+                  {isLoading ? 'Loading...' : 'I need this'}
+                </button>
+                <button 
+                  type="button" 
+                  className="cta-button-compact secondary" 
+                  onClick={() => onTabChange('learn-more')}
                   disabled={isLoading}
                 >
-                  Test Login
+                  Learn more
                 </button>
-              )}
+              </div>
               {(loginError || error) && (
                 <div className="error-message" style={{ color: '#ff4444', fontSize: '0.9rem', marginTop: '8px' }}>
                   {loginError || error}

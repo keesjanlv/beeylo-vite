@@ -1,18 +1,22 @@
 import { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import type { TabType } from './types'
-import { Sidebar, BottomNavigation } from './components'
+import { Sidebar, TopNavigation, SEO } from './components'
 import { 
   HomePage, 
   DashboardPage, 
-  FeaturesPage, 
+  BenefitsPage, 
   GiveawayPage,
+  HowItWorksPage,
   ActionsPage,
   LeaderboardPage,
   PersonalSettingsPage,
   AboutPage, 
   MenuPage,
-  FeedbackPage
+  FeedbackPage,
+  FAQPage,
+  LearnMorePage,
+  ThankYouPage
 } from './pages'
 import { UserProvider, useUser } from './contexts/UserContext'
 import './App.css'
@@ -24,6 +28,7 @@ const AppContent: FC = () => {
   const { isLoggedIn, userData, logout } = useUser()
   const [activeTab, setActiveTab] = useState<TabType>('home')
   const [emailFormHighlight, setEmailFormHighlight] = useState(false)
+
   const [theme, setTheme] = useState<ThemeType>(() => {
     const savedTheme = localStorage.getItem('theme') as ThemeType
     return savedTheme || 'system'
@@ -43,10 +48,10 @@ const AppContent: FC = () => {
     localStorage.setItem('style', style)
   }, [style])
 
-  // Auto-navigate to dashboard when user logs in
+  // Auto-navigate to thank you page when user logs in
   useEffect(() => {
     if (isLoggedIn && activeTab === 'home') {
-      setActiveTab('dashboard')
+      setActiveTab('thank-you')
     }
   }, [isLoggedIn])
 
@@ -55,7 +60,7 @@ const AppContent: FC = () => {
   }
 
   const handleTabChange = (tab: TabType) => {
-    if (!isLoggedIn && (tab === 'home' || tab === 'features' || tab === 'giveaway' || tab === 'dashboard')) {
+    if (!isLoggedIn && (tab === 'home' || tab === 'benefits' || tab === 'giveaway' || tab === 'dashboard')) {
       // If not logged in and clicking on main navigation items, highlight email form
       setActiveTab('home')
       setEmailFormHighlight(true)
@@ -70,26 +75,105 @@ const AppContent: FC = () => {
     setActiveTab('home')
   }
 
+  const getSEOMetadata = () => {
+    switch (activeTab) {
+      case 'home':
+        return {
+          title: 'Beeylo - Smart Email Management & Waitlist Competition',
+          description: 'Join Beeylo\'s exclusive waitlist and compete for early access! Smart email management that transforms your inbox into an organized, efficient workspace.',
+          url: '/'
+        }
+      case 'dashboard':
+        return {
+          title: 'Dashboard - Beeylo',
+          description: 'Your personal Beeylo dashboard. Track your waitlist position, referrals, and competition progress.',
+          url: '/dashboard'
+        }
+      case 'benefits':
+        return {
+          title: 'Benefits - Beeylo Email Management',
+          description: 'Discover Beeylo\'s powerful email management benefits. No spam, no ads, no useless updates - just pure productivity.',
+          url: '/benefits'
+        }
+      case 'giveaway':
+        return {
+          title: 'Giveaway Competition - Beeylo',
+          description: 'Join Beeylo\'s exclusive giveaway competition! Refer friends and climb the leaderboard for early access and amazing prizes.',
+          url: '/giveaway'
+        }
+      case 'how-it-works':
+        return {
+          title: 'How does it work? - Beeylo Giveaway',
+          description: 'Learn how Beeylo\'s giveaway works, what you can earn, and how to participate in our reward program.',
+          url: '/how-it-works'
+        }
+      case 'leaderboard':
+        return {
+          title: 'Leaderboard - Beeylo Competition',
+          description: 'Check your ranking in Beeylo\'s waitlist competition. See top referrers and track your progress.',
+          url: '/leaderboard'
+        }
+      case 'about':
+        return {
+          title: 'About Beeylo - Smart Email Management',
+          description: 'Learn about Beeylo\'s mission to revolutionize email management and productivity for modern professionals.',
+          url: '/about'
+        }
+      case 'faq':
+        return {
+          title: 'FAQ - Beeylo',
+          description: 'Find answers to frequently asked questions about Beeylo email management platform.',
+          url: '/faq'
+        }
+      case 'learn-more':
+        return {
+          title: 'Learn More - Beeylo',
+          description: 'Watch our demo and learn how Beeylo will transform your email experience.',
+          url: '/learn-more'
+        }
+      case 'thank-you':
+        return {
+          title: 'Welcome to Beeylo!',
+          description: 'Thank you for joining Beeylo! Share with friends and participate in our exclusive giveaway.',
+          url: '/thank-you'
+        }
+      default:
+        return {
+          title: 'Beeylo - Smart Email Management & Waitlist Competition',
+          description: 'Join Beeylo\'s exclusive waitlist and compete for early access! Smart email management that transforms your inbox into an organized, efficient workspace.',
+          url: '/'
+        }
+    }
+  }
+
   const renderPage = () => {
     switch (activeTab) {
       case 'home':
-        return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} />
+        return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
       case 'dashboard':
-        return isLoggedIn ? <DashboardPage userData={userData} onLogout={handleLogout} onTabChange={handleTabChange} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} />
-      case 'features':
-        return <FeaturesPage />
+        return isLoggedIn ? <DashboardPage userData={userData} onLogout={handleLogout} onTabChange={handleTabChange} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
+      case 'benefits':
+        return <BenefitsPage />
       case 'giveaway':
         return <GiveawayPage onTabChange={handleTabChange} />
+      case 'how-it-works':
+        return <HowItWorksPage onTabChange={handleTabChange} />
       case 'actions':
-        return isLoggedIn ? <ActionsPage onBack={handleBackToDashboard} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} />
+        return isLoggedIn ? <ActionsPage onBack={handleBackToDashboard} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
       case 'leaderboard':
-        return isLoggedIn ? <LeaderboardPage onBack={handleBackToDashboard} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} />
+        return isLoggedIn ? <LeaderboardPage onBack={handleBackToDashboard} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
       case 'personal-settings':
-        return isLoggedIn ? <PersonalSettingsPage userData={userData} onLogout={handleLogout} onBack={handleBackToDashboard} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} />
+        return isLoggedIn ? <PersonalSettingsPage userData={userData} onLogout={handleLogout} onBack={handleBackToDashboard} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
       case 'feedback':
         return <FeedbackPage onBack={() => setActiveTab('menu')} />
       case 'about':
         return <AboutPage />
+      case 'faq':
+        return <FAQPage />
+      case 'learn-more':
+        return <LearnMorePage />
+      case 'thank-you':
+        return <ThankYouPage userData={userData} onTabChange={handleTabChange} />
       case 'menu':
         return <MenuPage 
           theme={theme} 
@@ -101,12 +185,13 @@ const AppContent: FC = () => {
           isLoggedIn={isLoggedIn}
         />
       default:
-        return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} />
+        return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
     }
   }
 
   return (
     <div className="app">
+      <SEO {...getSEOMetadata()} />
       <Sidebar
         activeTab={activeTab}
         onTabChange={handleTabChange}
@@ -117,7 +202,7 @@ const AppContent: FC = () => {
         {renderPage()}
       </main>
       
-      <BottomNavigation
+      <TopNavigation
         activeTab={activeTab}
         onTabChange={handleTabChange}
         isLoggedIn={isLoggedIn}

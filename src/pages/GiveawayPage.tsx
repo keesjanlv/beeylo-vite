@@ -1,12 +1,12 @@
 import type { FC } from 'react'
 import { useState, useEffect } from 'react'
-import type { GiveawayTabType } from '../types'
+import type { GiveawayTabType, TabType } from '../types'
 import giveawayWhyImg from '../assets/giveaway-why.svg'
 import giveawayPeopleImg from '../assets/giveaway-people.svg'
 import giveawayChanceImg from '../assets/giveaway-chance.svg'
 
 interface GiveawayPageProps {
-  onTabChange: (tab: 'dashboard') => void
+  onTabChange: (tab: TabType) => void
 }
 
 interface GiveawaySlide {
@@ -41,6 +41,7 @@ const slides: GiveawaySlide[] = [
 
 export const GiveawayPage: FC<GiveawayPageProps> = ({ onTabChange }) => {
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [showContent, setShowContent] = useState(false)
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
   
@@ -118,6 +119,40 @@ export const GiveawayPage: FC<GiveawayPageProps> = ({ onTabChange }) => {
 
   const currentSlideData = slides[currentSlide]
 
+  // Show navigation buttons first
+  if (!showContent) {
+    return (
+      <div className="page-content giveaway-page">
+        <div className="giveaway-navigation">
+          <div className="giveaway-nav-content">
+            <h1>Giveaway</h1>
+            <p>Choose what you'd like to explore:</p>
+            <div className="giveaway-nav-buttons">
+              <button 
+                className="giveaway-nav-button primary"
+                onClick={() => setShowContent(true)}
+              >
+                Learn About Our Mission
+              </button>
+              <button 
+                className="giveaway-nav-button secondary"
+                onClick={() => onTabChange('how-it-works')}
+              >
+                How does it work?
+              </button>
+              <button 
+                className="giveaway-nav-button secondary"
+                onClick={() => onTabChange('dashboard')}
+              >
+                Go to Dashboard
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div 
       className="page-content giveaway-page"
@@ -127,6 +162,13 @@ export const GiveawayPage: FC<GiveawayPageProps> = ({ onTabChange }) => {
     >
       <div className="feature-content">
         <div className="feature-text">
+          <button 
+            className="back-button"
+            onClick={() => setShowContent(false)}
+            style={{ marginBottom: '16px' }}
+          >
+            ← Back to Options
+          </button>
           <div className="feature-navigation">
             {slides.map((_, index) => (
               <button

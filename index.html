@@ -2,11 +2,42 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Beeylo</title>
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="apple-touch-icon" href="/vite.svg" />
+    
+    <!-- Preconnect to external domains for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Base SEO Meta Tags (will be overridden by react-helmet-async) -->
+    <title>Beeylo - Smart Email Management & Waitlist Competition</title>
+    <meta name="description" content="Join Beeylo's exclusive waitlist and compete for early access! Smart email management that transforms your inbox into an organized, efficient workspace." />
+    <meta name="keywords" content="email management, productivity, waitlist, early access, inbox organization, email client, competition, referral program" />
+    <meta name="author" content="Beeylo Team" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Theme and App Configuration -->
+    <meta name="theme-color" content="#f59e0b" />
+    <meta name="application-name" content="Beeylo" />
+    <meta name="apple-mobile-web-app-title" content="Beeylo" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    
+    <!-- Performance and Security -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="dns-prefetch" href="//beeylo.com" />
   </head>
   <body>
+    <noscript>
+      <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+        <h1>Beeylo - Smart Email Management</h1>
+        <p>JavaScript is required to run this application. Please enable JavaScript in your browser to continue.</p>
+        <p>Join our waitlist for early access to revolutionary email management tools!</p>
+      </div>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

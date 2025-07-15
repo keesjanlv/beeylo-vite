@@ -1,4 +1,4 @@
-export type TabType = 'home' | 'dashboard' | 'features' | 'giveaway' | 'about' | 'menu' | 'actions' | 'leaderboard' | 'personal-settings' | 'feedback'
+export type TabType = 'home' | 'dashboard' | 'benefits' | 'giveaway' | 'about' | 'faq' | 'menu' | 'actions' | 'leaderboard' | 'personal-settings' | 'feedback' | 'learn-more' | 'thank-you' | 'how-it-works'
 export type FeatureTabType = 'speed' | 'design' | 'security' | 'mobile'
 export type DashboardTabType = 'intro' | 'actions' | 'share' | 'leaderboard'
 export type GiveawayTabType = 'why' | 'built-by-people' | 'your-chance'
