@@ -147,7 +147,9 @@ class BeeyloAPI {
   constructor() {
     // Use Vite environment variable for the API base URL, with a fallback
     this.baseURL = import.meta.env.VITE_API_BASE_URL || 'https://api.beeylo.com/api';
-    this.isDevelopment = import.meta.env.DEV || window.location.hostname === 'localhost';
+    this.isDevelopment = import.meta.env.DEV || 
+                        window.location.hostname === 'localhost' ||
+                        window.location.hostname === 'staging.beeylo.com';
   }
 
   private async request<T>(
