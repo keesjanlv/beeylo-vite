@@ -12,13 +12,11 @@ const AccordionContext = createContext<AccordionContextType | undefined>(undefin
 interface AccordionProps {
   children: React.ReactNode;
   className?: string;
-  type?: "single" | "multiple";
 }
 
 export const Accordion: React.FC<AccordionProps> = ({ 
   children, 
-  className,
-  type = "single" 
+  className
 }) => {
   const [openItem, setOpenItem] = useState<string | null>(null);
 

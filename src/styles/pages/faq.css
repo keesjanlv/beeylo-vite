@@ -126,6 +126,55 @@
   text-decoration: underline;
 }
 
+.faq-main-card {
+  margin-bottom: 32px;
+}
+
+.faq-main-card-content {
+  padding: 24px;
+}
+
+.faq-accordion-item {
+  border: none !important; /* Override accordion default */
+  background-color: var(--surface) !important;
+  border-radius: 8px !important;
+  margin-bottom: 8px;
+  overflow: hidden; /* Ensures border radius is respected */
+}
+
+.faq-accordion-trigger {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  padding: 16px 20px !important;
+}
+
+.faq-accordion-content {
+  padding: 0 20px 20px 20px !important;
+  color: var(--text-secondary) !important;
+  line-height: 1.6 !important;
+  font-size: 1rem !important;
+}
+
+.faq-footer-card {
+  display: inline-block;
+}
+
+.faq-footer-card-content {
+  padding: 24px;
+}
+
+.faq-footer-contact-link {
+  color: var(--primary);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.faq-footer-contact-link:hover {
+  color: var(--primary-hover);
+  text-decoration: none; /* Override default underline */
+}
+
 /* Mobile optimizations for FAQ */
 @media (max-width: 768px) {
   .faq-page {

@@ -161,11 +161,7 @@ const HowItWorksModalContent: FC = () => {
     );
 };
 
-interface GiveawayPageProps {
-  onTabChange: (tab: TabType) => void;
-}
-
-export const GiveawayPage: FC<GiveawayPageProps> = ({ onTabChange }) => {
+export const GiveawayPage: FC = () => {
   const { userData } = useUser();
   const [modalContent, setModalContent] = useState<null | 'rewards' | 'how-it-works'>(null);
 

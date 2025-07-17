@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Spotlight, GlowButton } from '../components/Spotlight';
 import type { TabType } from '../types';
 import '../styles/pages/logged-in-home.css';
@@ -6,10 +6,9 @@ import homeDefImg from '../assets/homedef.webp';
 
 interface LoggedInHomePageProps {
   onTabChange: (tab: TabType) => void;
-  onLogout?: () => void;
 }
 
-export const LoggedInHomePage: FC<LoggedInHomePageProps> = ({ onTabChange, onLogout }) => {
+export const LoggedInHomePage: FC<LoggedInHomePageProps> = ({ onTabChange }) => {
   return (
     <Spotlight className="page-content logged-in-home">
       <div className="logged-in-home-container">
@@ -28,13 +27,7 @@ export const LoggedInHomePage: FC<LoggedInHomePageProps> = ({ onTabChange, onLog
             >
               Tell me more
             </GlowButton>
-            <GlowButton 
-              onClick={() => onTabChange('benefits')} 
-              variant="secondary"
-              className="logged-in-home-button"
-            >
-              See benefits
-            </GlowButton>
+
           </div>
         </div>
         
