@@ -1,0 +1,332 @@
+/* ========================================
+   CARD COMPONENTS
+   ======================================== */
+
+/* ========================================
+   BASE CARD STYLES
+   ======================================== */
+
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(251, 191, 36, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================================
+   CARD SIZES
+   ======================================== */
+
+.card-sm {
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.card-md {
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.card-lg {
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.card-xl {
+  padding: 20px;
+  border-radius: 20px;
+}
+
+/* ========================================
+   CARD VARIANTS
+   ======================================== */
+
+/* Primary Card */
+.card-primary {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.1));
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  box-shadow: 0 6px 20px rgba(251, 191, 36, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Secondary Card */
+.card-secondary {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Ghost Card */
+.card-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+}
+
+.card-ghost:hover {
+  background: var(--surface);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Solid Card */
+.card-solid {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+/* ========================================
+   CARD LAYOUTS
+   ======================================== */
+
+.card-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+}
+
+.card-body {
+  flex: 1;
+}
+
+.card-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 12px;
+  padding-top: 12px;
+}
+
+/* ========================================
+   SPECIAL CARD TYPES
+   ======================================== */
+
+/* Stat Card */
+.stat-card {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.stat-card .stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.stat-card .stat-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Feature Card */
+.feature-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(251, 191, 36, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.feature-card .feature-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(251, 191, 36, 0.1);
+  border-radius: 12px;
+  color: var(--primary);
+  font-size: 24px;
+}
+
+.feature-card .feature-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.feature-card .feature-description {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Grid Card */
+.grid-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+.grid-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(251, 191, 36, 0.3);
+  transform: translateY(-2px);
+}
+
+.grid-card.active {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.1));
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* ========================================
+   CARD GRIDS
+   ======================================== */
+
+.card-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.card-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.card-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.card-grid-auto {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* ========================================
+   RESPONSIVE CARD STYLES
+   ======================================== */
+
+@media (max-width: 768px) {
+  .card-grid-2,
+  .card-grid-3,
+  .card-grid-4 {
+    grid-template-columns: 1fr;
+  }
+  
+  .card-grid-auto {
+    grid-template-columns: 1fr;
+  }
+  
+  .card {
+    border-radius: 8px;
+  }
+  
+  .card-lg {
+    padding: 12px;
+    border-radius: 12px;
+  }
+  
+  .card-xl {
+    padding: 16px;
+    border-radius: 16px;
+  }
+  
+  .feature-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+  
+  .feature-card .feature-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+  
+  .feature-card .feature-title {
+    font-size: 1rem;
+  }
+  
+  .feature-card .feature-description {
+    font-size: 0.8rem;
+  }
+  
+  .stat-card {
+    padding: 12px;
+  }
+  
+  .stat-card .stat-number {
+    font-size: 1.2rem;
+  }
+  
+  .stat-card .stat-label {
+    font-size: 0.8rem;
+  }
+}
+
+/* ========================================
+   THEME VARIATIONS
+   ======================================== */
+
+[data-style="minimal"] .card {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-style="minimal"] .card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ========================================
+   UTILITY CARD CLASSES
+   ======================================== */
+
+.card-clickable {
+  cursor: pointer;
+}
+
+.card-no-hover:hover {
+  transform: none;
+  box-shadow: none;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.card-shadow {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-shadow:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.card-full-height {
+  height: 100%;
+}
+
+.card-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}

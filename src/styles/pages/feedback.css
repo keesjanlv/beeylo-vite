@@ -1,0 +1,152 @@
+/* Feedback Page Styles */
+.feedback-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.feedback-form-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.feedback-submit-button {
+  background: var(--primary);
+  color: var(--background);
+  border: none;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.feedback-submit-button:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.feedback-submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.feedback-success {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.success-icon {
+  color: var(--success);
+  margin-bottom: 16px;
+}
+
+.feedback-success h3 {
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+}
+
+.feedback-success p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Feedback Icon Styling */
+.feedback-icon {
+  color: var(--primary);
+}
+
+.menu-item:hover .feedback-icon {
+  color: var(--primary-hover);
+}
+
+/* Mobile Responsive for Feedback Form */
+@media (max-width: 768px) {
+  .feedback-form-container {
+    padding: 0 4px;
+  }
+  
+  .form-input,
+  .form-select,
+  .form-textarea {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+  
+  .form-textarea {
+    min-height: 100px;
+  }
+  
+  .feedback-submit-button {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .feedback-subtitle {
+    font-size: 0.85rem;
+  }
+}

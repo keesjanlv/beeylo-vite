@@ -1,4 +1,5 @@
-import type { FC } from 'react'
+import type { FC } from 'react';
+import '../styles/pages/thank-you.css';
 import type { TabType } from '../types'
 
 interface ThankYouPageProps {
@@ -36,11 +37,11 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
                 type="text" 
                 value={shareUrl} 
                 readOnly 
-                className="share-link-input"
+                className="share-input"
               />
               <button 
                 onClick={copyToClipboard}
-                className="copy-button"
+                className="btn btn-primary btn-md"
               >
                 Copy
               </button>
@@ -50,7 +51,7 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
           <div className="action-buttons">
             <button 
               onClick={() => onTabChange('giveaway')}
-              className="giveaway-button primary-button"
+              className="btn btn-primary btn-lg"
             >
               Check Out Giveaway
             </button>

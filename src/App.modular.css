@@ -1,0 +1,21 @@
+/* Beeylo - Modular CSS Architecture */
+
+/* Base Styles */
+@import './styles/base/variables.css';
+@import './styles/base/utility.css';
+
+/* Layout Styles */
+@import './styles/layout/grid.css';
+
+/* Component Styles */
+@import './styles/components/navigation.css';
+@import './styles/components/buttons.css';
+@import './styles/components/cards.css';
+
+/* Page Styles */
+@import './styles/pages/faq.css';
+@import './styles/pages/giveaway.css';
+
+/* NOTE: This is a simplified version with key styles extracted to modules.
+   The remaining styles from the original App.css should be gradually 
+   moved to appropriate module files for better organization. */

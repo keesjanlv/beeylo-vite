@@ -1,0 +1,64 @@
+/* ========================================
+   TEMPLATE COMPONENTS
+   ======================================== */
+
+/* ========================================
+   TEMPLATE CONTAINERS
+   ======================================== */
+
+.share-templates {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.share-templates h4 {
+  /* margin-bottom: 16px; - replaced with utility class */
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.templates-list {
+  /* display: flex; - replaced with utility class */
+  /* flex-direction: column; - replaced with utility class */
+  /* gap: 16px; - replaced with utility class */
+}
+
+/* ========================================
+   TEMPLATE ITEMS
+   ======================================== */
+
+.template-item {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  /* padding: 16px; - replaced with utility class */
+  transition: all 0.2s ease;
+}
+
+.template-item:hover {
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.template-header {
+  /* display: flex; - replaced with utility class */
+  /* justify-content: space-between; - replaced with utility class */
+  /* align-items: center; - replaced with utility class */
+  /* margin-bottom: 12px; - replaced with utility class */
+}
+
+.template-platform {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.template-content p {
+  /* margin-bottom: 8px; - replaced with utility class */
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.template-hashtags {
+  font-size: 0.8rem;
+  color: var(--primary);
+  font-weight: 500;
+}

@@ -1,0 +1,324 @@
+/* New Dashboard Layout */
+.dashboard-new-layout {
+  height: 100%;
+  background: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.dashboard-container {
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Dashboard Welcome Header */
+.dashboard-welcome-header {
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+.dashboard-welcome-header h1 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Miniature Stats Cards */
+.dashboard-stats-mini {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.stat-card-mini {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.stat-card-mini:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(251, 191, 36, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-number-mini {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.stat-label-mini {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Referral Link Section */
+.referral-section {
+  margin-bottom: 12px;
+}
+
+.referral-header {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 0;
+  text-align: left;
+}
+
+.referral-link-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+.referral-link-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  min-width: 0;
+}
+
+.referral-link-input:focus {
+  outline: none;
+  border-color: rgba(251, 191, 36, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.copy-link-button {
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.copy-link-button:hover {
+  background: rgba(251, 191, 36, 0.2);
+  border-color: rgba(251, 191, 36, 0.5);
+  transform: translateY(-1px);
+}
+
+/* Dashboard Menu Section */
+.dashboard-menu-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dashboard-menu-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.dashboard-menu-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(251, 191, 36, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-menu-item .menu-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.1));
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.dashboard-menu-item .menu-content {
+  flex: 1;
+}
+
+.dashboard-menu-item .menu-content h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 2px 0;
+}
+
+.dashboard-menu-item .menu-content p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Dashboard Logout Section */
+.dashboard-logout-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.dashboard-logout-button {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 12px;
+  padding: 12px 24px;
+  color: #ef4444;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dashboard-logout-button:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.5);
+  transform: translateY(-1px);
+}
+
+/* Mobile Dashboard Layout */
+@media (max-width: 768px) {
+  .dashboard-new-layout {
+    padding: 12px;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .dashboard-container {
+    gap: 16px;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .dashboard-welcome-header {
+    margin-bottom: 4px;
+  }
+  
+  .dashboard-welcome-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .dashboard-stats-mini {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .stat-card-mini {
+    padding: 12px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px;
+  }
+  
+  .stat-number-mini {
+    font-size: 1.3rem;
+  }
+  
+  .stat-label-mini {
+    font-size: 0.75rem;
+  }
+  
+  .dashboard-menu-section {
+    gap: 8px;
+    /* flex: 1; */
+  }
+  
+  .dashboard-menu-item {
+    padding: 12px;
+    border-radius: 12px;
+  }
+  
+  .dashboard-menu-item .menu-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+  }
+  
+  .dashboard-menu-item .menu-content h3 {
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+  }
+  
+  .dashboard-menu-item .menu-content p {
+    font-size: 0.8rem;
+  }
+  
+  .dashboard-logout-section {
+    margin-top: 8px;
+  }
+  
+  .dashboard-logout-button {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+}
+
+.early-access-banner {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(22, 163, 74, 0.1));
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 8px;
+}
+
+.early-access-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.early-access-icon {
+    font-size: 1.5rem;
+}
+
+.early-access-text strong {
+    color: #22c55e;
+    font-weight: 600;
+}

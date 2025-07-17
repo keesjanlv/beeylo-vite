@@ -1,0 +1,227 @@
+/* Home Slides (Logged-in view) */
+.home-slides {
+  overflow: hidden;
+}
+
+.slide-content {
+  /* Replaced with utility classes: .flex .flex-col .h-full .p-20 .gap-24 */
+}
+
+.slide-text {
+  /* Replaced with utility classes: .flex .flex-col .gap-16 */
+}
+
+.slide-navigation {
+  /* Replaced with utility classes: .flex .gap-12 .justify-center .mb-16 */
+}
+
+.slide-nav-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  /* Replaced with utility classes: .flex .items-center .justify-center */
+}
+
+.slide-nav-button:hover {
+  border-color: rgba(251, 191, 36, 0.5);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.slide-nav-button.active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--background);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+}
+
+.slide-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.slide-description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.slide-image {
+  flex: 1;
+  /* Replaced with utility classes: .flex .items-center .justify-center */
+  overflow: hidden;
+}
+
+.slide-image img {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 769px) {
+  .slide-content {
+    /* Replaced with utility classes: .flex-row .items-center .p-40 .gap-48 */
+  }
+  
+  .slide-text {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .slide-navigation {
+    /* Replaced with utility class: .justify-start */
+  }
+  
+  .slide-title {
+    font-size: 2.5rem;
+    text-align: left;
+  }
+  
+  .slide-description {
+    font-size: 1.1rem;
+    text-align: left;
+  }
+  
+  .slide-image {
+    flex: 1;
+  }
+}
+
+/* Features Tabs - Mobile First */
+.feature-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.feature-tab {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 12px;
+  position: relative;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: none;
+}
+
+/* Desktop Features Tabs */
+@media (min-width: 769px) {
+  .feature-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .feature-tab {
+    aspect-ratio: auto;
+    align-items: center;
+    justify-content: center;
+  text-align: center;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+}
+
+.feature-tab:hover {
+  border-color: var(--primary);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.feature-tab.active {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: var(--background);
+}
+
+.tab-label {
+  font-weight: 600;
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  line-height: 1.2;
+}
+
+@media (min-width: 769px) {
+  .tab-label {
+    position: static;
+    bottom: auto;
+    left: auto;
+    right: auto;
+}
+}
+
+/* Feature Detail */
+.feature-detail {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.feature-detail-content {
+  max-width: 700px;
+}
+
+.feature-detail-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.feature-detail-subtitle {
+  font-size: 1.3rem;
+  color: var(--primary);
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.feature-detail-description {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+.feature-detail-benefits {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,104 @@
+/* Logged In Home Page Styles */
+.logged-in-home {
+  height: 100%;
+  background: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.logged-in-home-container {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 40px;
+  padding: 20px;
+}
+
+.logged-in-home-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 600px;
+}
+
+.logged-in-home-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.logged-in-home-description {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.logged-in-home-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.logged-in-home-button {
+  min-width: 160px;
+}
+
+.logged-in-home-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logged-in-home-image img {
+  max-width: 80%;
+  max-height: 400px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  object-fit: contain;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .logged-in-home-container {
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: 24px;
+  }
+
+  .logged-in-home-content {
+    align-items: center;
+  }
+
+  .logged-in-home-title {
+    font-size: 2rem;
+  }
+
+  .logged-in-home-description {
+    font-size: 1rem;
+  }
+
+  .logged-in-home-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .logged-in-home-button {
+    width: 100%;
+  }
+  
+  .logged-in-home-image img {
+    max-width: 90%;
+    max-height: 300px;
+  }
+}

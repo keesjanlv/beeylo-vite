@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
+import '../styles/pages/home.css';
+import '../styles/components/slider.css';
 import type { FC } from 'react'
 import type { TabType } from '../types'
 import { useUser } from '../contexts/UserContext'
+import { Spotlight, GlowButton } from '../components/Spotlight'
 import beeyloLogo from '../assets/beeylologo.png'
 import tripleScreenImg from '../assets/triplescreenhomedef.webp'
 import inboxOverloadImg from '../assets/inboxoverload.webp'
@@ -123,23 +126,25 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     const currentSlideData = slides[currentSlide]
     
     return (
-      <div 
-        className="page-content home-slides"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-      >
-        <div className="feature-content">
+      <Spotlight className="page-content home-slides">
+        <div 
+          className="feature-content"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
           <div className="feature-text">
             <div className="feature-navigation">
               {slides.map((_, index) => (
-                <button
+                <GlowButton
                   key={index}
                   onClick={() => handleSlideChange(index)}
-                  className={`feature-nav-button ${currentSlide === index ? 'active' : ''}`}
+                  variant={currentSlide === index ? 'primary' : 'outline'}
+                  size="sm"
+                  className="feature-nav-button"
                 >
                   {index + 1}
-                </button>
+                </GlowButton>
               ))}
             </div>
             <h2 className="feature-title">{currentSlideData.title}</h2>
@@ -149,7 +154,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
             <img src={currentSlideData.image} alt={currentSlideData.title} />
           </div>
         </div>
-      </div>
+      </Spotlight>
     )
   }
 
@@ -165,9 +170,8 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
         {/* Left column on desktop */}
         <div className="homepage-left">
           <h1 className="homepage-title">
-            <span className="title-big">The new free inbox with:</span>
-            <br />
-            <span className="title-small">No spam, no ads and no useless updates</span>
+            The new free inbox with No spam, 
+            no ads and no useless updates.
           </h1>
           
           {/* Login form */}
@@ -182,17 +186,22 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                 disabled={isLoading}
               />
               <div className="button-group">
-                <button type="submit" className="cta-button-compact primary" disabled={isLoading}>
-                  {isLoading ? 'Loading...' : 'I need this'}
-                </button>
-                <button 
-                  type="button" 
-                  className="cta-button-compact secondary" 
-                  onClick={() => onTabChange('learn-more')}
+                <GlowButton 
+                  type="submit"
+                  variant="primary"
                   disabled={isLoading}
+                  className="cta-button-compact"
                 >
-                  Learn more
-                </button>
+                  {isLoading ? 'Loading...' : 'End my inbox chaos'}
+                </GlowButton>
+                <GlowButton 
+                  onClick={() => onTabChange('learn-more')}
+                  variant="secondary"
+                  disabled={isLoading}
+                  className="cta-button-compact"
+                >
+                  90 sec explainer (video)
+                </GlowButton>
               </div>
               {(loginError || error) && (
                 <div className="error-message" style={{ color: '#ff4444', fontSize: '0.9rem', marginTop: '8px' }}>

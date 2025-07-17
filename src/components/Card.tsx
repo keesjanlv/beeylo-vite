@@ -1,4 +1,5 @@
 import type { FC, ReactNode } from 'react'
+import { AnimatedCard } from './Spotlight'
 
 interface CardProps {
   className?: string
@@ -6,6 +7,8 @@ interface CardProps {
   children: ReactNode
   title?: string
   subtitle?: string
+  interactive?: boolean
+  onClick?: () => void
 }
 
 export const Card: FC<CardProps> = ({ 
@@ -13,9 +16,15 @@ export const Card: FC<CardProps> = ({
   size = "1x1", 
   children, 
   title, 
-  subtitle 
+  subtitle,
+  interactive = false,
+  onClick
 }) => (
-  <div className={`card card-${size} ${className}`}>
+  <AnimatedCard 
+    className={`card-${size} ${className}`}
+    interactive={interactive}
+    onClick={onClick}
+  >
     {title && (
       <div className="card-header">
         <h3 className="card-title">{title}</h3>
@@ -25,5 +34,5 @@ export const Card: FC<CardProps> = ({
     <div className="card-content">
       {children}
     </div>
-  </div>
-) 
+  </AnimatedCard>
+)

@@ -9,19 +9,19 @@ import {
   GiveawayPage,
   HowItWorksPage,
   ActionsPage,
-  LeaderboardPage,
-  PersonalSettingsPage,
   AboutPage, 
   MenuPage,
   FeedbackPage,
   FAQPage,
   LearnMorePage,
-  ThankYouPage
+  ThankYouPage,
+  LoggedInHomePage,
+  FeaturesOverviewPage
 } from './pages'
 import { UserProvider, useUser } from './contexts/UserContext'
 import './App.css'
 
-type ThemeType = 'system' | 'light' | 'dark'
+type ThemeType = 'light' | 'dark'
 type StyleType = 'enhanced' | 'minimal'
 
 const AppContent: FC = () => {
@@ -31,7 +31,7 @@ const AppContent: FC = () => {
 
   const [theme, setTheme] = useState<ThemeType>(() => {
     const savedTheme = localStorage.getItem('theme') as ThemeType
-    return savedTheme || 'system'
+    return savedTheme || 'light'
   })
   const [style, setStyle] = useState<StyleType>(() => {
     const savedStyle = localStorage.getItem('style') as StyleType
@@ -107,11 +107,11 @@ const AppContent: FC = () => {
           description: 'Learn how Beeylo\'s giveaway works, what you can earn, and how to participate in our reward program.',
           url: '/how-it-works'
         }
-      case 'leaderboard':
+      case 'features-overview':
         return {
-          title: 'Leaderboard - Beeylo Competition',
-          description: 'Check your ranking in Beeylo\'s waitlist competition. See top referrers and track your progress.',
-          url: '/leaderboard'
+          title: 'Features Overview - Beeylo',
+          description: 'Explore Beeylo\'s key features and discover how our smart email management transforms your inbox experience.',
+          url: '/features-overview'
         }
       case 'about':
         return {
@@ -149,21 +149,19 @@ const AppContent: FC = () => {
   const renderPage = () => {
     switch (activeTab) {
       case 'home':
-        return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
+        return isLoggedIn ? <LoggedInHomePage onTabChange={handleTabChange} onLogout={handleLogout} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
       case 'dashboard':
         return isLoggedIn ? <DashboardPage userData={userData} onLogout={handleLogout} onTabChange={handleTabChange} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
       case 'benefits':
         return <BenefitsPage />
       case 'giveaway':
-        return <GiveawayPage onTabChange={handleTabChange} />
+        return <GiveawayPage onTabChange={handleTabChange} />;
       case 'how-it-works':
         return <HowItWorksPage onTabChange={handleTabChange} />
+      case 'features-overview':
+        return <FeaturesOverviewPage onTabChange={handleTabChange} />
       case 'actions':
         return isLoggedIn ? <ActionsPage onBack={handleBackToDashboard} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
-      case 'leaderboard':
-        return isLoggedIn ? <LeaderboardPage onBack={handleBackToDashboard} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
-      case 'personal-settings':
-        return isLoggedIn ? <PersonalSettingsPage userData={userData} onLogout={handleLogout} onBack={handleBackToDashboard} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
       case 'feedback':
         return <FeedbackPage onBack={() => setActiveTab('menu')} />
       case 'about':

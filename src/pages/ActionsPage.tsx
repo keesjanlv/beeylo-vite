@@ -1,5 +1,5 @@
-import type { FC } from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type FC } from 'react';
+import '../styles/pages/actions.css';
 import { useUser } from '../contexts/UserContext'
 import { InstagramIcon, TikTokIcon, TwitterIcon, LinkedinIcon } from '../components/Icons'
 

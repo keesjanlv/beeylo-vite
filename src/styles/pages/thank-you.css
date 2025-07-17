@@ -1,0 +1,78 @@
+/* Thank You Page Styles */
+.thank-you-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.thank-you-container {
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+.thank-you-content {
+  border-radius: 16px;
+  padding: 40px 32px;
+}
+
+.success-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.thank-you-content h1 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.thank-you-message {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 32px;
+  font-size: 0.95rem;
+}
+
+.share-section {
+  margin-bottom: 32px;
+}
+
+.share-section h3 {
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+}
+
+.share-link-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .thank-you-page {
+    padding: 16px;
+    align-items: flex-start;
+  }
+  
+  .thank-you-content {
+    padding: 32px 24px;
+  }
+  
+  .thank-you-content h1 {
+    font-size: 1.6rem;
+  }
+  
+  .share-link-container {
+    flex-direction: column;
+  }
+  
+  .copy-button,
+  .giveaway-button {
+    width: 100%;
+  }
+}

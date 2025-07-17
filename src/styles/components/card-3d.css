@@ -1,0 +1,213 @@
+/* ========================================
+   3D CARD COMPONENTS
+   ======================================== */
+
+/* Base Card 3D Styles */
+.card-3d {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: var(--space-md);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* Card Variants */
+.card-3d-default {
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-3d-elevated {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.card-3d-subtle {
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Interactive States */
+.card-3d-interactive {
+  cursor: pointer;
+}
+
+.card-3d-interactive:hover {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+/* Task Row Component */
+.task-row {
+  display: flex;
+  align-items: center;
+  padding: var(--space-sm);
+  border-radius: 8px;
+  margin-bottom: var(--space-sm);
+  background: rgba(255, 255, 255, 0.03);
+  transition: all 0.2s ease;
+}
+
+.task-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.task-row-icon {
+  margin-right: var(--space-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+}
+
+.task-row-title {
+  flex: 1;
+  font-size: var(--font-size-sm);
+}
+
+.task-row-actions {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+/* Task Card Component */
+.task-card {
+  overflow: hidden;
+}
+
+.task-card-header {
+  font-weight: 600;
+  font-size: var(--font-size-md);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.task-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+/* Integration Card Component */
+.integration-card {
+  overflow: hidden;
+}
+
+.integration-card-content {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.integration-card-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(251, 191, 36, 0.1);
+  border-radius: 12px;
+  color: var(--primary);
+  font-size: 24px;
+}
+
+.integration-card-info {
+  flex: 1;
+}
+
+.integration-card-title {
+  font-weight: 600;
+  font-size: var(--font-size-md);
+  margin-bottom: var(--space-xs);
+}
+
+.integration-card-description {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.integration-card-status {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.integration-card-status-active {
+  background: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+}
+
+.integration-card-status-inactive {
+  background: rgba(108, 117, 125, 0.2);
+  color: #6c757d;
+}
+
+.integration-card-status-pending {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+}
+
+.integration-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Light Mode Adjustments */
+@media (prefers-color-scheme: light) {
+  .card-3d {
+    background: rgba(0, 0, 0, 0.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  .card-3d-default {
+    background: rgba(0, 0, 0, 0.02);
+  }
+  
+  .card-3d-elevated {
+    background: rgba(0, 0, 0, 0.04);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+  
+  .card-3d-subtle {
+    background: rgba(0, 0, 0, 0.01);
+  }
+  
+  .card-3d-interactive:hover {
+    background: rgba(0, 0, 0, 0.03);
+  }
+  
+  .task-row {
+    background: rgba(0, 0, 0, 0.01);
+  }
+  
+  .task-row:hover {
+    background: rgba(0, 0, 0, 0.03);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .card-3d {
+    padding: var(--space-sm);
+  }
+  
+  .integration-card-content {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  
+  .integration-card-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+}

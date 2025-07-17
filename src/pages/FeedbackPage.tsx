@@ -1,5 +1,6 @@
 import type { FC } from 'react'
-import { useState } from 'react'
+import { useState } from 'react';
+import '../styles/pages/feedback.css';
 
 interface FeedbackPageProps {
   onBack?: () => void

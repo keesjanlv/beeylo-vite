@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import type { FC } from 'react'
+import '../styles/pages/benefits.css';
+import type { FC } from 'react';
 import ticketOrderImg from '../assets/ticketorder.webp'
 import brandsDefImg from '../assets/brandsdef.webp'
 import ticketButtonsImg from '../assets/ticketbuttons.webp'

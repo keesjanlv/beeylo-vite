@@ -1,0 +1,33 @@
+/* CSS Variables and Themes */
+
+/* Light Theme */
+[data-theme="light"] {
+  --primary: #E6B800;
+  --primary-hover: #D4A600;
+  --background: #FFFFFF;
+  --surface: #F8F9FA;
+  --border: #D1D5DB;
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-muted: #6B7280;
+  --success: #059669;
+  --warning: #D97706;
+  --error: #DC2626;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+  --primary: #FFD700;
+  --primary-hover: #FFC700;
+  --background: #0A0A0A;
+  --surface: #1A1A1A;
+  --border: #333;
+  --text-primary: #FFFFFF;
+  --text-secondary: #B0B0B0;
+  --text-muted: #666;
+  --success: #4CAF50;
+  --warning: #FF9800;
+  --error: #F44336;
+  --shadow: rgba(0, 0, 0, 0.3);
+}

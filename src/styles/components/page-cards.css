@@ -1,0 +1,135 @@
+/* Page-specific card styling for Homepage and Benefits */
+
+/* Homepage Cards */
+.homepage-hero-card {
+  margin-bottom: var(--space-lg);
+}
+
+.homepage-hero-card .homepage-title {
+  margin: 0;
+  text-align: center;
+}
+
+.homepage-form-card {
+  margin-bottom: var(--space-lg);
+}
+
+.homepage-form-card .homepage-form {
+  margin: 0;
+}
+
+.homepage-image-card {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.homepage-image-card .homepage-image-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.homepage-image-card .homepage-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Benefits Page Cards */
+.feature-text-card {
+  margin-bottom: var(--space-lg);
+}
+
+.feature-text-card .feature-text {
+  margin: 0;
+}
+
+.feature-text-card .feature-navigation {
+  margin-bottom: var(--space-lg);
+}
+
+.feature-image-card {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-image-card .feature-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-image-card .feature-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* FAQ Page Cards */
+.faq-item {
+  margin-bottom: var(--space-md);
+}
+
+.faq-question-button {
+  width: 100%;
+  text-align: left;
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+}
+
+.faq-answer-wrapper {
+  padding-top: var(--space-xs);
+}
+
+.faq-answer {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .homepage-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: start;
+  }
+  
+  .homepage-hero-card .homepage-title {
+    text-align: left;
+  }
+  
+  .feature-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: start;
+  }
+  
+  .feature-text-card {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .homepage-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+  
+  .feature-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+}

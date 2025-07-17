@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import '../styles/pages/how-it-works.css'
 import type { FC } from 'react'
 import type { TabType } from '../types'
 

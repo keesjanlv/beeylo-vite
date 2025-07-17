@@ -9,7 +9,6 @@ const routes = [
   { path: '/features', priority: '0.8', changefreq: 'monthly' },
   { path: '/giveaway', priority: '0.9', changefreq: 'weekly' },
   { path: '/about', priority: '0.7', changefreq: 'monthly' },
-  { path: '/leaderboard', priority: '0.6', changefreq: 'daily' },
 ];
 
 const generateSitemap = () => {

@@ -1,35 +1,37 @@
 import type { FC } from 'react'
 
-export const AboutPage: FC = () => (
-  <div className="page-content">
-    <div className="about-content">
-      <h2>About <span className="text-accent">Beeylo</span></h2>
-      <div className="about-text">
-        <p>
-          We believe in creating tools that make life simpler. 
-          Beeylo was born from the need for a clean, energetic and powerful app 
-          that does exactly what you expect.
-        </p>
-        <p>
-          Our team works hard on a product that is not only functional, 
-          but also a pleasure to use.
-        </p>
-      </div>
-      <div className="team-section">
-        <h3>The Team</h3>
-        <div className="team-grid">
-          <div className="team-member">
-            <div className="member-avatar">👨‍💻</div>
-            <h4>Development Team</h4>
-            <p>Passion for clean code and UX</p>
-          </div>
-          <div className="team-member">
-            <div className="member-avatar">🎨</div>
-            <h4>Design Team</h4>
-            <p>Minimalist with maximum impact</p>
-          </div>
+export const AboutPage: FC = () => {
+  return (
+    <div className="page-container">
+      <div className="page-content">
+        <div className="page-header">
+          <h1>About us</h1>
+          <h2>We're not just launching an inbox.<br />We're starting a shift.</h2>
+        </div>
+
+        <div className="content-section">
+          <p>
+            For too long, companies have controlled how they talk to us.<br />
+            Flooding our inboxes with spam, ads, and useless updates.
+          </p>
+          
+          <h3>We're two friends who decided to fix that.</h3>
+          
+          <p>
+            Beeylo is the world's first inbox built for people, not brands.<br />
+            It only shows what actually matters.
+          </p>
+          
+          <p>
+            And we're building it with the people.<br />
+            For the people.
+          </p>
+          
+          <p>
+            Because inbox noise was never your choice.
+          </p>
         </div>
       </div>
     </div>
-  </div>
-) 
+  )
+}

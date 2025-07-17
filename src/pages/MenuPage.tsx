@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import type { TabType } from '../types'
 
-type ThemeType = 'system' | 'light' | 'dark'
+type ThemeType = 'light' | 'dark'
 type StyleType = 'enhanced' | 'minimal'
 
 interface MenuPageProps {
@@ -97,18 +97,6 @@ export const MenuPage: FC<MenuPageProps> = ({
           <div className="menu-content">
             <h3>Theme Settings</h3>
             <div className="theme-options">
-              <button 
-                className={`theme-option ${theme === 'system' ? 'active' : ''}`}
-                onClick={() => onThemeChange('system')}
-                title="System Theme"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                  <line x1="8" y1="21" x2="16" y2="21"/>
-                  <line x1="12" y1="17" x2="12" y2="21"/>
-                </svg>
-                System
-              </button>
               <button 
                 className={`theme-option ${theme === 'light' ? 'active' : ''}`}
                 onClick={() => onThemeChange('light')}
