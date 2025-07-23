@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import type { FC } from 'react'
-import type { TabType } from '../types'
 import { NumberedButton, Container, Stack, Card, CardContent } from '../components/ui'
 import ticketOrderImg from '../assets/ticketorder.webp'
 import brandsDefImg from '../assets/brandsdef.webp'
@@ -42,10 +41,10 @@ const features: Feature[] = [
 ]
 
 interface BenefitsPageProps {
-  onTabChange: (tab: TabType) => void
+  // No props needed
 }
 
-export const BenefitsPage: FC<BenefitsPageProps> = ({ onTabChange }) => {
+export const BenefitsPage: FC<BenefitsPageProps> = () => {
   const [currentFeature, setCurrentFeature] = useState(0)
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)

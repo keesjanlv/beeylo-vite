@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import type { TabType } from '../types'
-import { Container, Stack, Card, CardContent, Button } from '../components/ui'
+import { Container, Card, CardContent, Button } from '../components/ui'
 
 type ThemeType = 'light' | 'dark'
 type StyleType = 'enhanced' | 'minimal'

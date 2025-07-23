@@ -1,4 +1,3 @@
-import React from 'react'
 import type { FC, ReactNode, HTMLAttributes } from 'react'
 
 export interface StackProps extends HTMLAttributes<HTMLDivElement> {

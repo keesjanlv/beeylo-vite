@@ -146,7 +146,7 @@ const AppContent: FC = () => {
       case 'dashboard':
         return isLoggedIn ? <DashboardPage userData={userData} onLogout={handleLogout} onTabChange={handleTabChange} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
       case 'benefits':
-        return <BenefitsPage onTabChange={handleTabChange} />
+        return <BenefitsPage />
       case 'giveaway':
         return <GiveawayPage onTabChange={handleTabChange} />
       case 'how-it-works':
