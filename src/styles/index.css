@@ -1,0 +1,13 @@
+/* Main Styles Index - Import all style modules */
+
+/* 1. Design Tokens - Must be first */
+@import './tokens.css';
+
+/* 2. Layout System */
+@import './layout.css';
+
+/* 3. Component Styles */
+@import './components.css';
+
+/* 4. Legacy Styles - Gradually migrate these */
+@import './legacy.css';

@@ -35,7 +35,7 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="author" content={author} />
       <meta name="robots" content="index, follow" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta name="theme-color" content="#f59e0b" />
+      <meta name="theme-color" content="#FBBF16" />
       
       {/* Open Graph Meta Tags */}
       <meta property="og:title" content={fullTitle} />

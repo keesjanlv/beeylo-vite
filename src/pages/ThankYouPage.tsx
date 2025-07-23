@@ -1,5 +1,6 @@
 import type { FC } from 'react'
 import type { TabType } from '../types'
+import { Container, Stack, Card, CardContent, Button, Input } from '../components/ui'
 
 interface ThankYouPageProps {
   userData?: any
@@ -19,44 +20,51 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
   }
 
   return (
-    <div className="thank-you-page">
-      <div className="thank-you-container">
-        <div className="thank-you-content">
-          <div className="success-icon">🎉</div>
-          <h1>You're in!</h1>
-          <p className="thank-you-message">
-            Help us grow even faster and bigger by sharing. To thank you for your part in this, 
-            we have also created a special giveaway, something that has never been done before.
-          </p>
-          
-          <div className="share-section">
-            <h3>Your Share Link</h3>
-            <div className="share-link-container">
-              <input 
-                type="text" 
-                value={shareUrl} 
-                readOnly 
-                className="share-link-input"
-              />
-              <button 
-                onClick={copyToClipboard}
-                className="copy-button"
-              >
-                Copy
-              </button>
-            </div>
-          </div>
-          
-          <div className="action-buttons">
-            <button 
-              onClick={() => onTabChange('giveaway')}
-              className="giveaway-button primary-button"
-            >
-              Check Out Giveaway
-            </button>
-          </div>
-        </div>
-      </div>
+    <div className="page-content thank-you-page">
+      <Container size="lg">
+        <Card variant="outline">
+          <CardContent>
+            <Stack spacing={6} className="thank-you-content items-center text-center">
+              <h1 className="text-3xl font-bold">You're in!</h1>
+              <p className="text-secondary max-w-lg mx-auto">
+                Help us grow faster by sharing. As a thank you, we’ve created a one-of-a-kind giveaway. Something never done before.
+              </p>
+              
+              <Card variant="outline" className="w-full max-w-lg">
+                <CardContent>
+                  <Stack spacing={3}>
+                    <h3 className="text-xl font-medium">Your Share Link</h3>
+                    <div className="flex items-center gap-2">
+                      <Input 
+                        value={shareUrl} 
+                        readOnly 
+                        className="flex-1"
+                      />
+                      <Button 
+                        variant="primary"
+                        size="sm"
+                        onClick={copyToClipboard}
+                      >
+                        Copy
+                      </Button>
+                    </div>
+                  </Stack>
+                </CardContent>
+              </Card>
+              
+              <div className="action-buttons">
+                <Button 
+                  variant="primary"
+                  size="lg"
+                  onClick={() => onTabChange('giveaway')}
+                >
+                  Check Out Giveaway
+                </Button>
+              </div>
+            </Stack>
+          </CardContent>
+        </Card>
+      </Container>
     </div>
   )
 }

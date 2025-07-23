@@ -1,0 +1,250 @@
+/* Enhanced Stats Section - Yellow/Orange Gradient Design */
+.stats-section-enhanced {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 24px 0;
+  padding: 0;
+}
+
+.stats-main-container {
+  position: relative;
+  background: linear-gradient(180deg, #FFE082 0%, #FFCC02 100%);
+  border-radius: 24px;
+  padding: 20px;
+  width: 100%;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 8px 32px rgba(255, 193, 7, 0.2);
+  overflow: hidden;
+}
+
+/* Dark theme gradient */
+@media (prefers-color-scheme: dark) {
+  .stats-main-container {
+    background: linear-gradient(180deg, #FFB74D 0%, #FF9800 100%);
+  }
+}
+
+/* Light theme gradient (for explicit light mode) */
+[data-theme="light"] .stats-main-container {
+  background: linear-gradient(180deg, #FFF3C4 0%, #FFE082 100%);
+}
+
+/* Header Text */
+.stats-header {
+  color: #1A1A1A;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="light"] .stats-header {
+  color: #424242;
+}
+
+/* Progress Bar */
+.stats-progress-label {
+  color: #1A1A1A;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="light"] .stats-progress-label {
+  color: #424242;
+}
+
+.stats-progress-container {
+  width: 100%;
+  margin: 0 0 8px 0;
+}
+
+.stats-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(26, 26, 26, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.stats-progress-fill {
+  height: 100%;
+  background: #FF8F00;
+  border-radius: 4px;
+  width: 65%; /* This will be dynamic based on actual progress */
+  transition: width 0.3s ease;
+}
+
+[data-theme="light"] .stats-progress-fill {
+  background: #F57C00;
+}
+
+[data-theme="light"] .stats-progress-bar {
+  background: rgba(66, 66, 66, 0.15);
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: auto;
+}
+
+.stats-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.stats-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(26, 26, 26, 0.7);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+[data-theme="light"] .stats-label {
+  color: rgba(66, 66, 66, 0.8);
+}
+
+.stats-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1A1A1A;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="light"] .stats-number {
+  color: #212121;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+/* Responsive Design - Mobile First */
+@media (max-width: 640px) {
+  .stats-main-container {
+    padding: 16px;
+    min-height: 120px;
+    border-radius: 20px;
+    gap: 10px;
+  }
+  
+  .stats-header {
+    font-size: 1rem;
+  }
+  
+  .stats-progress-label {
+    font-size: 0.7rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr 1fr; /* Keep side by side on mobile */
+    gap: 12px;
+  }
+  
+  .stats-number {
+    font-size: 2rem;
+  }
+  
+  .stats-label {
+    font-size: 0.8rem;
+  }
+}
+
+/* Tablet */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .stats-main-container {
+    padding: 24px;
+    min-height: 160px;
+    border-radius: 28px;
+  }
+  
+  .stats-grid {
+    gap: 24px;
+  }
+  
+  .stats-number {
+    font-size: 2.75rem;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1025px) {
+  .stats-section-enhanced {
+    max-width: 600px;
+    margin: 32px auto;
+  }
+  
+  .stats-main-container {
+    padding: 28px;
+    min-height: 180px;
+    border-radius: 32px;
+    gap: 16px;
+  }
+  
+  .stats-header {
+    font-size: 1.2rem;
+  }
+  
+  .stats-grid {
+    gap: 32px;
+  }
+  
+  .stats-number {
+    font-size: 3rem;
+  }
+  
+  .stats-label {
+    font-size: 0.9rem;
+  }
+}
+
+/* Hover Effects for Desktop */
+@media (min-width: 1025px) {
+  .stats-main-container {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .stats-main-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(255, 193, 7, 0.3);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .stats-main-container,
+  .stats-progress-fill {
+    transition: none;
+  }
+  
+  .stats-main-container:hover {
+    transform: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .stats-main-container {
+    border: 2px solid #000;
+  }
+  
+  .stats-header,
+  .stats-number,
+  .stats-label,
+  .stats-progress-label {
+    color: #000;
+    text-shadow: none;
+  }
+}

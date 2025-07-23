@@ -1,7 +1,13 @@
+// Legacy Components
+export { Card as LegacyCard } from './Card'
+export * from './Header'
 export * from './Icons'
 export * from './Logo'
-export * from './Card'
 export * from './Navigation'
-export * from './Header'
+export * from './SEO'
 export * from './Slider'
+
+// New UI Components
+export * from './ui'
 export { default as SEO } from './SEO'
+export * from './PageBadge'

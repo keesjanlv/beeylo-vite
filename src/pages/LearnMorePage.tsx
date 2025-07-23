@@ -1,38 +1,140 @@
+import { useState, useEffect } from 'react'
 import type { FC } from 'react'
+import type { TabType } from '../types'
+import { NumberedButton } from '../components/ui'
+import tripleScreenImg from '../assets/triplescreenhomedef.webp'
+import inboxOverloadImg from '../assets/inboxoverload.webp'
+import homeDefImg from '../assets/homedef.webp'
+import ticketOrderImg from '../assets/ticketorder.webp'
 
-export const LearnMorePage: FC = () => {
+interface LearnMorePageProps {
+  onTabChange: (tab: TabType) => void
+}
+
+const slides = [
+  {
+    id: 1,
+    title: "Welcome to your inbox without the noise.",
+    description: "No spam, no ads and no useless updates. Beeylo only shows you the 10% that actually matters.",
+    image: tripleScreenImg
+  },
+  {
+    id: 2,
+    title: "What's wrong with your inbox?",
+    description: "You get 40+ emails a day — but only 4 actually matter. And they get lost in the noise.",
+    image: inboxOverloadImg
+  },
+  {
+    id: 3,
+    title: "You order one thing... and your inbox explodes with 10 separate emails.",
+    description: "Every purchase becomes a flood of confirmations, shipping updates, and promotional follow-ups.",
+    image: ticketOrderImg
+  },
+  {
+    id: 4,
+    title: "Meet your new inbox.",
+    description: "Beeylo only shows you the 10% that actually matters. The rest? Gone.",
+    image: homeDefImg
+  },
+  {
+    id: 5,
+    title: "One order = one smart overview.",
+    description: "Every update is added to that same view. No more hunting through dozens of emails.",
+    image: homeDefImg
+  }
+]
+
+export const LearnMorePage: FC<LearnMorePageProps> = ({ onTabChange }) => {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+
+  const handleSlideChange = (index: number) => {
+    setCurrentSlide(index)
+  }
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length)
+  }
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+  }
+
+  // Handle touch events for mobile swipe
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > 50
+    const isRightSwipe = distance < -50
+
+    if (isLeftSwipe) {
+      nextSlide()
+    }
+    if (isRightSwipe) {
+      prevSlide()
+    }
+  }
+
+  // Handle keyboard events for desktop
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        prevSlide()
+      } else if (e.key === 'ArrowRight') {
+        nextSlide()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  const currentSlideData = slides[currentSlide]
+  
   return (
-    <div className="learn-more-page">
-      <div className="learn-more-container">
-        <div className="learn-more-header">
-          <h1>Learn More About Beeylo</h1>
-          <p>Discover how Beeylo will revolutionize your email experience</p>
+    <div 
+      className="page-content home-slides"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
+      
+      <div className="feature-content">
+        <div className="feature-text">
+          <div className="feature-navigation">
+            {slides.map((_, index) => (
+              <NumberedButton
+                key={index}
+                number={index + 1}
+                active={currentSlide === index}
+                onClick={() => handleSlideChange(index)}
+              />
+            ))}
+          </div>
+          <h2 className="feature-title">{currentSlideData.title}</h2>
+          <p className="feature-description">{currentSlideData.description}</p>
+          {currentSlide === 4 && (
+            <button 
+              className="see-benefits-button"
+              onClick={() => onTabChange('about')}
+            >
+              See our story
+            </button>
+          )}
         </div>
-        
-        <div className="video-section">
-          <div className="video-placeholder">
-            <div className="video-icon">▶️</div>
-            <p>Video Coming Soon</p>
-            <span>Watch our demo to see Beeylo in action</span>
-          </div>
-        </div>
-        
-        <div className="learn-more-content">
-          <div className="feature-highlight">
-            <h2>Why Beeylo?</h2>
-            <p>Traditional email is broken. Beeylo fixes it with intelligent filtering, beautiful design, and privacy-first approach.</p>
-          </div>
-          
-          <div className="benefits-preview">
-            <h3>What makes us different:</h3>
-            <ul>
-              <li>✨ AI-powered spam filtering</li>
-              <li>🎨 Beautiful, distraction-free interface</li>
-              <li>🔒 End-to-end encryption</li>
-              <li>⚡ Lightning-fast performance</li>
-              <li>📱 Perfect mobile experience</li>
-            </ul>
-          </div>
+        <div className="feature-image">
+          <img src={currentSlideData.image} alt={currentSlideData.title} />
         </div>
       </div>
     </div>

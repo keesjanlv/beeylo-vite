@@ -1,12 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import type { FC } from 'react'
 import type { TabType } from '../types'
 import { useUser } from '../contexts/UserContext'
 import beeyloLogo from '../assets/beeylologo.png'
 import tripleScreenImg from '../assets/triplescreenhomedef.webp'
-import inboxOverloadImg from '../assets/inboxoverload.webp'
-import homeDefImg from '../assets/homedef.webp'
-import ticketOrderImg from '../assets/ticketorder.webp'
 
 interface HomePageProps {
   isLoggedIn?: boolean
@@ -14,45 +11,11 @@ interface HomePageProps {
   onTabChange: (tab: TabType) => void
 }
 
-const slides = [
-  {
-    id: 1,
-    title: "Welcome to your inbox without the noise.",
-    description: "No spam, no ads and no useless updates. Beeylo only shows you the 10% that actually matters.",
-    image: tripleScreenImg
-  },
-  {
-    id: 2,
-    title: "What's wrong with your inbox?",
-    description: "You get 40+ emails a day — but only 4 actually matter. And they get lost in the noise.",
-    image: inboxOverloadImg
-  },
-  {
-    id: 3,
-    title: "You order one thing... and your inbox explodes with 10 separate emails.",
-    description: "Every purchase becomes a flood of confirmations, shipping updates, and promotional follow-ups.",
-    image: ticketOrderImg
-  },
-  {
-    id: 4,
-    title: "Meet your new inbox.",
-    description: "Beeylo only shows you the 10% that actually matters. The rest? Gone.",
-    image: homeDefImg
-  },
-  {
-    id: 5,
-    title: "One order = one smart overview.",
-    description: "Every update is added to that same view. No more hunting through dozens of emails.",
-    image: homeDefImg // Using placeholder image as requested
-  }
-]
+
 
 export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighlight = false, onTabChange }) => {
   const { login, isLoading, error } = useUser()
   const [email, setEmail] = useState('')
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [touchStart, setTouchStart] = useState<number | null>(null)
-  const [touchEnd, setTouchEnd] = useState<number | null>(null)
   const [loginError, setLoginError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,88 +28,47 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     }
   }
 
-  const handleSlideChange = (index: number) => {
-    setCurrentSlide(index)
-  }
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length)
-  }
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
-  }
-
-  // Handle touch events for mobile swipe
-  const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null)
-    setTouchStart(e.targetTouches[0].clientX)
-  }
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX)
-  }
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return
-    
-    const distance = touchStart - touchEnd
-    const isLeftSwipe = distance > 50
-    const isRightSwipe = distance < -50
-
-    if (isLeftSwipe) {
-      nextSlide()
-    }
-    if (isRightSwipe) {
-      prevSlide()
-    }
-  }
-
-  // Handle keyboard events for desktop
-  useEffect(() => {
-    if (!isLoggedIn) return
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') {
-        prevSlide()
-      } else if (e.key === 'ArrowRight') {
-        nextSlide()
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isLoggedIn])
 
   if (isLoggedIn) {
-    // Logged-in user view with slides
-    const currentSlideData = slides[currentSlide]
-    
+    // New simple logged-in user view
     return (
-      <div 
-        className="page-content home-slides"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-      >
-        <div className="feature-content">
-          <div className="feature-text">
-            <div className="feature-navigation">
-              {slides.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleSlideChange(index)}
-                  className={`feature-nav-button ${currentSlide === index ? 'active' : ''}`}
+      <div className="page-content logged-in-home">
+        <div className="logged-in-home-container">
+          <div className="logged-in-home-content">
+            <div className="logged-in-home-text">
+              <h1 className="logged-in-home-title">Welcome to Beeylo</h1>
+              <p className="logged-in-home-subtitle">No more spam, ads or useless updates</p>
+              
+              <div className="logged-in-home-buttons">
+                <button 
+                  className="button-exp"
+                  onClick={() => onTabChange('learn-more')}
                 >
-                  {index + 1}
+                  <div className="icon">
+                    <svg strokeLinejoin="round" strokeLinecap="round" fill="none" strokeWidth={2} stroke="currentColor" height={24} width={24} viewBox="0 0 24 24">
+                      <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                  </div>
+                  <span className="title">Learn more</span>
                 </button>
-              ))}
+                <button 
+                  className="button-exp"
+                  onClick={() => onTabChange('benefits')}
+                >
+                  <div className="icon">
+                    <svg strokeLinejoin="round" strokeLinecap="round" fill="none" strokeWidth={2} stroke="currentColor" height={24} width={24} viewBox="0 0 24 24">
+                      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <span className="title">See benefits</span>
+                </button>
+              </div>
             </div>
-            <h2 className="feature-title">{currentSlideData.title}</h2>
-            <p className="feature-description">{currentSlideData.description}</p>
-          </div>
-          <div className="feature-image">
-            <img src={currentSlideData.image} alt={currentSlideData.title} />
+            
+            <div className="logged-in-home-image">
+              <img src={tripleScreenImg} alt="Beeylo App Interface" />
+            </div>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
-export type TabType = 'home' | 'dashboard' | 'benefits' | 'giveaway' | 'about' | 'faq' | 'menu' | 'actions' | 'leaderboard' | 'personal-settings' | 'feedback' | 'learn-more' | 'thank-you' | 'how-it-works'
+export type TabType = 'home' | 'dashboard' | 'benefits' | 'giveaway' | 'about' | 'faq' | 'menu' | 'actions' | 'feedback' | 'learn-more' | 'thank-you' | 'how-it-works' | 'component-demo'
 export type FeatureTabType = 'speed' | 'design' | 'security' | 'mobile'
-export type DashboardTabType = 'intro' | 'actions' | 'share' | 'leaderboard'
+export type DashboardTabType = 'intro' | 'actions' | 'share'
 export type GiveawayTabType = 'why' | 'built-by-people' | 'your-chance'
 
 export interface Tab {

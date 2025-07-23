@@ -1,35 +1,42 @@
 import type { FC } from 'react'
+import { Container, Stack } from '../components/ui'
+import { PageBadge } from '../components'
 
 export const AboutPage: FC = () => (
   <div className="page-content">
-    <div className="about-content">
-      <h2>About <span className="text-accent">Beeylo</span></h2>
-      <div className="about-text">
-        <p>
-          We believe in creating tools that make life simpler. 
-          Beeylo was born from the need for a clean, energetic and powerful app 
-          that does exactly what you expect.
-        </p>
-        <p>
-          Our team works hard on a product that is not only functional, 
-          but also a pleasure to use.
-        </p>
-      </div>
-      <div className="team-section">
-        <h3>The Team</h3>
-        <div className="team-grid">
-          <div className="team-member">
-            <div className="member-avatar">👨‍💻</div>
-            <h4>Development Team</h4>
-            <p>Passion for clean code and UX</p>
-          </div>
-          <div className="team-member">
-            <div className="member-avatar">🎨</div>
-            <h4>Design Team</h4>
-            <p>Minimalist with maximum impact</p>
-          </div>
+    <Container size="lg">
+      <Stack spacing={8}>
+        {/* Page Badge */}
+        <PageBadge>Our Story</PageBadge>
+        
+        {/* First Section */}
+        <Stack spacing={4}>
+          <h2 className="text-4xl font-bold">
+            We're not just launching an inbox.<br />
+            We're starting a shift.
+          </h2>
+          <p className="text-lg text-secondary">
+            For too long, companies have controlled how they talk to us. Flooding our inboxes with spam, ads, and useless updates.
+          </p>
+        </Stack>
+
+        {/* Second Section */}
+        <Stack spacing={4}>
+          <h3 className="text-3xl font-bold">
+            We're two friends who decided to fix that.
+          </h3>
+          <p className="text-lg text-secondary">
+            Beeylo is the world's first inbox built for people, not brands. It only shows what actually matters. And we're building it with the people. For the people.
+          </p>
+        </Stack>
+
+        {/* Final Statement */}
+        <div className="text-center">
+          <p className="text-xl font-medium text-secondary italic">
+            Because inbox noise was never your choice
+          </p>
         </div>
-      </div>
-    </div>
+      </Stack>
+    </Container>
   </div>
-) 
+)

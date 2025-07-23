@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import type { TabType } from '../types'
+import { NumberedButton, Container, Stack, Card, CardContent, Button } from '../components/ui'
 
 interface HowItWorksPageProps {
   onTabChange: (tab: TabType) => void
@@ -277,32 +278,45 @@ export const HowItWorksPage: FC<HowItWorksPageProps> = ({ onTabChange }) => {
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
-      <div className="feature-content">
-        <div className="feature-text">
-          <button 
-            className="back-button"
-            onClick={() => onTabChange('giveaway')}
-            style={{ marginBottom: '16px' }}
-          >
-            ←
-          </button>
-          <div className="feature-navigation">
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => handleSlideChange(index)}
-                className={`feature-nav-button ${currentSlide === index ? 'active' : ''}`}
-              >
-                {index + 1}
-              </button>
-            ))}
-          </div>
-          <h2 className="feature-title">{currentSlideData.title}</h2>
-          <div className="feature-description">
-            {currentSlideData.content}
-          </div>
-        </div>
-      </div>
+      <Container size="lg">
+        <Card variant="outline" className="feature-card">
+          <CardContent>
+            <Stack spacing={6}>
+              <Stack spacing={4} className="feature-text">
+                <Button 
+                  variant="ghost" 
+                  onClick={() => onTabChange('giveaway')} 
+                  className="back-button"
+                  aria-label="Go back to giveaway"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M19 12H5"/>
+                    <path d="M12 19l-7-7 7-7"/>
+                  </svg>
+                  <span className="ml-2">Back to Giveaway</span>
+                </Button>
+                
+                <div className="feature-navigation">
+                  {slides.map((_, index) => (
+                    <NumberedButton
+                      key={index}
+                      number={index + 1}
+                      active={currentSlide === index}
+                      onClick={() => handleSlideChange(index)}
+                    />
+                  ))}
+                </div>
+                
+                <h2 className="text-2xl font-bold feature-title">{currentSlideData.title}</h2>
+                
+                <div className="feature-description">
+                  {currentSlideData.content}
+                </div>
+              </Stack>
+            </Stack>
+          </CardContent>
+        </Card>
+      </Container>
     </div>
   )
 }

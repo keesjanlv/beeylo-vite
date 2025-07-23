@@ -1,5 +1,11 @@
+/* Import custom fonts */
+@import './styles/fonts.css';
+
+/* Import enhanced stats styling */
+@import './styles/stats-enhanced.css';
+
 :root {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -8,10 +14,10 @@
   --amber-100: #fef3c7;
   --amber-200: #fde68a;
   --amber-300: #fcd34d;
-  --amber-400: #fbbf24;
-  --amber-500: #f59e0b;
-  --amber-600: #d97706;
-  --amber-700: #b45309;
+  --amber-400: #FBBF16;
+  --amber-500: #E6AC14;
+  --amber-600: #D19912;
+  --amber-700: #B8860B;
   --amber-800: #92400e;
   --amber-900: #78350f;
 
@@ -68,27 +74,50 @@ body {
 }
 
 /* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
 h1 {
   font-size: 2.5rem;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.025em;
 }
 
 h2 {
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.3;
   letter-spacing: -0.025em;
 }
 
 h3 {
   font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+h5 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+h6 {
+  font-size: 1rem;
   font-weight: 600;
   line-height: 1.4;
 }
 
 p {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: var(--text-secondary);
   line-height: 1.6;
 }

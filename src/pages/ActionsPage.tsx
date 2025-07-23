@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import { useState, useEffect } from 'react'
 import { useUser } from '../contexts/UserContext'
 import { InstagramIcon, TikTokIcon, TwitterIcon, LinkedinIcon } from '../components/Icons'
+import { Container, Stack, Card, CardContent, Button } from '../components/ui'
 
 interface ActionsPageProps {
   onBack: () => void
@@ -90,63 +91,92 @@ export const ActionsPage: FC<ActionsPageProps> = ({ onBack }) => {
 
   return (
     <div className="page-content">
-      <div className="dashboard-new-layout">
-        <div className="dashboard-container">
-          <div className="dashboard-header">
-            <button className="back-button" onClick={onBack}>
-              ←
-            </button>
-            <h1>Actions</h1>
-            <p>Complete these actions to earn points and help us grow</p>
-          </div>
+      <Container size="lg">
+        <Stack spacing={6}>
+          {/* Header */}
+          <Stack spacing={4}>
+            <Button 
+              variant="ghost" 
+              onClick={onBack} 
+              className="back-button"
+              aria-label="Go back"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5"/>
+                <path d="M12 19l-7-7 7-7"/>
+              </svg>
+              <span className="ml-2">Back</span>
+            </Button>
+            
+            <Stack spacing={2}>
+              <h1 className="text-3xl font-bold">Actions</h1>
+              <p className="text-secondary">Complete these actions to earn points and help us grow</p>
+            </Stack>
+          </Stack>
 
-          <div className="dashboard-menu-section">
-            {socialActions.map((action) => {
-              const isCompleted = completedActions.has(action.id)
-              const isLoading = loading === action.id
-              
-              return (
-                <div 
-                  key={action.id}
-                  className={`action-item-compact ${isCompleted ? 'completed' : ''} ${isLoading ? 'loading' : ''}`}
-                  onClick={() => handleActionClick(action)}
-                  style={{ 
-                    cursor: isCompleted ? 'default' : 'pointer',
-                    opacity: isCompleted ? 0.7 : 1
-                  }}
-                >
-                  <div className="action-left">
-                    <div className="action-icon">
-                      {action.icon}
+          {/* Social Actions */}
+          <Card variant="outline">
+            <CardContent>
+              <Stack spacing={4}>
+                {socialActions.map((action) => {
+                  const isCompleted = completedActions.has(action.id)
+                  const isLoading = loading === action.id
+                  
+                  return (
+                    <div 
+                      key={action.id}
+                      className={`action-item ${isCompleted ? 'completed' : ''} ${isLoading ? 'loading' : ''}`}
+                      onClick={() => !isCompleted && handleActionClick(action)}
+                      role="button"
+                      tabIndex={isCompleted ? -1 : 0}
+                      style={{ 
+                        cursor: isCompleted ? 'default' : 'pointer',
+                        opacity: isCompleted ? 0.7 : 1
+                      }}
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-3">
+                          <div className="action-icon">
+                            {action.icon}
+                          </div>
+                          <div>
+                            <h4 className="text-base font-medium">{action.title}</h4>
+                            {isCompleted && <span className="text-success text-xs">✓ Completed</span>}
+                            {isLoading && <span className="text-primary text-xs">Processing...</span>}
+                          </div>
+                        </div>
+                        <div className="action-points">
+                          {isCompleted ? '✓' : `+${action.points}`}
+                        </div>
+                      </div>
                     </div>
-                    <div className="action-content">
-                      <h4>{action.title}</h4>
-                      {isCompleted && <span style={{ color: '#4CAF50', fontSize: '12px' }}>✓ Completed</span>}
-                      {isLoading && <span style={{ color: '#2196F3', fontSize: '12px' }}>Processing...</span>}
-                    </div>
-                  </div>
-                  <div className="action-right">
-                    <div className="action-points">
-                      {isCompleted ? '✓' : `+${action.points}`}
-                    </div>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
+                  )
+                })}
+              </Stack>
+            </CardContent>
+          </Card>
 
-          <div className="actions-info">
-            <div className="info-card">
-              <h4>How it works</h4>
-              <p>Follow us on social media platforms to earn points. Each follow gives you 50 points that count towards your leaderboard position.</p>
-            </div>
-            <div className="info-card">
-              <h4>Why follow us?</h4>
-              <p>Stay updated with the latest Beeylo news, product updates, and be part of our growing community building the future of communication.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+          {/* Info Cards */}
+          <Stack spacing={4} direction="row" className="actions-info">
+            <Card variant="outline" className="flex-1">
+              <CardContent>
+                <Stack spacing={2}>
+                  <h4 className="text-lg font-medium">How it works</h4>
+                  <p className="text-secondary">Follow us on social media platforms to earn points. Each follow gives you 50 points that count towards your leaderboard position.</p>
+                </Stack>
+              </CardContent>
+            </Card>
+            <Card variant="outline" className="flex-1">
+              <CardContent>
+                <Stack spacing={2}>
+                  <h4 className="text-lg font-medium">Why follow us?</h4>
+                  <p className="text-secondary">Stay updated with the latest Beeylo news, product updates, and be part of our growing community building the future of communication.</p>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Stack>
+        </Stack>
+      </Container>
     </div>
   )
 }

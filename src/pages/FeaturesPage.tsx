@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import type { FC } from 'react'
+import { NumberedButton, Container, Stack, Card, CardContent } from '../components/ui'
 import ticketOrderImg from '../assets/ticketorder.webp'
 import brandsDefImg from '../assets/brandsdef.webp'
 import ticketButtonsImg from '../assets/ticketbuttons.webp'
@@ -125,26 +126,35 @@ export const FeaturesPage: FC = () => {
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
-      <div className="feature-content">
-        <div className="feature-text">
-          <div className="feature-navigation">
-            {features.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => handleFeatureChange(index)}
-                className={`feature-nav-button ${currentFeature === index ? 'active' : ''}`}
-              >
-                {index + 1}
-              </button>
-            ))}
-          </div>
-          <h2 className="feature-title">{currentFeatureData.title}</h2>
-          <p className="feature-description">{currentFeatureData.description}</p>
-        </div>
-        <div className="feature-image">
-          <img src={currentFeatureData.image} alt={currentFeatureData.title} />
-        </div>
-      </div>
+      <Container size="lg">
+        <Card variant="outline" className="feature-card">
+          <CardContent>
+            <Stack spacing={6} className="feature-content">
+              <Stack spacing={4} className="feature-text">
+                <div className="feature-navigation">
+                  {features.map((_, index) => (
+                    <NumberedButton
+                      key={index}
+                      number={index + 1}
+                      active={currentFeature === index}
+                      onClick={() => handleFeatureChange(index)}
+                    />
+                  ))}
+                </div>
+                <h2 className="text-2xl font-bold feature-title">{currentFeatureData.title}</h2>
+                <p className="text-secondary feature-description">{currentFeatureData.description}</p>
+              </Stack>
+              <div className="feature-image">
+                <img 
+                  src={currentFeatureData.image} 
+                  alt={currentFeatureData.title} 
+                  className="feature-img" 
+                />
+              </div>
+            </Stack>
+          </CardContent>
+        </Card>
+      </Container>
     </div>
   )
 }
