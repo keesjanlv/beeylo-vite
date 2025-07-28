@@ -2681,12 +2681,10 @@
 .home-input:focus {
   outline: none;
   border-color: var(--color-brand-primary);
-  box-shadow: 0 0 0 1px var(--color-brand-primary);
 }
 
 .home-input-highlight {
   border-color: var(--color-brand-primary);
-  box-shadow: 0 0 0 1px var(--color-brand-primary);
   animation: pulse 2s infinite;
 }
 

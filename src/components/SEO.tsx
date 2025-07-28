@@ -13,8 +13,8 @@ interface SEOProps {
 }
 
 const SEO: React.FC<SEOProps> = ({
-  title = 'Beeylo - Smart Email Management & Waitlist Competition',
-  description = 'Join Beeylo\'s exclusive waitlist and compete for early access! Smart email management that transforms your inbox into an organized, efficient workspace.',
+  title = 'Beeylo',
+  description = 'The new free inbox. No more spam, ads and useless updates.',
   keywords = 'email management, productivity, waitlist, early access, inbox organization, email client, competition, referral program',
   image = '/beeylo-og-image.jpg',
   url = 'https://beeylo.com',
@@ -35,7 +35,6 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="author" content={author} />
       <meta name="robots" content="index, follow" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta name="theme-color" content="#FBBF16" />
       
       {/* Open Graph Meta Tags */}
       <meta property="og:title" content={fullTitle} />

@@ -31,7 +31,7 @@ const AppContent: FC = () => {
 
   const [theme, setTheme] = useState<ThemeType>(() => {
     const savedTheme = localStorage.getItem('theme') as ThemeType
-    return savedTheme || 'system'
+    return savedTheme || 'light'
   })
   const [style, setStyle] = useState<StyleType>(() => {
     const savedStyle = localStorage.getItem('style') as StyleType

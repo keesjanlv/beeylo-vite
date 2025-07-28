@@ -271,7 +271,7 @@ export const GiveawayPage: FC<GiveawayPageProps> = ({ onTabChange }) => {
               variant="primary"
               size="lg"
               onClick={() => setActiveModal('rewards')}
-              className="w-full giveaway-main-button"
+              className="w-full giveaway-main-button buttonv2 buttonv2-yellow"
             >
               What can I win?
             </Button>
@@ -279,7 +279,7 @@ export const GiveawayPage: FC<GiveawayPageProps> = ({ onTabChange }) => {
               variant="secondary"
               size="lg"
               onClick={() => setActiveModal('how-it-works')}
-              className="w-full giveaway-main-button"
+              className="w-full giveaway-main-button buttonv2"
             >
               How does it work?
             </Button>
@@ -323,6 +323,7 @@ export const GiveawayPage: FC<GiveawayPageProps> = ({ onTabChange }) => {
                   <Button 
                     variant="primary"
                     onClick={() => onTabChange('home')}
+                    className="buttonv2 buttonv2-yellow"
                   >
                     Go to Home
                   </Button>
@@ -349,6 +350,7 @@ export const GiveawayPage: FC<GiveawayPageProps> = ({ onTabChange }) => {
                   variant="primary" 
                   size="sm" 
                   onClick={handleCopyReferralLink}
+                  className="buttonv2 buttonv2-yellow"
                 >
                   Copy
                 </Button>
