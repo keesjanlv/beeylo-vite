@@ -17,8 +17,8 @@ export const AboutPage: FC = () => (
 
             <div className="grid desktop:grid-cols-2 gap-8">
               <Card>
-                <CardContent className="text-center">
-                  <Stack spacing={4}>
+                <CardContent>
+                  <Stack spacing={4} className="text-center">
                     <Typography variant="h3">Why?</Typography>
                     <Typography variant="body" color="secondary">
                       For too long, companies have controlled how they talk to us. Flooding our inboxes with spam, ads, and useless updates.
@@ -28,8 +28,8 @@ export const AboutPage: FC = () => (
               </Card>
 
               <Card>
-                <CardContent className="text-center">
-                  <Stack spacing={4}>
+                <CardContent>
+                  <Stack spacing={4} className="text-center">
                     <Typography variant="h3">How?</Typography>
                     <Typography variant="body" color="secondary">
                       Beeylo is the world's first inbox built for people, not brands. It only shows what actually matters. And we're building it with the people. For the people.
