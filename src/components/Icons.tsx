@@ -1,11 +1,7 @@
 import type { FC } from 'react'
+import { Home, User, HelpCircle, Gift, MoreVertical } from 'lucide-react'
 
-export const HomeIcon: FC = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-    <polyline points="9,22 9,12 15,12 15,22"/>
-  </svg>
-)
+export const HomeIcon: FC = () => <Home size={20} />
 
 export const DashboardIcon: FC = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -22,12 +18,7 @@ export const FeaturesIcon: FC = () => (
   </svg>
 )
 
-export const AboutIcon: FC = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <circle cx="12" cy="12" r="10"/>
-    <path d="m9,12 2,2 4,-4"/>
-  </svg>
-)
+export const AboutIcon: FC = () => <User size={20} />
 
 export const MenuIcon: FC = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -37,22 +28,9 @@ export const MenuIcon: FC = () => (
   </svg>
 )
 
-export const ThreeDotsIcon: FC = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <circle cx="12" cy="12" r="1"/>
-    <circle cx="12" cy="5" r="1"/>
-    <circle cx="12" cy="19" r="1"/>
-  </svg>
-)
+export const ThreeDotsIcon: FC = () => <MoreVertical size={20} />
 
-export const GiveawayIcon: FC = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <rect x="3" y="8" width="18" height="4" rx="1"/>
-    <path d="m12 8-2-2v-2a2 2 0 0 1 4 0v2l-2 2"/>
-    <path d="M8.5 14S9 16 12 16s3.5-2 3.5-2"/>
-    <path d="M16 12v6a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-6"/>
-  </svg>
-)
+export const GiveawayIcon: FC = () => <Gift size={20} />
 
 export const InstagramIcon: FC = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -106,3 +84,5 @@ export const SettingsIcon: FC = () => (
     <path d="m12 1 2.09 6.26L22 9l-6.26 2.09L14 19l-2.09-6.26L4 11l6.26-2.09L12 1z"/>
   </svg>
 )
+
+export const FAQIcon: FC = () => <HelpCircle size={20} />

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { FC } from 'react';
-import { Container, Stack } from '../components/ui';
+import { Container, Stack, Typography } from '../components/ui';
 import { PageBadge } from '../components';
 
 export const FAQPage: FC = () => {
@@ -38,15 +38,19 @@ export const FAQPage: FC = () => {
   };
 
   return (
-    <div className="page-content">
-      <Container size="lg">
-        <Stack spacing={8}>
-          {/* Header */}
-          <Stack spacing={4} className="text-center">
-            <PageBadge>Support</PageBadge>
-            <h2 className="text-4xl font-bold">Frequently Asked Questions</h2>
-            <p className="text-lg text-secondary">Find answers to common questions about Beeylo</p>
-          </Stack>
+    <div className="page-container">
+      <div className="page-content content-scrollable">
+        <div className="content-center-scroll">
+          <Container size="lg">
+            <Stack spacing={8}>
+              {/* Header */}
+              <Stack spacing={4} className="text-center">
+                <PageBadge>Support</PageBadge>
+                <Typography variant="h2">Frequently Asked Questions</Typography>
+                <Typography variant="body" color="secondary" className="text-lg">
+                  Find answers to common questions about Beeylo
+                </Typography>
+              </Stack>
           
           {/* FAQ List */}
           <Stack spacing={2}>
@@ -96,14 +100,16 @@ export const FAQPage: FC = () => {
             })}
           </Stack>
           
-          {/* Footer */}
-          <div className="text-center">
-            <p className="text-secondary">
-              Have more questions? <a href="mailto:support@beeylo.com" className="text-primary hover:underline">Contact our support team</a>
-            </p>
-          </div>
-        </Stack>
-      </Container>
+              {/* Footer */}
+              <div className="text-center">
+                <Typography variant="body" color="secondary">
+                  Have more questions? <a href="mailto:support@beeylo.com" className="text-primary hover:underline">Contact our support team</a>
+                </Typography>
+              </div>
+            </Stack>
+          </Container>
+        </div>
+      </div>
     </div>
   );
 };

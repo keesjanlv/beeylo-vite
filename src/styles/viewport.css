@@ -1,0 +1,297 @@
+/* Viewport Constraints - Ensure content fits on screen */
+
+/* Dynamic viewport height support for mobile browsers */
+:root {
+  --vh: 1vh;
+}
+
+/* JavaScript will update this value */
+@supports (height: 100dvh) {
+  :root {
+    --vh: 1dvh;
+  }
+}
+
+/* === PAGE LAYOUT SYSTEM === */
+.page-container {
+  height: 100vh;
+  height: calc(100 * var(--vh));
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--canvas); /* Unified background color */
+  /* Smooth transition for page changes */
+  transition: opacity var(--transition-base) var(--ease-out);
+}
+
+/* Mobile: Account for top navigation */
+@media (max-width: 768px) {
+  .page-container {
+    height: calc(100vh - var(--nav-height-mobile));
+    height: calc(100 * var(--vh) - var(--nav-height-mobile));
+  }
+}
+
+/* Desktop: Full height (no top navigation) */
+@media (min-width: 769px) {
+  .page-container {
+    height: 100vh;
+    height: calc(100 * var(--vh));
+  }
+}
+
+.page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--canvas); /* Unified background color */
+}
+
+/* Content layout utilities */
+.content-scrollable {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.content-fit-screen {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.content-center-screen {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-4);
+}
+
+/* Desktop viewport constraints (with sidebar) */
+@media (min-width: 769px) {
+  .page-content {
+    max-height: var(--content-max-height-desktop);
+    max-height: calc(100 * var(--vh) - var(--header-height));
+    margin-left: var(--sidebar-width);
+  }
+  
+  .content-scrollable {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  .content-fit-screen {
+    height: var(--content-max-height-desktop);
+    height: calc(100 * var(--vh) - var(--header-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  
+  .content-center-screen {
+    height: var(--content-max-height-desktop);
+    height: calc(100 * var(--vh) - var(--header-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: var(--space-6);
+  }
+}
+
+/* === CONTENT LAYOUT PATTERNS === */
+
+/* Full height content that scrolls */
+.layout-scroll {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--space-4);
+}
+
+@media (min-width: 769px) {
+  .layout-scroll {
+    padding: var(--space-6);
+  }
+}
+
+/* Content that fits exactly on screen */
+.layout-fit {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+  overflow: hidden;
+}
+
+@media (min-width: 769px) {
+  .layout-fit {
+    padding: var(--space-6);
+  }
+}
+
+/* Centered content on screen */
+.layout-center {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-4);
+  text-align: center;
+}
+
+@media (min-width: 769px) {
+  .layout-center {
+    padding: var(--space-6);
+  }
+}
+
+/* Split layout - header/content/footer */
+.layout-split {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.layout-split-header {
+  flex-shrink: 0;
+}
+
+.layout-split-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.layout-split-footer {
+  flex-shrink: 0;
+}
+
+/* === RESPONSIVE CONTAINERS === */
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: var(--container-max-width-sm);
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: var(--container-max-width-md);
+    padding: 0 var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: var(--container-max-width-lg);
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: var(--container-max-width-xl);
+  }
+}
+
+/* Constrained containers for better readability */
+.container-sm {
+  width: 100%;
+  max-width: var(--container-max-width-sm);
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+.container-md {
+  width: 100%;
+  max-width: var(--container-max-width-md);
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .container-sm,
+  .container-md {
+    padding: 0 var(--space-6);
+  }
+}
+
+/* === SAFE AREA SUPPORT === */
+@supports (padding: max(0px)) {
+  .safe-area-inset {
+    padding-left: max(var(--space-4), env(safe-area-inset-left));
+    padding-right: max(var(--space-4), env(safe-area-inset-right));
+  }
+  
+  .safe-area-inset-bottom {
+    padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  }
+  
+  .safe-area-inset-top {
+    padding-top: max(var(--space-4), env(safe-area-inset-top));
+  }
+}
+
+/* === SCROLL BEHAVIOR === */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+.scroll-snap-y {
+  scroll-snap-type: y mandatory;
+}
+
+.scroll-snap-start {
+  scroll-snap-align: start;
+}
+
+.scroll-snap-center {
+  scroll-snap-align: center;
+}
+
+/* Hide scrollbars while maintaining functionality */
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom scrollbar styling */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}

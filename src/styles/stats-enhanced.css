@@ -119,8 +119,9 @@
 }
 
 .stats-number {
-  font-size: 2.5rem;
+  font-size: 1.8rem;
   font-weight: 700;
+  font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: #1A1A1A;
   line-height: 1;
   text-shadow: 0 2px 4px rgba(255, 255, 255, 0.2);
@@ -154,7 +155,7 @@
   }
   
   .stats-number {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
   
   .stats-label {
@@ -175,14 +176,13 @@
   }
   
   .stats-number {
-    font-size: 2.75rem;
+    font-size: 2rem;
   }
 }
 
 /* Desktop */
 @media (min-width: 1025px) {
   .stats-section-enhanced {
-    max-width: 600px;
     margin: 32px auto;
   }
   
@@ -202,23 +202,11 @@
   }
   
   .stats-number {
-    font-size: 3rem;
+    font-size: 2.2rem;
   }
   
   .stats-label {
     font-size: 0.9rem;
-  }
-}
-
-/* Hover Effects for Desktop */
-@media (min-width: 1025px) {
-  .stats-main-container {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .stats-main-container:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(255, 193, 7, 0.3);
   }
 }
 

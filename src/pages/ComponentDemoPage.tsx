@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { useState } from 'react'
-import { Button, Input, Card, CardHeader, CardContent, CardFooter, Stack, Container, Badge, Toast, Modal, NumberedButton, SidebarButton } from '../components/ui'
+import { Button, Input, Card, CardHeader, CardContent, CardFooter, Stack, Container, Badge, Toast, Modal, NumberedButton, SidebarButton, Typography } from '../components/ui'
 
 export const ComponentDemoPage: FC = () => {
   const [inputValue, setInputValue] = useState('')
@@ -31,16 +31,18 @@ export const ComponentDemoPage: FC = () => {
   }
 
   return (
-    <div className="page-content">
-      <Container size="lg">
-        <Stack spacing={8}>
-          {/* Header */}
-          <Stack spacing={4}>
-            <h1 className="text-4xl font-bold text-primary">Component Demo</h1>
-            <p className="text-lg text-secondary">
-              Showcase of the new reusable UI component system
-            </p>
-          </Stack>
+    <div className="page-container">
+      <div className="page-content content-scrollable">
+        <div className="layout-scroll">
+          <Container size="lg">
+            <Stack spacing={8}>
+              {/* Header */}
+              <Stack spacing={4}>
+                <Typography variant="h1" className="text-primary">Component Demo</Typography>
+                <Typography variant="body" color="secondary" className="text-lg">
+                  Showcase of the new reusable UI component system
+                </Typography>
+              </Stack>
 
           {/* Button Variants */}
           <Card>
@@ -629,8 +631,10 @@ export const ComponentDemoPage: FC = () => {
               </Stack>
             </CardContent>
           </Card>
-        </Stack>
-      </Container>
+            </Stack>
+          </Container>
+        </div>
+      </div>
     </div>
   )
 }

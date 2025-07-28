@@ -1,9 +1,10 @@
 import type { FC, ButtonHTMLAttributes, ReactNode } from 'react'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'default' | 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive'
-  size?: 'sm' | 'md' | 'lg'
+  variant?: 'default' | 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive' | 'brand'
+  size?: 'sm' | 'md' | 'lg' | 'xl'
   loading?: boolean
+  fullWidth?: boolean
   children: ReactNode
   className?: string
 }
@@ -12,6 +13,7 @@ const Button: FC<ButtonProps> = ({
   variant = 'default',
   size = 'md',
   loading = false,
+  fullWidth = false,
   children,
   className = '',
   disabled,
@@ -22,6 +24,7 @@ const Button: FC<ButtonProps> = ({
   const sizeClasses = `btn-${size}`
   const loadingClasses = loading ? 'btn-loading' : ''
   const disabledClasses = (disabled || loading) ? 'btn-disabled' : ''
+  const fullWidthClasses = fullWidth ? 'w-full' : ''
 
   const classes = [
     baseClasses,
@@ -29,6 +32,7 @@ const Button: FC<ButtonProps> = ({
     sizeClasses,
     loadingClasses,
     disabledClasses,
+    fullWidthClasses,
     className
   ].filter(Boolean).join(' ')
 

@@ -48,9 +48,89 @@
   --radius-md: 0.375rem;   /* 6px */
   --radius-lg: 0.5rem;     /* 8px */
   --radius-xl: 0.75rem;    /* 12px */
-  --radius-2xl: 1rem;      /* 16px */
-  --radius-3xl: 1.5rem;    /* 24px */
+  --radius-2xl: 1rem;     /* 16px */
   --radius-full: 9999px;
+
+  /* === SEMANTIC COLORS === */
+  --color-brand-primary: #FFD700;
+  --color-brand-secondary: #FFC700;
+  --color-brand-tertiary: #FFB000;
+  
+  --color-success: #4CAF50;
+  --color-success-light: #81C784;
+  --color-success-dark: #388E3C;
+  
+  --color-warning: #FF9800;
+  --color-warning-light: #FFB74D;
+  --color-warning-dark: #F57C00;
+  
+  --color-error: #F44336;
+  --color-error-light: #E57373;
+  --color-error-dark: #D32F2F;
+  
+  --color-info: #2196F3;
+  --color-info-light: #64B5F6;
+  --color-info-dark: #1976D2;
+
+  /* === VIEWPORT CONSTRAINTS === */
+  --header-height: 60px;
+  --nav-height-mobile: 60px;
+  --nav-height-desktop: 0px; /* Sidebar doesn't take vertical space */
+  --sidebar-width: 280px;
+  
+  /* Fixed pixel heights */
+  --content-max-height-mobile: calc(100vh - var(--nav-height-mobile));
+  --content-max-height-desktop: calc(100vh - var(--header-height));
+  
+  /* Dynamic viewport height support */
+  --vh: 1vh;
+  --content-max-height-mobile-dvh: calc(100 * var(--vh) - var(--nav-height-mobile));
+  --content-max-height-desktop-dvh: calc(100 * var(--vh) - var(--header-height));
+  
+  /* Percentage-based viewport heights for mobile */
+  --nav-height-mobile-pct: 7%;
+  --content-height-mobile-pct: 93%;
+
+  /* === COMPONENT TOKENS === */
+  --button-height-sm: 32px;
+  --button-height-md: 40px;
+  --button-height-lg: 48px;
+  --button-height-xl: 56px;
+  
+  --input-height-sm: 32px;
+  --input-height-md: 40px;
+  --input-height-lg: 48px;
+  
+  --card-padding-sm: var(--space-3);
+  --card-padding-md: var(--space-4);
+  --card-padding-lg: var(--space-6);
+  
+  --modal-max-width: 500px;
+  --modal-max-height: 80vh;
+  
+  --container-max-width-sm: 640px;
+  --container-max-width-md: 768px;
+  --container-max-width-lg: 1024px;
+  --container-max-width-xl: 1280px;
+
+  /* === ANIMATION TOKENS === */
+  --transition-fast: 0.15s ease-in-out;
+  --transition-base: 0.2s ease-in-out;
+  --transition-slow: 0.3s ease-in-out;
+  
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* === Z-INDEX SCALE === */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-toast: 1080;
 
   /* === SHADOWS === */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -99,12 +179,13 @@
   --primary-foreground: #000000;
 
   /* Background Colors */
-  --background: #FFFFFF;
+  --background: #F5F5F7;
   --background-secondary: #F8F9FA;
   --background-tertiary: #F1F3F4;
+  --canvas: #F5F5F7; /* App background color - matches --background */
 
   /* Surface Colors */
-  --surface: #FFFFFF;
+  --surface: #fafafa;
   --surface-hover: #F8F9FA;
   --surface-active: #F1F3F4;
   --surface-secondary: #F8F9FA;
@@ -161,9 +242,10 @@
   --primary-foreground: #000000;
 
   /* Background Colors */
-  --background: #0A0A0A;
+  --background: var(--surface);
   --background-secondary: #1A1A1A;
   --background-tertiary: #2A2A2A;
+  --canvas: #1A1A1A; /* App background color - matches --surface */
 
   /* Surface Colors */
   --surface: #1A1A1A;

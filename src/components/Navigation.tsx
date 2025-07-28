@@ -1,14 +1,14 @@
 import type { FC } from 'react'
 import type { NavigationProps, TabType } from '../types'
 import { Logo } from './Logo'
-import { ThreeDotsIcon } from './Icons'
+import { ThreeDotsIcon, HomeIcon, GiveawayIcon, AboutIcon, FAQIcon } from './Icons'
 import { SidebarButton } from './ui'
 
-const allTabs: Array<{ id: TabType, label: string, requiresLogin?: boolean, hiddenOnMobile?: boolean }> = [
-  { id: 'home', label: 'Home' },
-  { id: 'giveaway', label: 'Giveaway' },
-  { id: 'about', label: 'About us' },
-  { id: 'faq', label: 'FAQ' }
+const allTabs: Array<{ id: TabType, label: string, requiresLogin?: boolean, hiddenOnMobile?: boolean, icon?: React.ReactNode }> = [
+  { id: 'home', label: 'Home', icon: <HomeIcon /> },
+  { id: 'giveaway', label: 'Giveaway', icon: <GiveawayIcon /> },
+  { id: 'about', label: 'About us', icon: <AboutIcon /> },
+  { id: 'faq', label: 'FAQ', icon: <FAQIcon /> }
 ]
 
 
@@ -31,6 +31,7 @@ export const Sidebar: FC<SidebarProps> = ({ activeTab, onTabChange, isLoggedIn =
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
             active={activeTab === tab.id}
+            icon={tab.icon}
           >
             {tab.label}
           </SidebarButton>

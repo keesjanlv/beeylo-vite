@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import type { FC } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import type { TabType } from './types'
-import { Sidebar, TopNavigation, SEO } from './components'
-import { 
-  HomePage, 
-  DashboardPage, 
-  BenefitsPage, 
+import SEO from './components/SEO'
+import { Sidebar, TopNavigation } from './components/Navigation'
+import {
+  HomePage,
+  DashboardPage,
+  BenefitsPage,
   GiveawayPage,
   HowItWorksPage,
   ActionsPage,
@@ -188,15 +190,27 @@ const AppContent: FC = () => {
         isLoggedIn={isLoggedIn}
       />
       
-      <main className="main-content">
-        {renderPage()}
-      </main>
-      
       <TopNavigation
         activeTab={activeTab}
         onTabChange={handleTabChange}
         isLoggedIn={isLoggedIn}
       />
+      <main className="main-content">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ 
+              duration: 0.3,
+              ease: [0.4, 0.0, 0.2, 1]
+            }}
+          >
+            {renderPage()}
+          </motion.div>
+        </AnimatePresence>
+      </main>
     </div>
   )
 }

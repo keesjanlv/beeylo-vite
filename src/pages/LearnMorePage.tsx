@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import type { TabType } from '../types'
-import { NumberedButton } from '../components/ui'
+import { NumberedButton, Container, Stack, Card, CardContent, Typography, Button } from '../components/ui'
 import tripleScreenImg from '../assets/triplescreenhomedef.webp'
 import inboxOverloadImg from '../assets/inboxoverload.webp'
 import homeDefImg from '../assets/homedef.webp'
@@ -104,39 +104,49 @@ export const LearnMorePage: FC<LearnMorePageProps> = ({ onTabChange }) => {
   
   return (
     <div 
-      className="page-content home-slides"
+      className="page-container home-slides"
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
-      
-      <div className="feature-content">
-        <div className="feature-text">
-          <div className="feature-navigation">
-            {slides.map((_, index) => (
-              <NumberedButton
-                key={index}
-                number={index + 1}
-                active={currentSlide === index}
-                onClick={() => handleSlideChange(index)}
-              />
-            ))}
-          </div>
-          <h2 className="feature-title">{currentSlideData.title}</h2>
-          <p className="feature-description">{currentSlideData.description}</p>
-          {currentSlide === 4 && (
-            <button 
-              className="see-benefits-button"
-              onClick={() => onTabChange('about')}
-            >
-              See our story
-            </button>
-          )}
-        </div>
-        <div className="feature-image">
-          <img src={currentSlideData.image} alt={currentSlideData.title} />
-        </div>
-      </div>
+      <Container size="lg">
+        <Card variant="outline" className="feature-card">
+          <CardContent>
+            <Stack spacing={6} className="feature-content">
+                    <Stack spacing={4} className="feature-text">
+                      <div className="feature-navigation">
+                        {slides.map((_, index) => (
+                          <NumberedButton
+                            key={index}
+                            number={index + 1}
+                            active={currentSlide === index}
+                            onClick={() => handleSlideChange(index)}
+                          />
+                        ))}
+                      </div>
+                      <Typography variant="h2" className="feature-title">{currentSlideData.title}</Typography>
+                      <Typography variant="body" color="secondary" className="feature-description">{currentSlideData.description}</Typography>
+                      {currentSlide === 4 && (
+                        <Button 
+                          variant="primary"
+                          onClick={() => onTabChange('about')}
+                          className="see-benefits-button"
+                        >
+                          See our story
+                        </Button>
+                      )}
+                    </Stack>
+                    <div className="feature-image">
+                      <img 
+                        src={currentSlideData.image} 
+                        alt={currentSlideData.title} 
+                        className="feature-img" 
+                      />
+                    </div>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Container>
     </div>
   )
 }

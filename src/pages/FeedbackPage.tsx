@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { useState } from 'react'
-import { Container, Stack, Card, CardContent, Button, Input } from '../components/ui'
+import { Container, Stack, Card, CardContent, Button, Input, Typography } from '../components/ui'
 
 interface FeedbackPageProps {
   onBack?: () => void
@@ -47,29 +47,31 @@ export const FeedbackPage: FC<FeedbackPageProps> = ({ onBack }) => {
   }
 
   return (
-    <div className="page-content">
-      <Container size="md">
-        <Stack spacing={6}>
-          {/* Header */}
-          <Stack spacing={2}>
-            <div className="header-with-back">
-              {onBack && (
-                <Button 
-                  variant="ghost" 
-                  onClick={onBack} 
-                  className="back-button"
-                  aria-label="Go back"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M19 12H5"/>
-                    <path d="M12 19l-7-7 7-7"/>
-                  </svg>
-                </Button>
-              )}
-              <h1 className="text-2xl font-bold">Submit Feedback</h1>
-            </div>
-            <p className="text-secondary">Help us improve Beeylo by sharing your thoughts and suggestions</p>
-          </Stack>
+    <div className="page-container">
+      <div className="page-content content-scrollable">
+        <div className="layout-scroll">
+          <Container size="md">
+            <Stack spacing={6}>
+              {/* Header */}
+              <Stack spacing={2}>
+                <div className="header-with-back">
+                  {onBack && (
+                    <Button 
+                      variant="ghost" 
+                      onClick={onBack} 
+                      className="back-button"
+                      aria-label="Go back"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M19 12H5"/>
+                        <path d="M12 19l-7-7 7-7"/>
+                      </svg>
+                    </Button>
+                  )}
+                  <Typography variant="h1">Submit Feedback</Typography>
+                </div>
+                <Typography variant="body" color="secondary">Help us improve Beeylo by sharing your thoughts and suggestions</Typography>
+              </Stack>
 
           {/* Feedback Form */}
           <Card variant="outline">
@@ -82,8 +84,8 @@ export const FeedbackPage: FC<FeedbackPageProps> = ({ onBack }) => {
                       <polyline points="22,4 12,14.01 9,11.01"/>
                     </svg>
                   </div>
-                  <h3 className="text-xl font-medium">Thank you for your feedback!</h3>
-                  <p className="text-secondary">We appreciate your input and will review it carefully.</p>
+                  <Typography variant="h3">Thank you for your feedback!</Typography>
+                  <Typography variant="body" color="secondary">We appreciate your input and will review it carefully.</Typography>
                 </div>
               ) : (
                 <form className="feedback-form" onSubmit={handleSubmit}>
@@ -163,8 +165,10 @@ export const FeedbackPage: FC<FeedbackPageProps> = ({ onBack }) => {
               )}
             </CardContent>
           </Card>
-        </Stack>
-      </Container>
+            </Stack>
+          </Container>
+        </div>
+      </div>
     </div>
   )
 }

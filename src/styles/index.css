@@ -1,13 +1,22 @@
-/* Main Styles Index - Import all style modules */
+/* Main CSS entry point */
 
-/* 1. Design Tokens - Must be first */
+/* Import font definitions */
+@import './fonts.css';
+
+/* Import design tokens - foundation layer */
 @import './tokens.css';
 
-/* 2. Layout System */
+/* Import utility classes - Tailwind-inspired utilities */
+@import './utilities.css';
+
+/* Import viewport constraints - responsive layout system */
+@import './viewport.css';
+
+/* Import layout utilities */
 @import './layout.css';
 
-/* 3. Component Styles */
+/* Import component styles */
 @import './components.css';
 
-/* 4. Legacy Styles - Gradually migrate these */
-@import './legacy.css';
+/* Legacy styles have been fully migrated and removed */
+/* All styles now use the modular CSS architecture above */

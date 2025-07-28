@@ -18,12 +18,19 @@
     width: var(--nav-width-desktop);
     height: 100vh;
     flex-shrink: 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: var(--z-fixed);
   }
   
   .main-content {
     flex: 1;
     height: 100vh;
     overflow-y: auto;
+    width: calc(100% - var(--nav-width-desktop));
+    max-width: calc(100% - var(--nav-width-desktop));
+    margin-left: var(--nav-width-desktop);
   }
   
   .top-navigation {
@@ -35,6 +42,9 @@
 @media (max-width: 768px) {
   .app {
     flex-direction: column;
+    height: 100vh;
+    height: calc(100 * var(--vh));
+    display: flex;
   }
   
   .sidebar {
@@ -49,8 +59,9 @@
   
   .main-content {
     flex: 1;
-    height: calc(100vh - var(--nav-height-mobile));
-    overflow-y: auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -59,6 +70,13 @@
   width: 100%;
   margin: 0 auto;
   padding: 0 var(--space-4);
+}
+
+/* Container fills height when directly in page-container */
+.page-container > .container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .container-sm {
@@ -314,6 +332,7 @@
   padding: var(--space-6);
   max-width: 100%;
   margin: 0 auto;
+  justify-content: center;
 }
 
 @media (min-width: 769px) {
