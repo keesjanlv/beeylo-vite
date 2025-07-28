@@ -3,7 +3,7 @@ import { useState } from 'react'
 import type { TabType } from '../types'
 import { useUser } from '../contexts/UserContext'
 import giveawayWhyImg from '../assets/giveaway-why.svg'
-import { NumberedButton, Button, Container, Stack, Card, CardContent, Input, Typography } from '../components/ui'
+import { NumberedButton, Button, Container, Stack, Card, CardContent, Input } from '../components/ui'
 import { InstagramIcon, TikTokIcon, TwitterIcon, LinkedinIcon } from '../components/Icons'
 
 interface GiveawayPageProps {
