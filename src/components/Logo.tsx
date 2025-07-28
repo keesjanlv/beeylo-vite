@@ -1,8 +1,17 @@
 import type { FC } from 'react'
 import beeyloLogo from '../assets/beeylologo.png'
 
-export const Logo: FC = () => (
-  <div className="logo">
+interface LogoProps {
+  onClick?: () => void
+}
+
+export const Logo: FC<LogoProps> = ({ onClick }) => (
+  <div 
+    className={`logo ${onClick ? 'logo-clickable' : ''}`}
+    onClick={onClick}
+    role={onClick ? 'button' : undefined}
+    tabIndex={onClick ? 0 : undefined}
+  >
     <img src={beeyloLogo} alt="Beeylo" className="logo-image" />
     <span className="logo-text hidden-mobile">Beeylo</span>
   </div>

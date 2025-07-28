@@ -23,7 +23,7 @@ export const Sidebar: FC<SidebarProps> = ({ activeTab, onTabChange, isLoggedIn =
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <Logo />
+        <Logo onClick={() => onTabChange('home')} />
       </div>
       <nav className="sidebar-tabs">
         {mainTabs.map((tab) => (
@@ -69,7 +69,7 @@ export const TopNavigation: FC<TopNavigationProps> = ({ activeTab, onTabChange, 
   return (
     <div className="top-navigation">
       <div className="mobile-nav-logo">
-        <Logo />
+        <Logo onClick={() => onTabChange('home')} />
       </div>
       <div className="top-nav-tabs">
         {mainTabs.map((tab) => (

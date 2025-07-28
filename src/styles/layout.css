@@ -31,6 +31,7 @@
     width: calc(100% - var(--nav-width-desktop));
     max-width: calc(100% - var(--nav-width-desktop));
     margin-left: var(--nav-width-desktop);
+    justify-content: center;
   }
   
   .top-navigation {
@@ -62,6 +63,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    justify-content: center;
   }
 }
 

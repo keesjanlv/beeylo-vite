@@ -10,7 +10,7 @@
 .stats-main-container {
   position: relative;
   background: linear-gradient(180deg, #FFE082 0%, #FFCC02 100%);
-  border-radius: 24px;
+  border-radius: var(--radius-lg);
   padding: 20px;
   width: 100%;
   min-height: 140px;
@@ -137,7 +137,7 @@
   .stats-main-container {
     padding: 16px;
     min-height: 120px;
-    border-radius: 20px;
+    border-radius: var(--radius-lg);
     gap: 10px;
   }
   
@@ -168,7 +168,7 @@
   .stats-main-container {
     padding: 24px;
     min-height: 160px;
-    border-radius: 28px;
+    border-radius: var(--radius-lg);
   }
   
   .stats-grid {
@@ -189,7 +189,7 @@
   .stats-main-container {
     padding: 28px;
     min-height: 180px;
-    border-radius: 32px;
+    border-radius: var(--radius-lg);
     gap: 16px;
   }
   

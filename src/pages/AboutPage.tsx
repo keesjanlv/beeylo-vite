@@ -40,7 +40,7 @@ export const AboutPage: FC = () => (
             </div>
 
             <div className="text-center py-4">
-              <Typography variant="body" color="secondary" weight="medium" className="text-center text-xl">
+              <Typography variant="body" weight="medium" className="text-center text-xl" style={{ color: '#FBBF16' }}>
                 Because inbox noise was never your choice
               </Typography>
             </div>

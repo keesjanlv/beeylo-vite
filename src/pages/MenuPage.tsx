@@ -26,7 +26,7 @@ export const MenuPage: FC<MenuPageProps> = ({
     <div className="page-content content-scrollable viewport-constrained">
       <div className="layout-scroll">
         <Container size="lg">
-          <Stack spacing={4} className="feature-content menu-items-list">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 menu-items-grid">
               {/* Giveaway Campaign */}
               <Card variant="outline" className="menu-card">
                 <CardContent className="menu-item">
@@ -36,8 +36,8 @@ export const MenuPage: FC<MenuPageProps> = ({
                     </svg>
                   </div>
                   <div className="menu-content">
-                    <Typography variant="body" className="font-semibold">Giveaway Campaign</Typography>
-                    <Typography variant="body" color="secondary">View regulations</Typography>
+                    <Typography variant="body" className="font-semibold menu-text-small">Giveaway Campaign</Typography>
+                    <Typography variant="body" color="secondary" className="menu-text-small">View regulations</Typography>
                   </div>
                 </CardContent>
               </Card>
@@ -57,8 +57,8 @@ export const MenuPage: FC<MenuPageProps> = ({
                     </svg>
                   </div>
                   <div className="menu-content">
-                    <Typography variant="body" className="font-semibold">Submit Feedback</Typography>
-                    <Typography variant="body" color="secondary">Help us improve</Typography>
+                    <Typography variant="body" className="font-semibold menu-text-small">Submit Feedback</Typography>
+                    <Typography variant="body" color="secondary" className="menu-text-small">Help us improve</Typography>
                   </div>
                 </CardContent>
               </Card>
@@ -75,8 +75,8 @@ export const MenuPage: FC<MenuPageProps> = ({
                     </svg>
                   </div>
                   <div className="menu-content">
-                    <Typography variant="body" className="font-semibold">Terms of Service</Typography>
-                    <Typography variant="body" color="secondary">Legal Information</Typography>
+                    <Typography variant="body" className="font-semibold menu-text-small">Terms of Service</Typography>
+                    <Typography variant="body" color="secondary" className="menu-text-small">Legal Information</Typography>
                   </div>
                 </CardContent>
               </Card>
@@ -91,62 +91,54 @@ export const MenuPage: FC<MenuPageProps> = ({
                     </svg>
                   </div>
                   <div className="menu-content">
-                    <Typography variant="body" className="font-semibold">Privacy Policy</Typography>
-                    <Typography variant="body" color="secondary">Data Protection</Typography>
+                    <Typography variant="body" className="font-semibold menu-text-small">Privacy Policy</Typography>
+                    <Typography variant="body" color="secondary" className="menu-text-small">Data Protection</Typography>
                   </div>
                 </CardContent>
               </Card>
 
-              {/* Theme Settings */}
-              <Card variant="outline" className="menu-card theme-card">
+              {/* Theme Switch */}
+              <Card 
+                variant="outline" 
+                className="menu-card theme-switch-card"
+                onClick={() => onThemeChange(theme === 'light' ? 'dark' : 'light')}
+                role="button"
+                tabIndex={0}
+              >
                 <CardContent className="menu-item">
-                  <div className="menu-icon theme-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="5"/>
-                      <line x1="12" y1="1" x2="12" y2="3"/>
-                      <line x1="12" y1="21" x2="12" y2="23"/>
-                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                      <line x1="1" y1="12" x2="3" y2="12"/>
-                      <line x1="21" y1="12" x2="23" y2="12"/>
-                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                    </svg>
-                  </div>
+                  <button 
+                    className={`theme-switch ${theme === 'dark' ? 'dark' : 'light'}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onThemeChange(theme === 'light' ? 'dark' : 'light');
+                    }}
+                    aria-label="Toggle theme"
+                  >
+                    <div className="switch-track">
+                      <div className="switch-thumb">
+                        {theme === 'light' ? (
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <circle cx="12" cy="12" r="5"/>
+                            <line x1="12" y1="1" x2="12" y2="3"/>
+                            <line x1="12" y1="21" x2="12" y2="23"/>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                            <line x1="1" y1="12" x2="3" y2="12"/>
+                            <line x1="21" y1="12" x2="23" y2="12"/>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                          </svg>
+                        ) : (
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                          </svg>
+                        )}
+                      </div>
+                    </div>
+                  </button>
                   <div className="menu-content">
-                    <Typography variant="body" className="font-semibold">Theme Settings</Typography>
-                  </div>
-                  <div className="theme-options">
-                    <Button 
-                      variant={theme === 'light' ? 'primary' : 'secondary'}
-                      onClick={() => onThemeChange('light')}
-                      size="sm"
-                      className="theme-option"
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2">
-                        <circle cx="12" cy="12" r="5"/>
-                        <line x1="12" y1="1" x2="12" y2="3"/>
-                        <line x1="12" y1="21" x2="12" y2="23"/>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                        <line x1="1" y1="12" x2="3" y2="12"/>
-                        <line x1="21" y1="12" x2="23" y2="12"/>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                      </svg>
-                      Light
-                    </Button>
-                    <Button 
-                      variant={theme === 'dark' ? 'primary' : 'secondary'}
-                      onClick={() => onThemeChange('dark')}
-                      size="sm"
-                      className="theme-option"
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                      </svg>
-                      Dark
-                    </Button>
+                    <Typography variant="body" className="font-semibold menu-text-small">Theme</Typography>
+                    <Typography variant="body" color="secondary" className="menu-text-small">{theme === 'light' ? 'Light' : 'Dark'}</Typography>
                   </div>
                 </CardContent>
               </Card>
@@ -169,13 +161,79 @@ export const MenuPage: FC<MenuPageProps> = ({
                       </svg>
                     </div>
                     <div className="menu-content">
-                      <Typography variant="body" className="font-semibold text-danger">Logout</Typography>
-                      <Typography variant="body" color="secondary">Sign out of your account</Typography>
+                      <Typography variant="body" className="font-semibold text-danger menu-text-small">Logout</Typography>
+                      <Typography variant="body" color="secondary" className="menu-text-small">Sign out of your account</Typography>
                     </div>
                   </CardContent>
                 </Card>
               )}
-            </Stack>
+            </div>
+            
+            {/* Social Media Icons Section */}
+            <div className="social-icons-section">
+              <div className="social-icons-grid">
+                <a 
+                  href="https://instagram.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="social-icon-link"
+                  aria-label="Follow us on Instagram"
+                >
+                  <div className="social-icon instagram-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                    </svg>
+                  </div>
+                </a>
+                
+                <a 
+                  href="https://tiktok.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="social-icon-link"
+                  aria-label="Follow us on TikTok"
+                >
+                  <div className="social-icon tiktok-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+                    </svg>
+                  </div>
+                </a>
+                
+                <a 
+                  href="https://linkedin.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="social-icon-link"
+                  aria-label="Follow us on LinkedIn"
+                >
+                  <div className="social-icon linkedin-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                      <rect x="2" y="9" width="4" height="12"/>
+                      <circle cx="4" cy="4" r="2"/>
+                    </svg>
+                  </div>
+                </a>
+                
+                <a 
+                  href="https://x.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="social-icon-link"
+                  aria-label="Follow us on X"
+                >
+                  <div className="social-icon x-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M4 4l11.733 16h4.267l-11.733 -16z"/>
+                      <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/>
+                    </svg>
+                  </div>
+                </a>
+              </div>
+            </div>
         </Container>
       </div>
     </div>

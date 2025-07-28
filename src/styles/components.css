@@ -284,6 +284,62 @@
 }
 
 /* Responsive Typography */
+/* Social Icons Section */
+.social-icons-section {
+  margin-top: var(--space-8);
+  padding: var(--space-6) 0;
+  text-align: center;
+}
+
+.social-icons-title {
+  margin-bottom: var(--space-4);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.social-icons-grid {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.social-icon-link {
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+.social-icon-link:hover {
+  transform: translateY(-2px);
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; /* 50% smaller */
+  height: 24px; /* 50% smaller */
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  background-color: var(--surface-secondary); /* Monochrome background */
+  color: var(--text-secondary); /* Monochrome color */
+}
+
+/* Removed individual colored backgrounds for monochrome look */
+.instagram-icon,
+.tiktok-icon,
+.linkedin-icon,
+.x-icon {
+  background-color: var(--surface-secondary);
+  color: var(--text-primary);
+}
+
+.social-icon:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 @media (max-width: 768px) {
   .text-h1 {
     font-size: var(--text-4xl);
@@ -437,7 +493,7 @@
 }
 
 [data-theme="dark"] .menu-card {
-  background-color: black;
+  background-color: #1e1e1e;
 }
 
 .menu-item {
@@ -1922,7 +1978,7 @@
 /* Surface Card Component */
 .surface-card {
   background: #FFFFFF; /* Ensure surface cards are always white */
-  border-radius: 40px;
+  border-radius: var(--radius-lg);
   padding: 24px;
   -webkit-box-shadow: 0 4px 35px rgba(0,0,0,.1);
   box-shadow: 0 4px 35px rgba(0,0,0,.1);
@@ -1946,7 +2002,7 @@
 
 /* Dark theme surface cards */
 [data-theme="dark"] .surface-card {
-  background: #1F2937;
+  background-color: var(--card-background);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #F9FAFB;
 }
@@ -1969,7 +2025,7 @@
 @media (max-width: 640px) {
   .surface-card {
     padding: 20px;
-    border-radius: 32px;
+    border-radius: var(--radius-lg);
     -webkit-box-shadow: 0 3px 25px rgba(0,0,0,.08);
     box-shadow: 0 3px 25px rgba(0,0,0,.08);
   }
@@ -2028,7 +2084,7 @@
 /* === PAGE BADGE COMPONENT === */
 .page-badge {
   width: fit-content;
-  margin: 0 auto 24px auto;
+  margin: 0 auto 8px auto;
   display: inline-block;
   padding: 6px 16px;
   border-radius: 50px;
@@ -2119,6 +2175,11 @@
     margin-right: -8px;
     width: calc(100% + 16px);
   }
+}
+
+/* Container centering within layout-scroll */
+.page-content .layout-scroll .container.container-lg.px-4 {
+  justify-content: center;
 }
 
 /* Input field width improvements */
@@ -2215,6 +2276,15 @@
   color: var(--text-primary);
 }
 
+.logo-clickable {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.logo-clickable:hover {
+  opacity: 0.8;
+}
+
 .logo-image {
   height: 32px;
   width: 32px;
@@ -2256,8 +2326,17 @@
 }
 
 .sidebar-footer {
-  padding: var(--space-4);
+  padding: 0 var(--space-4) var(--space-4); /* Remove top padding to align with sidebar-tabs */
   /* No border for footer */
+}
+
+/* Unify Menu button layout with other sidebar items */
+.sidebar-footer .sidebar-button {
+  width: 100%;
+  justify-content: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  margin: 0;
 }
 
 /* Top navigation - only visible on mobile */
@@ -2957,6 +3036,11 @@
   width: 100%;
 }
 
+.menu-items-grid {
+  padding: var(--space-2);
+  width: 100%;
+}
+
 .menu-card {
   background-color: var(--card-bg-darker);
   border-radius: var(--radius-xl);
@@ -2966,25 +3050,24 @@
 }
 
 .menu-card:hover {
-  background-color: var(--card-bg-darker-hover);
   transform: translateY(-2px);
 }
 
 .menu-card .menu-item {
   display: flex;
   align-items: center;
-  gap: var(--space-3); /* Reduced gap */
-  padding: var(--space-2); /* Reduced padding by 50% */
+  gap: calc(var(--space-3) * 1.5); /* Increased gap by 50% */
+  padding: calc(var(--space-1) * 1.5); /* Increased padding by 50% */
 }
 
 .menu-card .menu-content .typography-h3 {
-  font-size: 0.9rem; /* Reduced font size */
+  font-size: 1.35rem; /* Increased font size by 50% */
   font-weight: 600;
   margin-bottom: 0; /* Reduced spacing */
 }
 
 .menu-card .menu-content .typography-body {
-  font-size: 0.75rem; /* Reduced font size */
+  font-size: 1.125rem; /* Increased font size by 50% */
   color: var(--text-secondary);
   line-height: 1.2; /* Tighter line height */
 }
@@ -2993,13 +3076,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px; /* Reduced size */
-  height: 32px; /* Reduced size */
+  width: 48px; /* Increased size by 50% */
+  height: 48px; /* Increased size by 50% */
   border-radius: var(--radius-md);
+  flex-shrink: 0; /* Prevent icon from shrinking */
 }
 
 .menu-content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 48px; /* Match icon height - increased by 50% */
 }
 
 /* Icon-specific styles */
@@ -3058,12 +3146,84 @@
   border-color: var(--primary) !important;
 }
 
+/* Theme Switch Styles */
+.theme-switch-card .menu-item {
+  cursor: pointer;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.theme-switch-card:hover {
+  background-color: var(--surface-hover);
+}
+
+.theme-switch {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.switch-track {
+  width: 48px; /* Match menu-icon width */
+  height: 18px;
+  background-color: var(--surface-secondary);
+  border-radius: 9px;
+  position: relative;
+  transition: background-color 0.3s ease;
+  border: 1px solid var(--border-color);
+}
+
+.theme-switch.dark .switch-track {
+  background-color: var(--primary);
+}
+
+.switch-thumb {
+  width: 14px;
+  height: 14px;
+  background-color: var(--surface);
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.theme-switch.dark .switch-thumb {
+  transform: translateX(30px); /* Adjusted for wider track */
+}
+
+.switch-thumb svg {
+  color: var(--text-primary);
+  width: 10px;
+  height: 10px;
+}
+
 @media (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
   }
   .sidebar.open {
     transform: translateX(0);
+  }
+  
+  /* Make menu cards span full width on mobile */
+  .menu-items-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--space-3);
+    padding: var(--space-3);
+  }
+  
+  .menu-card {
+    width: 100%;
   }
 }
 
