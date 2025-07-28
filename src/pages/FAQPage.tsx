@@ -46,9 +46,9 @@ export const FAQPage: FC = () => {
               {/* Header */}
               <Stack spacing={4} className="text-center">
                 <PageBadge>Support</PageBadge>
-                <Typography variant="h2">Frequently Asked Questions</Typography>
-                <Typography variant="body" color="secondary" className="text-lg">
-                  Find answers to common questions about Beeylo
+                <Typography variant="h2" className="text-center">Frequently Asked Questions</Typography>
+                <Typography variant="body" color="secondary" className="text-lg text-center">
+                  Find your answer below
                 </Typography>
               </Stack>
           

@@ -124,8 +124,8 @@ export const LearnMorePage: FC<LearnMorePageProps> = ({ onTabChange }) => {
                           />
                         ))}
                       </div>
-                      <Typography variant="h2" className="feature-title">{currentSlideData.title}</Typography>
-                      <Typography variant="body" color="secondary" className="feature-description">{currentSlideData.description}</Typography>
+                      <Typography variant="h2" className="feature-title text-center">{currentSlideData.title}</Typography>
+                      <Typography variant="body" color="secondary" className="feature-description text-center">{currentSlideData.description}</Typography>
                       {currentSlide === 4 && (
                         <Button 
                           variant="primary"

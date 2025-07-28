@@ -51,14 +51,14 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
                      <Button 
                        variant="primary"
                        onClick={copyToClipboard}
-                       className="flex-1"
+                       className="flex-1 buttonv2 buttonv2-yellow"
                      >
                        Copy Link
                      </Button>
                      <Button 
                        variant="secondary"
                        onClick={() => onTabChange('giveaway')}
-                       className="flex-1"
+                       className="flex-1 buttonv2"
                      >
                        See giveaway
                      </Button>

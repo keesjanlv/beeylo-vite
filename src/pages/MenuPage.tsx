@@ -28,7 +28,7 @@ export const MenuPage: FC<MenuPageProps> = ({
         <Container size="lg">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 menu-items-grid">
               {/* Giveaway Campaign */}
-              <Card variant="outline" className="menu-card">
+              <Card className="menu-card">
                 <CardContent className="menu-item">
                   <div className="menu-icon giveaway-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -44,7 +44,6 @@ export const MenuPage: FC<MenuPageProps> = ({
 
               {/* Submit Feedback */}
               <Card 
-                variant="outline" 
                 className="menu-card" 
                 onClick={() => onTabChange?.('feedback')}
                 role="button"
@@ -66,7 +65,7 @@ export const MenuPage: FC<MenuPageProps> = ({
 
 
               {/* Terms of Service */}
-              <Card variant="outline" className="menu-card">
+              <Card className="menu-card">
                 <CardContent className="menu-item">
                   <div className="menu-icon brand-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -82,7 +81,7 @@ export const MenuPage: FC<MenuPageProps> = ({
               </Card>
 
               {/* Privacy Policy */}
-              <Card variant="outline" className="menu-card">
+              <Card className="menu-card">
                 <CardContent className="menu-item">
                   <div className="menu-icon privacy-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -99,7 +98,6 @@ export const MenuPage: FC<MenuPageProps> = ({
 
               {/* Theme Switch */}
               <Card 
-                variant="outline" 
                 className="menu-card theme-switch-card"
                 onClick={() => onThemeChange(theme === 'light' ? 'dark' : 'light')}
                 role="button"
@@ -146,7 +144,6 @@ export const MenuPage: FC<MenuPageProps> = ({
               {/* Logout Section - Only show if logged in */}
               {isLoggedIn && onLogout && (
                 <Card 
-                  variant="outline" 
                   className="menu-card logout-item" 
                   onClick={onLogout}
                   role="button"
