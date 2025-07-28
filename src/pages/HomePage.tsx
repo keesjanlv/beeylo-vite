@@ -48,15 +48,17 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                     variant="brand"
                     size="lg"
                     onClick={() => onTabChange('learn-more')}
+                    className="buttonv2 buttonv2-yellow"
                   >
-                    Discover Beeylo
+                    Discover
                   </Button>
                   <Button 
                     variant="outline"
                     size="lg"
                     onClick={() => onTabChange('benefits')}
+                    className="buttonv2"
                   >
-                    See benefits
+                    Features
                   </Button>
                 </div>
               </div>
@@ -117,6 +119,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                       fullWidth
                       loading={isLoading}
                       disabled={isLoading}
+                      className="buttonv2 buttonv2-yellow"
                     >
                       {isLoading ? 'Loading...' : 'I want in'}
                     </Button>
@@ -127,6 +130,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                       fullWidth
                       onClick={() => onTabChange('learn-more')}
                       disabled={isLoading}
+                      className="buttonv2"
                     >
                       Learn more
                     </Button>

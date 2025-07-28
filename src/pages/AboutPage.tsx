@@ -17,7 +17,7 @@ export const AboutPage: FC = () => (
 
             <div className="grid desktop:grid-cols-2 gap-8">
               <Card>
-                <CardContent>
+                <CardContent className="text-center">
                   <Stack spacing={4}>
                     <Typography variant="h3">Why?</Typography>
                     <Typography variant="body" color="secondary">
@@ -28,7 +28,7 @@ export const AboutPage: FC = () => (
               </Card>
 
               <Card>
-                <CardContent>
+                <CardContent className="text-center">
                   <Stack spacing={4}>
                     <Typography variant="h3">How?</Typography>
                     <Typography variant="body" color="secondary">

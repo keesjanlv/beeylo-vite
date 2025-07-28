@@ -1324,6 +1324,118 @@
   font-weight: 600;
 }
 
+/* === BUTTONV2 COMPONENT === */
+.buttonv2 {
+  color: #090909;
+  padding: 0.7em 1.7em;
+  font-size: 14px;
+  border-radius: 0.5em;
+  background: #ffffff;
+  cursor: pointer;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s;
+  box-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.08),
+    -2px -2px 4px rgba(255, 255, 255, 0.9);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.buttonv2:hover {
+  background: #e8e8e8;
+  border: 1px solid #d0d0d0;
+  transform: translateY(-1px);
+  box-shadow: 
+    3px 3px 6px rgba(0, 0, 0, 0.1),
+    -3px -3px 6px rgba(255, 255, 255, 0.95);
+}
+
+.buttonv2:active {
+  transform: translateY(0);
+  background: #e0e0e0;
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.08),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.9);
+}
+
+/* === BUTTONV2 YELLOW VARIANT === */
+.buttonv2.buttonv2-yellow {
+  background: #FBBF16;
+  border: 1px solid #e6ac00;
+  color: #000000;
+  box-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.08),
+    -2px -2px 4px rgba(255, 255, 255, 0.6);
+}
+
+.buttonv2.buttonv2-yellow:hover {
+  background: #e6ac00;
+  border: 1px solid #cc9900;
+  box-shadow: 
+    3px 3px 6px rgba(0, 0, 0, 0.1),
+    -3px -3px 6px rgba(255, 255, 255, 0.7);
+}
+
+.buttonv2.buttonv2-yellow:active {
+  background: #d99e00;
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.08),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.6);
+}
+
+/* === DARK THEME VARIANTS === */
+[data-theme="dark"] .buttonv2 {
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  color: #f0f0f0;
+  box-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.3),
+    -2px -2px 4px rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .buttonv2:hover {
+  background: #3a3a3a;
+  border: 1px solid #4a4a4a;
+  box-shadow: 
+    3px 3px 6px rgba(0, 0, 0, 0.4),
+    -3px -3px 6px rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .buttonv2:active {
+  background: #1a1a1a;
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.3),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .buttonv2.buttonv2-yellow {
+  background: #FBBF16;
+  border: 1px solid #e6ac00;
+  color: #000000;
+  box-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.3),
+    -2px -2px 4px rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .buttonv2.buttonv2-yellow:hover {
+  background: #e6ac00;
+  border: 1px solid #cc9900;
+  box-shadow: 
+    3px 3px 6px rgba(0, 0, 0, 0.4),
+    -3px -3px 6px rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="dark"] .buttonv2.buttonv2-yellow:active {
+  background: #d99e00;
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.3),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.1);
+}
+
 /* Screen Reader Only - Accessibility */
 .sr-only {
   position: absolute;
@@ -2102,14 +2214,14 @@
 
 /* === GIVEAWAY PAGE SPECIFIC STYLES === */
 /* Larger main action buttons */
-.giveaway-main-button {
-  min-height: 60px !important;
-  font-size: 1.1rem !important;
-  font-weight: 600 !important;
-}
+ .giveaway-main-button {
+  min-height: 50px !important;
+/*  font-size: 1.1rem !important;
+  font-weight: 600 !important; */
+} 
 
 /* Responsive font sizing for main action buttons */
-@media (max-width: 640px) {
+/@media (max-width: 640px) {
   .giveaway-main-button {
     font-size: 0.9rem !important;
     min-height: 50px !important;
@@ -2119,9 +2231,9 @@
 @media (min-width: 641px) and (max-width: 1024px) {
   .giveaway-main-button {
     font-size: 1rem !important;
-    min-height: 55px !important;
+    min-height: 50px !important;
   }
-}
+}  */
 
 /* Standardize all giveaway page card widths to match stats-section-enhanced */
 @media (min-width: 1025px) {
@@ -2569,12 +2681,12 @@
 .home-input:focus {
   outline: none;
   border-color: var(--color-brand-primary);
-  box-shadow: 0 0 0 2px var(--color-brand-primary);
+  box-shadow: 0 0 0 1px var(--color-brand-primary);
 }
 
 .home-input-highlight {
   border-color: var(--color-brand-primary);
-  box-shadow: 0 0 0 2px var(--color-brand-primary);
+  box-shadow: 0 0 0 1px var(--color-brand-primary);
   animation: pulse 2s infinite;
 }
 
