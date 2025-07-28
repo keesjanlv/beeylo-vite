@@ -36,10 +36,10 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
             <div className="home-content-wrapper">
               {/* Text Content */}
               <div className="home-text-section">
-                <Typography variant="h1" className="home-title text-center">
+                <Typography variant="h1" className="home-title text-center-mobile-left-desktop">
                   Welcome to Beeylo
                 </Typography>
-                <Typography variant="body" color="secondary" className="home-subtitle">
+                <Typography variant="body" color="secondary" className="home-subtitle text-center-mobile-left-desktop">
                   No more spam, ads or useless updates
                 </Typography>
                 
@@ -89,11 +89,11 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
           <div className="home-content-wrapper">
             {/* Text and Form Content */}
             <div className="home-text-section">
-              <Typography variant="h1" className="home-title-large text-center">
+              <Typography variant="h1" className="home-title-large text-center-mobile-left-desktop">
                 <span className="home-title-main">
                   The new free inbox
                 </span>
-                <span className="home-title-sub">
+                <span className="home-title-sub" >
                   No more spam, ads or useless updates
                 </span>
               </Typography>

@@ -526,7 +526,6 @@
 
 .card {
   background-color: var(--card-background);
-  border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
   transition: all 0.2s ease-in-out;
@@ -540,7 +539,6 @@
 
 .card-outline {
   background-color: transparent;
-  border: 1px solid var(--border);
   box-shadow: none;
 }
 
