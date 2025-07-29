@@ -1,13 +1,14 @@
 import type { FC } from 'react'
 import type { NavigationProps, TabType } from '../types'
 import { Logo } from './Logo'
-import { ThreeDotsIcon, HomeIcon, GiveawayIcon, AboutIcon, FAQIcon } from './Icons'
+import { ThreeDotsIcon, HomeIcon, WaitlistIcon, AboutIcon, FAQIcon } from './Icons'
 import { SidebarButton } from './ui'
 
 const allTabs: Array<{ id: TabType, label: string, requiresLogin?: boolean, hiddenOnMobile?: boolean, icon?: React.ReactNode }> = [
   { id: 'home', label: 'Home', icon: <HomeIcon /> },
-  { id: 'giveaway', label: 'Giveaway', icon: <GiveawayIcon /> },
-  { id: 'about', label: 'About us', icon: <AboutIcon /> },
+  { id: 'benefits', label: 'Benefits', icon: <WaitlistIcon /> },
+  { id: 'waitlist', label: 'Waitlist', icon: <WaitlistIcon /> },
+  { id: 'about', label: 'Our story', icon: <AboutIcon /> },
   { id: 'faq', label: 'FAQ', icon: <FAQIcon /> }
 ]
 

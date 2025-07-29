@@ -9,6 +9,7 @@ import {
   DashboardPage,
   BenefitsPage,
   GiveawayPage,
+  WaitlistPage,
   HowItWorksPage,
   ActionsPage,
   AboutPage, 
@@ -101,6 +102,12 @@ const AppContent: FC = () => {
           description: 'Join Beeylo\'s exclusive giveaway competition! Refer friends and climb the leaderboard for early access and amazing prizes.',
           url: '/giveaway'
         }
+      case 'waitlist':
+        return {
+          title: 'Join the Waitlist - Beeylo',
+          description: 'Join Beeylo\'s exclusive waitlist and be among the first to experience the future of email management. Early access, exclusive benefits, and founder perks await.',
+          url: '/waitlist'
+        }
       case 'how-it-works':
         return {
           title: 'How does it work? - Beeylo Giveaway',
@@ -144,13 +151,15 @@ const AppContent: FC = () => {
   const renderPage = () => {
     switch (activeTab) {
       case 'home':
-        return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
+        return isLoggedIn ? <LearnMorePage onTabChange={handleTabChange} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
       case 'dashboard':
         return isLoggedIn ? <DashboardPage userData={userData} onLogout={handleLogout} onTabChange={handleTabChange} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
       case 'benefits':
         return <BenefitsPage />
       case 'giveaway':
         return <GiveawayPage onTabChange={handleTabChange} />
+      case 'waitlist':
+        return <WaitlistPage onTabChange={handleTabChange} />
       case 'how-it-works':
         return <HowItWorksPage onTabChange={handleTabChange} />
       case 'actions':

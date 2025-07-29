@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import type { TabType } from '../types'
-import { Container, Stack, Input, Typography, Button } from '../components/ui'
+import { Container, Stack, Input, Typography, Button, NumberedButton } from '../components/ui'
 
 interface ThankYouPageProps {
   userData?: any
@@ -24,6 +24,19 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
       <div className="page-content content-scrollable">
         <div className="content-center-scroll">
           <Container size="xl">
+            {/* Close Button */}
+            <div className="flex justify-center mb-6">
+              <button
+                onClick={() => onTabChange('home')}
+                className="w-10 h-10 rounded-full bg-surface border border-border hover:bg-surface-hover transition-colors flex items-center justify-center"
+                aria-label="Close"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
             <Stack spacing={6} className="thank-you-content items-center text-center">
               {/* Message Surface Card */}
               <div className="card card-default card-md card-padding-md">

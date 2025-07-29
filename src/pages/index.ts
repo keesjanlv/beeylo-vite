@@ -2,6 +2,7 @@ export * from './HomePage'
 export * from './DashboardPage'
 export * from './BenefitsPage'
 export * from './GiveawayPage'
+export * from './WaitlistPage'
 export * from './HowItWorksPage'
 export * from './ActionsPage'
 
