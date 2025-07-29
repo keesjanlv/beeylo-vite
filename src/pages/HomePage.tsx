@@ -27,7 +27,58 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     }
   }
 
-  // Always show the logged-out view (logged-in users will see LearnMorePage instead)
+  if (isLoggedIn) {
+    // Logged-in view - Clean vertical centering
+    return (
+      <div className="page-container">
+        <div className="page-content content-center-screen">
+          <div className="container max-w-6xl">
+            <div className="home-content-wrapper">
+              {/* Text Content */}
+              <div className="home-text-section">
+                <Typography variant="h1" className="home-title text-center-mobile-left-desktop">
+                  Your inbox without the noise
+                </Typography>
+                <Typography variant="body" color="secondary" className="home-subtitle text-center-mobile-left-desktop">
+                  No more spam, ads or useless updates
+                </Typography>
+                
+                <div className="home-actions">
+                  <Button 
+                    variant="brand"
+                    size="lg"
+                    onClick={() => onTabChange('learn-more')}
+                    className="buttonv2 buttonv2-yellow"
+                  >
+                    Discover
+                  </Button>
+                  <Button 
+                    variant="outline"
+                    size="lg"
+                    onClick={() => onTabChange('benefits')}
+                    className="buttonv2"
+                  >
+                    Benefits
+                  </Button>
+                </div>
+              </div>
+              
+              {/* Image Content */}
+              <div className="home-image-section">
+                <img 
+                  src={tripleScreenImg} 
+                  alt="Beeylo App Interface" 
+                  className="home-hero-image"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Non-logged-in view - Clean vertical centering
   return (
     <div className="page-container">
       <div className="page-content content-center-screen">
