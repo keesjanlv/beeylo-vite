@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import type { FC } from 'react'
+import type { TabType } from '../types'
 import { Button, Typography, Card, CardContent, Stack, Container } from '../components/ui'
 import { PageBadge } from '../components'
 
 interface WaitlistPageProps {
-  onTabChange?: (tab: string) => void
+  onTabChange?: (tab: TabType) => void
 }
 
-export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange }) => {
+export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange }) => {
   const [activeContent, setActiveContent] = useState<string>('position') // Default to position tab
   
   // Mock data - in real app, this would come from API
