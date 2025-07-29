@@ -179,10 +179,10 @@
   --primary-foreground: #000000;
 
   /* Background Colors */
-  --background: #fcfcfc;
+  --background: #f1f1f1;
   --background-secondary: #F8F9FA;
   --background-tertiary: #F1F3F4;
-  --canvas: #fcfcfc; /* App background color - consistent with --background */
+  --canvas: #f1f1f1; /* App background color - consistent with --background */
 
   /* Surface Colors */
   --surface: #fafafa;
