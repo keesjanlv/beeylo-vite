@@ -5,6 +5,7 @@ import { NumberedButton, Container, Stack, Card, CardContent, Typography, Button
 import inboxOverloadImg from '../assets/inboxoverload.webp'
 import homeDefImg from '../assets/homedef.webp'
 import ticketOrderImg from '../assets/ticketorder.webp'
+import orderSpamImg from '../assets/orderspam.webp'
 
 interface LearnMorePageProps {
   onTabChange: (tab: TabType) => void
@@ -13,7 +14,7 @@ interface LearnMorePageProps {
 const slides = [
   {
     id: 1,
-    title: "What's wrong with your inbox?",
+    title: "You get 40+ emails a day — but only 4 actually matter.",
     description: "You get 40+ emails a day — but only 4 actually matter. And they get lost in the noise.",
     image: inboxOverloadImg
   },
@@ -21,7 +22,7 @@ const slides = [
     id: 2,
     title: "You order one thing... and your inbox explodes with 10 separate emails.",
     description: "Every purchase becomes a flood of confirmations, shipping updates, and promotional follow-ups.",
-    image: ticketOrderImg
+    image: orderSpamImg
   },
   {
     id: 3,
@@ -33,7 +34,7 @@ const slides = [
     id: 4,
     title: "One order = one smart overview.",
     description: "Every update is added to that same view. No more hunting through dozens of emails.",
-    image: homeDefImg
+    image: ticketOrderImg
   }
 ]
 

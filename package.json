@@ -13,6 +13,7 @@
     "install:legacy": "npm install --legacy-peer-deps"
   },
   "dependencies": {
+    "@formbricks/js": "^4.1.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.10",
     "lodash": "^4.17.21",

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import type { TabType } from './types'
 import SEO from './components/SEO'
 import { Sidebar, TopNavigation } from './components/Navigation'
+import formbricks from '@formbricks/js'
 import {
   HomePage,
   DashboardPage,
@@ -48,6 +49,16 @@ const AppContent: FC = () => {
     document.documentElement.setAttribute('data-style', style)
     localStorage.setItem('style', style)
   }, [style])
+
+  // Initialize Formbricks
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      formbricks.setup({
+        environmentId: 'cmdram4jy3w6euu01p4o3shuh', // User's environment ID
+        appUrl: 'https://app.formbricks.com'
+      })
+    }
+  }, [])
 
   // Auto-navigate to thank you page when user logs in
   useEffect(() => {
@@ -212,7 +223,7 @@ const AppContent: FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ 
-              duration: 0.3,
+              duration: 0.225, /* 25% faster: 0.3 * 0.75 = 0.225 */
               ease: [0.4, 0.0, 0.2, 1]
             }}
           >

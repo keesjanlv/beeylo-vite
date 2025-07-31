@@ -21,7 +21,7 @@ export const AboutPage: FC = () => (
                   For too long, companies have controlled how they talk to us. Flooding our inboxes with spam, ads, and useless updates.
                 </Typography>
               </div>
-              <div className="why-content">
+              <div>
                 <Typography variant="body" color="secondary" className="text-center">
                   Beeylo is the world's first inbox built for people, not brands. It only shows what actually matters. And we're building it with the people. For the people.
                 </Typography>

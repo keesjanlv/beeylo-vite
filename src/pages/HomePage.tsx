@@ -123,6 +123,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                     >
                       {isLoading ? 'Loading...' : 'End my inbox chaos'}
                     </Button>
+                    {/* 90 sec explainer button - temporarily hidden
                     <Button 
                       type="button" 
                       variant="outline" 
@@ -134,6 +135,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                     >
                       90 sec explainer (video)
                     </Button>
+                    */}
                   </div>
                   {(loginError || error) && (
                     <Typography variant="small" color="error" className="home-error">

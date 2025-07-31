@@ -1,6 +1,8 @@
 import type { FC } from 'react'
 import { useState } from 'react'
 import { Container, Stack, Card, CardContent, Button, Input, Typography } from '../components/ui'
+import { PageBadge } from '../components'
+import formbricks from '@formbricks/js'
 
 interface FeedbackPageProps {
   onBack?: () => void
@@ -10,7 +12,6 @@ export const FeedbackPage: FC<FeedbackPageProps> = ({ onBack }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    category: 'general',
     message: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -28,22 +29,32 @@ export const FeedbackPage: FC<FeedbackPageProps> = ({ onBack }) => {
     e.preventDefault()
     setIsSubmitting(true)
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false)
-      setFormData({
-        name: '',
-        email: '',
-        category: 'general',
-        message: ''
+    try {
+      // Submit to Formbricks
+      formbricks.track('feedback_submitted', {
+        name: formData.name,
+        email: formData.email,
+        message: formData.message
       })
-    }, 3000)
+      
+      // Form successfully submitted
+      setIsSubmitting(false)
+      setIsSubmitted(true)
+      
+      // Reset form after 3 seconds
+      setTimeout(() => {
+        setIsSubmitted(false)
+        setFormData({
+          name: '',
+          email: '',
+          message: ''
+        })
+      }, 3000)
+    } catch (error) {
+      console.error('Form submission error:', error)
+      setIsSubmitting(false)
+      alert('There was a problem submitting your feedback. Please try again.')
+    }
   }
 
   return (
@@ -68,103 +79,120 @@ export const FeedbackPage: FC<FeedbackPageProps> = ({ onBack }) => {
                       </svg>
                     </Button>
                   )}
-                  <Typography variant="h1">Submit Feedback</Typography>
+                  <div className="text-center">
+                    <PageBadge>Feedback</PageBadge>
+                    <Typography variant="h2" className="text-center">Submit Feedback</Typography>
+                  </div>
                 </div>
-                <Typography variant="body" color="secondary">Help us improve Beeylo by sharing your thoughts and suggestions</Typography>
+                <Typography variant="body" color="secondary" className="text-center">
+                  Help us improve Beeylo by sharing your thoughts and suggestions
+                </Typography>
               </Stack>
 
-          {/* Feedback Form */}
-          <Card variant="outline">
-            <CardContent>
-              {isSubmitted ? (
-                <div className="feedback-success">
-                  <div className="success-icon">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                      <polyline points="22,4 12,14.01 9,11.01"/>
-                    </svg>
-                  </div>
-                  <Typography variant="h3">Thank you for your feedback!</Typography>
-                  <Typography variant="body" color="secondary">We appreciate your input and will review it carefully.</Typography>
-                </div>
-              ) : (
-                <form className="feedback-form" onSubmit={handleSubmit}>
-                  <Stack spacing={4}>
-                    <Input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
-                      label="Name"
-                      placeholder="Your full name"
-                    />
-
-                    <Input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                      label="Email"
-                      placeholder="your.email@example.com"
-                    />
-
-                    <div className="form-group">
-                      <label htmlFor="category" className="form-label">Category</label>
-                      <select
-                        id="category"
-                        name="category"
-                        value={formData.category}
-                        onChange={handleInputChange}
-                        className="form-select"
-                      >
-                        <option value="general">General Feedback</option>
-                        <option value="bug">Bug Report</option>
-                        <option value="feature">Feature Request</option>
-                        <option value="ui">UI/UX Improvement</option>
-                        <option value="performance">Performance Issue</option>
-                      </select>
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="message" className="form-label">Message</label>
-                      <textarea
-                        id="message"
-                        name="message"
-                        value={formData.message}
-                        onChange={handleInputChange}
-                        required
-                        className="form-textarea"
-                        placeholder="Please share your feedback, suggestions, or report any issues you've encountered..."
-                        rows={6}
-                      />
-                    </div>
-
-                    <Button 
-                      type="submit" 
-                      variant="primary"
-                      disabled={isSubmitting}
-                      className="mt-2"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <svg className="spinner mr-2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M21 12a9 9 0 11-6.219-8.56"/>
+              {/* Feedback Form */}
+              <Card>
+                <CardContent>
+                  {isSubmitted ? (
+                    <div className="feedback-success text-center">
+                      <div className="success-icon mb-4">
+                        <div style={{ width: '48px', height: '48px', margin: '0 auto', backgroundColor: 'var(--primary)', borderRadius: '50%', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22,4 12,14.01 9,11.01"/>
                           </svg>
-                          Submitting...
-                        </>
-                      ) : (
-                        'Submit Feedback'
-                      )}
-                    </Button>
-                  </Stack>
-                </form>
-              )}
-            </CardContent>
-          </Card>
+                        </div>
+                      </div>
+                      <Typography variant="h3" className="mb-2">Thank you for your feedback!</Typography>
+                      <Typography variant="body" color="secondary">We appreciate your input and will review it carefully.</Typography>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleSubmit}>
+                      <Stack spacing={4}>
+                        {/* Name Field */}
+                        <div>
+                          <Input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleInputChange}
+                            required
+                            label="Name"
+                            placeholder="Your full name"
+                            style={{ 
+                              width: '100%', 
+                              padding: '8px 12px', 
+                              border: '1px solid var(--border)', 
+                              borderRadius: 'var(--radius-md)', 
+                              background: 'var(--surface)',
+                              color: 'var(--text-primary)',
+                              fontSize: '14px'
+                            }}
+                          />
+                        </div>
+
+                        {/* Email Field */}
+                        <div>
+                          <Input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            required
+                            label="Email"
+                            placeholder="your.email@example.com"
+                            style={{ 
+                              width: '100%', 
+                              padding: '8px 12px', 
+                              border: '1px solid var(--border)', 
+                              borderRadius: 'var(--radius-md)', 
+                              background: 'var(--surface)',
+                              color: 'var(--text-primary)',
+                              fontSize: '14px'
+                            }}
+                          />
+                        </div>
+
+                        {/* Message Field */}
+                        <div>
+                          <label htmlFor="message" className="form-label" style={{ marginBottom: '8px', display: 'block', fontWeight: '500' }}>Message</label>
+                          <textarea
+                            id="message"
+                            name="message"
+                            value={formData.message}
+                            onChange={handleInputChange}
+                            required
+                            placeholder="Please share your feedback, suggestions, or report any issues you've encountered..."
+                            rows={6}
+                            style={{ 
+                              width: '100%', 
+                              padding: '12px', 
+                              border: '1px solid var(--border)', 
+                              borderRadius: 'var(--radius-md)', 
+                              background: 'var(--surface)',
+                              color: 'var(--text-primary)',
+                              fontSize: '14px',
+                              resize: 'vertical',
+                              fontFamily: 'inherit'
+                            }}
+                          />
+                        </div>
+
+                        <Button 
+                          type="submit" 
+                          variant="primary"
+                          disabled={isSubmitting}
+                          className="buttonv2 buttonv2-yellow"
+                          style={{ width: '100%', marginTop: '16px' }}
+                        >
+                          {isSubmitting ? "Submitting..." : "Submit Feedback"}
+                        </Button>
+                      </Stack>
+                    </form>
+                  )}
+                </CardContent>
+              </Card>
             </Stack>
           </Container>
         </div>
