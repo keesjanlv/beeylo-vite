@@ -32,9 +32,11 @@ export const FeedbackPage: FC<FeedbackPageProps> = ({ onBack }) => {
     try {
       // Submit to Formbricks
       formbricks.track('feedback_submitted', {
-        name: formData.name,
-        email: formData.email,
-        message: formData.message
+        hiddenFields: {
+          name: formData.name,
+          email: formData.email,
+          message: formData.message
+        }
       })
       
       // Form successfully submitted
