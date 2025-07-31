@@ -37,10 +37,10 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
               {/* Text Content */}
               <div className="home-text-section">
                 <Typography variant="h1" className="home-title text-center-mobile-left-desktop">
-                  Your inbox without the noise
+                  Welcome to your inbox without the noise.
                 </Typography>
                 <Typography variant="body" color="secondary" className="home-subtitle text-center-mobile-left-desktop">
-                  No more spam, ads or useless updates
+                  No spam, no ads and no useless updates. Beeylo only shows you the 10% that actually matters
                 </Typography>
                 
                 <div className="home-actions">
@@ -102,7 +102,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
               
               {/* Login form */}
               <div className="home-form-section">
-                <form onSubmit={handleSubmit} className="home-form">
+                <form onSubmit={handleSubmit} className="home-form bg-surface">
                   <input
                     type="email"
                     placeholder="Enter your email"

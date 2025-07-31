@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import type { TabType } from '../types'
-import { Container, Stack, Input, Typography, Button } from '../components/ui'
+import { Container, Stack, Input, Typography, Button, Card, CardContent } from '../components/ui'
+import { InstagramIcon, LinkedinIcon, TwitterIcon, TikTokIcon } from '../components/Icons'
 
 interface ThankYouPageProps {
   userData?: any
@@ -9,6 +10,10 @@ interface ThankYouPageProps {
 
 export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) => {
   const shareUrl = userData?.referral_url || 'https://beeylo.com/ref/sample'
+  
+  // Mock data - in real app, this would come from API
+  const totalWaitlist = 15847
+  const userPosition = 1234
   
   const copyToClipboard = async () => {
     try {
@@ -37,46 +42,94 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
                 </button>
               </div>
 
-              {/* Message Surface Card */}
+              {/* Welcome Message */}
+              <Stack spacing={4} className="items-center">
+                <Typography variant="h1" className="text-center">Thank you!</Typography>
+                <Typography variant="body" color="secondary" className="max-w-lg mx-auto text-center">
+                  You have successfully joined the waitlist.
+                </Typography>
+              </Stack>
+
+              {/* Waitlist Position Card */}
+              <Card>
+                <CardContent>
+                  <div className="stats-section-enhanced">
+                    <div className="stat-item text-center">
+                      <Typography variant="h1" className="stat-number text-center font-roboto font-bold text-sm">
+                        {userPosition.toLocaleString()} of {totalWaitlist.toLocaleString()}
+                      </Typography>
+                      <Typography variant="body" color="secondary" className="stat-label text-center">
+                        Your Position
+                      </Typography>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Early Access Header */}
+              <Stack spacing={2} className="items-center">
+                <Typography variant="h3" className="text-center">Want early access?</Typography>
+                <Typography variant="body" color="secondary" className="text-center">
+                  Move up by referring your friends. Share your personal link directly or use your favorite platform.
+                </Typography>
+              </Stack>
+
+              {/* Share Link Card */}
               <div className="card card-default card-md card-padding-md">
-                <Stack spacing={4} className="items-center">
-                  <Typography variant="h1" className="text-center">You're in!</Typography>
-                  <Typography variant="body" color="secondary" className="max-w-lg mx-auto text-center">
-                    Help us grow faster by sharing. As a thank you, we've created a one-of-a-kind giveaway. Something never done before.
-                  </Typography>
+                <Stack spacing={4} className="items-center text-center">
+                  <Typography variant="h3" className="text-center">Your Share Link</Typography>
+                  <div className="flex items-center gap-2 w-full">
+                    <Input 
+                      value={shareUrl} 
+                      readOnly 
+                      className="flex-1 w-full"
+                    />
+                  </div>
+                  
+                  <div className="action-buttons flex gap-3 w-full">
+                    <Button 
+                      variant="primary"
+                      onClick={copyToClipboard}
+                      className="flex-1 buttonv2 buttonv2-yellow"
+                    >
+                      Copy Link
+                    </Button>
+                    <Button 
+                      variant="secondary"
+                      onClick={() => onTabChange('waitlist')}
+                      className="flex-1 buttonv2"
+                    >
+                      Waitlist
+                    </Button>
+                  </div>
                 </Stack>
               </div>
-              
-              {/* Form Surface Card */}
-               <div className="card card-default card-md card-padding-md">
-                 <Stack spacing={4} className="items-center text-center">
-                   <Typography variant="h3" className="text-center">Your Share Link</Typography>
-                   <div className="flex items-center gap-2 w-full">
-                     <Input 
-                       value={shareUrl} 
-                       readOnly 
-                       className="flex-1 w-full"
-                     />
-                   </div>
-                   
-                   <div className="action-buttons flex gap-3 w-full">
-                     <Button 
-                       variant="primary"
-                       onClick={copyToClipboard}
-                       className="flex-1 buttonv2 buttonv2-yellow"
-                     >
-                       Copy Link
-                     </Button>
-                     <Button 
-                       variant="secondary"
-                       onClick={() => onTabChange('waitlist')}
-                       className="flex-1 buttonv2"
-                     >
-                       Waitlist
-                     </Button>
-                   </div>
-                 </Stack>
-               </div>
+
+              {/* Social Sharing */}
+              <div className="text-center">
+                <Typography variant="h4" className="mb-2">Share on Social Media</Typography>
+                <Typography variant="body" color="secondary" className="mb-4">
+                  Earn more points and climb the waitlist by sharing.
+                </Typography>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-card" aria-label="Follow us on Instagram">
+                    <InstagramIcon />
+                    <span className="platform-name">instagram</span>
+                  </a>
+                  <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="social-card" aria-label="Follow us on TikTok">
+                    <TikTokIcon />
+                    <span className="platform-name">tiktok</span>
+                  </a>
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-card" aria-label="Follow us on LinkedIn">
+                    <LinkedinIcon />
+                    <span className="platform-name">linkedin</span>
+                  </a>
+                  <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="social-card" aria-label="Follow us on X">
+                    <TwitterIcon />
+                    <span className="platform-name">x (twitter)</span>
+                  </a>
+                </div>
+              </div>
             </Stack>
           </Container>
         </div>

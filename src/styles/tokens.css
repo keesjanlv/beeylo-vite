@@ -179,10 +179,10 @@
   --primary-foreground: #000000;
 
   /* Background Colors */
-  --background: #f1f1f1;
+  --background: #f8f8f8;
   --background-secondary: #F8F9FA;
   --background-tertiary: #F1F3F4;
-  --canvas: #f1f1f1; /* App background color - consistent with --background */
+  --canvas: #f8f8f8; /* App background color - consistent with --background */
 
   /* Surface Colors */
   --surface: #fafafa;
@@ -221,13 +221,19 @@
   --info-hover: #2563EB;
   --info-foreground: #FFFFFF;
 
+  /* Semantic Background Colors (for icons, etc.) */
+  --success-background: #E8F5E9; /* Light Green */
+  --warning-background: #FFF8E1; /* Light Yellow */
+  --error-background: #FFEBEE;   /* Light Red */
+  --info-background: #E3F2FD;    /* Light Blue */
+
   /* Component-specific */
   --input-background: #FFFFFF;
   --input-border: #D1D5DB;
   --input-border-focus: var(--primary);
   --input-placeholder: #9CA3AF;
 
-  --card-background: #FFFFFF;
+  --card-background: #fcfcfc;
   --card-border: #E5E7EB;
 
   --shadow: rgba(0, 0, 0, 0.1);

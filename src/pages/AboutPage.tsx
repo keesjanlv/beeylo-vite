@@ -15,35 +15,31 @@ export const AboutPage: FC = () => (
               </Typography>
             </div>
 
-            <div className="grid desktop:grid-cols-2 gap-8">
-              <Card>
-                <CardContent>
-                  <Stack spacing={4} >
-                    <Typography variant="h3" className="text-center">Why?</Typography>
-                    <Typography variant="body" color="secondary" className="text-center">
-                      For too long, companies have controlled how they talk to us. Flooding our inboxes with spam, ads, and useless updates.
-                    </Typography>
-                  </Stack>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardContent>
-                  <Stack spacing={4}>
-                    <Typography variant="h3" className="text-center">How?</Typography>
-                    <Typography variant="body" color="secondary" className="text-center">
-                      Beeylo is the world's first inbox built for people, not brands. It only shows what actually matters. And we're building it with the people. For the people.
-                    </Typography>
-                  </Stack>
-                </CardContent>
-              </Card>
+            <div className="grid desktop:grid-cols-2 gap-8 my-8">
+              <div>
+                <Typography variant="body" color="secondary" className="text-center">
+                  For too long, companies have controlled how they talk to us. Flooding our inboxes with spam, ads, and useless updates.
+                </Typography>
+              </div>
+              <div className="why-content">
+                <Typography variant="body" color="secondary" className="text-center">
+                  Beeylo is the world's first inbox built for people, not brands. It only shows what actually matters. And we're building it with the people. For the people.
+                </Typography>
+              </div>
             </div>
 
-            <div className="text-center py-4">
-              <Typography variant="body" weight="medium" className="text-center text-xl" style={{ color: '#FBBF16' }}>
-                Because inbox noise was never your choice
-              </Typography>
-            </div>
+            <Card className="quote-card">
+              <CardContent>
+                <Stack spacing={4} className="text-center">
+                  <Typography variant="h3" className="quote-text text-center">
+                    “Because inbox noise was never your choice”
+                  </Typography>
+                  <Typography variant="body" color="secondary" className="quote-attribution text-center">
+                    — Team Beeylo
+                  </Typography>
+                </Stack>
+              </CardContent>
+            </Card>
           </Stack>
         </Container>
       </div>

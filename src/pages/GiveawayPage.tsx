@@ -71,7 +71,7 @@ export const GiveawayPage: FC<GiveawayPageProps> = ({ onTabChange }) => {
                 </div>
 
                 {rewardsSlide === 'what-you-earn' ? (
-                  <div className="rewards-content">
+                  <div className="rewards-content giveaway-modal-content">
                     <h3 className="text-lg font-medium">What you can earn</h3>
                     <p className="text-secondary">We're giving away 2% of everything we raise and earn in the first 6 months to the top 10 people who help us grow.</p>
                     
@@ -104,7 +104,7 @@ export const GiveawayPage: FC<GiveawayPageProps> = ({ onTabChange }) => {
                     </div>
                   </div>
                 ) : (
-                  <div className="rewards-content">
+                  <div className="rewards-content giveaway-modal-content">
                     <h3 className="text-lg font-medium">Example</h3>
                     <div className="example-scenario">
                       <p className="font-medium">Beeylo raises €10 million and earns €500.000 in early profit.</p>
@@ -182,7 +182,7 @@ export const GiveawayPage: FC<GiveawayPageProps> = ({ onTabChange }) => {
                 </div>
 
                 {howItWorksSlide === 'steps' ? (
-                  <div className="steps-content">
+                  <div className="steps-content giveaway-modal-content">
                     <h3 className="text-lg font-medium">How it works</h3>
                     <div className="steps-container">
                       <div className="modal-step-item">

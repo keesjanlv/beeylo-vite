@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { Home, User, HelpCircle, Gift, MoreVertical } from 'lucide-react'
+import { Home, User, HelpCircle, Gift, Hexagon, MoreVertical } from 'lucide-react'
 
 export const HomeIcon: FC = () => <Home size={20} />
 
@@ -32,13 +32,7 @@ export const ThreeDotsIcon: FC = () => <MoreVertical size={20} />
 
 export const GiveawayIcon: FC = () => <Gift size={20} />
 
-export const WaitlistIcon: FC = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-    <circle cx="9" cy="7" r="4"/>
-    <path d="m22 21-3-3m0 0-3-3m3 3h-6"/>
-  </svg>
-)
+export const WaitlistIcon: FC = () => <Hexagon size={20} />
 
 export const InstagramIcon: FC = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

@@ -20,7 +20,7 @@ import {
   ThankYouPage
 } from './pages'
 import { UserProvider, useUser } from './contexts/UserContext'
-import './styles/index.css'
+import './index.css'
 
 type ThemeType = 'light' | 'dark'
 type StyleType = 'enhanced' | 'minimal'

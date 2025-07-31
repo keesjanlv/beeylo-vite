@@ -7,7 +7,7 @@ import { SidebarButton } from './ui'
 const allTabs: Array<{ id: TabType, label: string, requiresLogin?: boolean, hiddenOnMobile?: boolean, icon?: React.ReactNode }> = [
   { id: 'home', label: 'Home', icon: <HomeIcon /> },
   { id: 'waitlist', label: 'Waitlist', icon: <WaitlistIcon /> },
-  { id: 'about', label: 'About us', icon: <AboutIcon /> },
+  { id: 'about', label: 'Our Story', icon: <AboutIcon /> },
   { id: 'faq', label: 'FAQ', icon: <FAQIcon /> }
 ]
 

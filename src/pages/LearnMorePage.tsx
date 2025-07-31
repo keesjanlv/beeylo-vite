@@ -14,30 +14,24 @@ interface LearnMorePageProps {
 const slides = [
   {
     id: 1,
-    title: "Welcome to your inbox without the noise.",
-    description: "No spam, no ads and no useless updates. Beeylo only shows you the 10% that actually matters.",
-    image: tripleScreenImg
-  },
-  {
-    id: 2,
     title: "What's wrong with your inbox?",
     description: "You get 40+ emails a day — but only 4 actually matter. And they get lost in the noise.",
     image: inboxOverloadImg
   },
   {
-    id: 3,
+    id: 2,
     title: "You order one thing... and your inbox explodes with 10 separate emails.",
     description: "Every purchase becomes a flood of confirmations, shipping updates, and promotional follow-ups.",
     image: ticketOrderImg
   },
   {
-    id: 4,
+    id: 3,
     title: "Meet your new inbox.",
     description: "Beeylo only shows you the 10% that actually matters. The rest? Gone.",
     image: homeDefImg
   },
   {
-    id: 5,
+    id: 4,
     title: "One order = one smart overview.",
     description: "Every update is added to that same view. No more hunting through dozens of emails.",
     image: homeDefImg
@@ -124,15 +118,14 @@ export const LearnMorePage: FC<LearnMorePageProps> = ({ onTabChange }) => {
                           />
                         ))}
                       </div>
-                      <Typography variant="h2" className="feature-title text-center">{currentSlideData.title}</Typography>
-                      <Typography variant="body" color="secondary" className="feature-description text-center">{currentSlideData.description}</Typography>
-                      {currentSlide === 4 && (
+                      <Typography variant="h2" className="feature-title text-center-mobile-left-desktop">{currentSlideData.title}</Typography>
+                      {currentSlide === 3 && (
                         <Button 
                           variant="primary"
-                          onClick={() => onTabChange('about')}
-                          className="see-benefits-button"
+                          onClick={() => onTabChange('benefits')}
+                          className="buttonv2"
                         >
-                          See our story
+                          See benefits
                         </Button>
                       )}
                     </Stack>

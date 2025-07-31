@@ -16,27 +16,27 @@ interface Feature {
 const features: Feature[] = [
   {
     id: 1,
-    image: ticketOrderImg,
-    title: 'One ticket per order',
-    description: 'Ten separate emails for one simple order — from confirmation to return? That\'s old school. Beeylo brings everything together in one smart overview.'
-  },
-  {
-    id: 2,
     image: brandsDefImg,
     title: 'Inbox overload done',
     description: 'Every brand you interact with has its own clean hub inside Beeylo. So all your conversations stay exactly where they belong.'
   },
   {
-    id: 3,
+    id: 2,
     image: ticketButtonsImg,
     title: 'No more switching apps',
     description: 'Beeylo lets you take action the moment you see a message. Return an item, download a receipt, check your warranty, ask a question and all from one place.'
   },
   {
-    id: 4,
+    id: 3,
     image: ticketKwikImg,
     title: 'No more long emails',
     description: 'Beeylo\'s smart AI summarizes your emails, so you instantly see what matters.'
+  },
+  {
+    id: 4,
+    image: ticketOrderImg,
+    title: 'One ticket per order',
+    description: 'Ten separate emails for one simple order — from confirmation to return? That\'s old school. Beeylo brings everything together in one smart overview.'
   }
 ]
 
@@ -145,8 +145,8 @@ export const BenefitsPage: FC<BenefitsPageProps> = () => {
                           />
                         ))}
                       </div>
-                      <Typography variant="h2" className="feature-title text-center">{currentFeatureData.title}</Typography>
-                      <Typography variant="body" color="secondary" className="feature-description text-center">{currentFeatureData.description}</Typography>
+                      <Typography variant="h2" className="feature-title text-center-mobile-left-desktop">{currentFeatureData.title}</Typography>
+                      <Typography variant="body" color="secondary" className="feature-description text-center-mobile-left-desktop">{currentFeatureData.description}</Typography>
                     </Stack>
                     <div className="feature-image">
                       <img 
