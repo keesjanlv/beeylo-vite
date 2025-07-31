@@ -1291,7 +1291,6 @@
   align-items: center;
   justify-content: center;
   min-width: calc(20px + var(--space-4)); /* icon size + equal padding on both sides */
-  flex: 0 0 10%; /* Allocate exactly 10% of space */
 }
 
 /* === EXPERIMENTAL BUTTON COMPONENT === */
@@ -2512,7 +2511,6 @@
 .sidebar-footer .sidebar-button {
   width: 100%;
   justify-content: flex-start;
-  gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
   margin: 0;
 }
@@ -2546,7 +2544,7 @@
 .mobile-nav-logo {
   flex: 0 0 10%; /* Allocate exactly 10% of space */
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .top-nav-tabs {
@@ -2560,17 +2558,12 @@
 .top-nav-button {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
   color: var(--text-secondary);
   font-weight: var(--font-medium);
   transition: all 0.2s ease;
   border: 1px solid transparent;
-}
-
-.top-nav-button.menu-button {
-  flex: 0 0 10%; /* Allocate exactly 10% of space for the menu button */
 }
 
 .top-nav-button.menu-button .sidebar-button-icon {

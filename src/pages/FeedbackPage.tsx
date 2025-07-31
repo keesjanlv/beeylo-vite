@@ -156,27 +156,25 @@ export const FeedbackPage: FC<FeedbackPageProps> = ({ onBack }) => {
 
                         {/* Message Field */}
                         <div>
-                          <label htmlFor="message" className="form-label" style={{ marginBottom: '8px', display: 'block', fontWeight: '500' }}>Message</label>
-                          <textarea
-                            id="message"
-                            name="message"
-                            value={formData.message}
-                            onChange={handleInputChange}
-                            required
-                            placeholder="Please share your feedback, suggestions, or report any issues you've encountered..."
-                            rows={6}
-                            style={{ 
-                              width: '100%', 
-                              padding: '12px', 
-                              border: '1px solid var(--border)', 
-                              borderRadius: 'var(--radius-md)', 
-                              background: 'var(--surface)',
-                              color: 'var(--text-primary)',
-                              fontSize: '14px',
-                              resize: 'vertical',
-                              fontFamily: 'inherit'
-                            }}
-                          />
+                          <div className="input-group">
+                            <label htmlFor="message" className="input-label">Message</label>
+                            <div className="input-wrapper">
+                              <textarea
+                                id="message"
+                                name="message"
+                                value={formData.message}
+                                onChange={handleInputChange}
+                                required
+                                placeholder="Please share your feedback, suggestions, or report any issues you've encountered..."
+                                rows={6}
+                                className="input input-md"
+                                style={{ 
+                                  resize: 'vertical',
+                                  fontFamily: 'inherit'
+                                }}
+                              />
+                            </div>
+                          </div>
                         </div>
 
                         <Button 
