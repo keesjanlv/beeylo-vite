@@ -77,7 +77,7 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
               {/* Share Link Card */}
               <div className="card card-default card-md card-padding-md">
                 <Stack spacing={4} className="items-center text-center">
-                  <Typography variant="h3" className="text-center">Your Share Link</Typography>
+                  {/* Share Link header removed */}
                   <div className="flex items-center gap-2 w-full">
                     <Input 
                       value={shareUrl} 
@@ -99,7 +99,7 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
                       onClick={() => onTabChange('waitlist')}
                       className="flex-1 buttonv2"
                     >
-                      Waitlist
+                      See waitlist
                     </Button>
                   </div>
                 </Stack>
@@ -107,10 +107,6 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
 
               {/* Social Sharing */}
               <div className="text-center">
-                <Typography variant="h4" className="mb-2">Share on Social Media</Typography>
-                <Typography variant="body" color="secondary" className="mb-4">
-                  Earn more points and climb the waitlist by sharing.
-                </Typography>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-card" aria-label="Follow us on Instagram">
                     <InstagramIcon />
