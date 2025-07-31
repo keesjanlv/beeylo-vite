@@ -185,6 +185,19 @@
   }
 }
 
+/* Mobile header size adjustment */
+@media (max-width: 768px) {
+  .mobile-header-smaller h1 {
+    font-size: var(--text-2xl);
+  }
+  .mobile-header-smaller h2 {
+    font-size: var(--text-xl);
+  }
+  .mobile-header-smaller h3 {
+    font-size: var(--text-lg);
+  }
+}
+
 .text-primary { color: var(--text-primary); }
 .text-secondary { color: var(--text-secondary); }
 .text-muted { color: var(--text-muted); }

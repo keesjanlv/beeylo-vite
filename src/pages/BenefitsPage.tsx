@@ -145,7 +145,7 @@ export const BenefitsPage: FC<BenefitsPageProps> = () => {
                           />
                         ))}
                       </div>
-                      <Typography variant="h2" className="feature-title text-center-mobile-left-desktop">{currentFeatureData.title}</Typography>
+                      <Typography variant="h3" className="feature-title text-center-mobile-left-desktop">{currentFeatureData.title}</Typography>
                       <Typography variant="body" color="secondary" className="feature-description text-center-mobile-left-desktop">{currentFeatureData.description}</Typography>
                     </Stack>
                     <div className="feature-image">

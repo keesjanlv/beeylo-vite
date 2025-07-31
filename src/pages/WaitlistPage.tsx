@@ -246,7 +246,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
   return (
     <div className="page-container">
       <div className="page-content layout-scroll">
-        <Container size="md">
+        <Container size="lg">
           <Stack spacing={8}>
             {/* Welcome Content - Outside Card */}
             <Stack spacing={4}>
@@ -290,7 +290,9 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
             </div>
 
             {/* Dynamic Content */}
-            {renderContent()}
+            <div className="waitlist-content-wrapper">
+              {renderContent()}
+            </div>
             </Stack>
           </Container>
       </div>

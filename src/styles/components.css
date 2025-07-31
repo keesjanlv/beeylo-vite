@@ -2314,6 +2314,7 @@
   .page-content {
     padding-left: 12px;
     padding-right: 12px;
+    min-width: 80%;
   }
   
   .thank-you-page .surface-card {
@@ -3076,7 +3077,7 @@
   
   .feature-img {
     width: 100%;
-    height: 100%;
+    max-height: 80%;
   }
 }
 
@@ -3742,5 +3743,48 @@
   
   .task-points {
     font-size: 0.8rem;
+  }
+}
+
+/* === WAITLIST PAGE SPECIFIC STYLING === */
+/* Ensure consistent width across all tab content */
+.waitlist-content-wrapper {
+  width: 100%;
+}
+
+/* Medium screens: responsive sizing to prevent overflow */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .waitlist-content-wrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  /* Allow social cards to be responsive on medium screens */
+  .social-cards-container {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  /* Allow button grid to be responsive on medium screens */
+  .grid.grid-cols-2.gap-4 {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Large screens: set minimum widths to prevent layout shifts */
+@media (min-width: 1024px) {
+  .waitlist-content-wrapper {
+    min-width: 600px; /* Minimum width to prevent content jumping */
+  }
+  
+  /* Ensure social cards container maintains consistent width */
+  .social-cards-container {
+    min-width: 500px;
+  }
+  
+  /* Ensure the button grid maintains consistent width */
+  .grid.grid-cols-2.gap-4 {
+    min-width: 400px;
   }
 }

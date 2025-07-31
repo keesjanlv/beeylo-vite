@@ -107,7 +107,7 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
 
               {/* Social Sharing */}
               <div className="text-center">
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="social-cards-container">
                   <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-card" aria-label="Follow us on Instagram">
                     <InstagramIcon />
                     <span className="platform-name">instagram</span>
