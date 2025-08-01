@@ -13,7 +13,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
   const [activeContent, setActiveContent] = useState<string>('position') // Default to position tab
   
   // Mock data - in real app, this would come from API
-  const totalWaitlist = 15847
+  // const totalWaitlist = 15847  // Commented out as it's not used
   const userPosition = 1234
 
   const handleContentToggle = (content: string) => {
