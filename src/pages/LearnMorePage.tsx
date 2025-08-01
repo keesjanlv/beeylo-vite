@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import type { TabType } from '../types'
 import { NumberedButton, Container, Stack, Card, CardContent, Typography, Button } from '../components/ui'
-import { AnimatedInbox } from '../components'
+import { AnimatedInbox, AnimatedEmailList } from '../components'
+import { motion, AnimatePresence } from 'framer-motion'
 import inboxOverloadImg from '../assets/inboxoverload.webp'
 import homeDefImg from '../assets/homedef.webp'
 import inbox5Img from '../assets/inbox5.webp'
@@ -25,7 +26,8 @@ const slides = [
     id: 2,
     title: "But needs just 5 of them",
     description: "Beeylo only shows you the 10% that actually matters. The rest? Gone.",
-    image: inbox5Img
+    image: inbox5Img,
+    useEmailAnimation: true
   },
   {
     id: 3,
@@ -35,7 +37,7 @@ const slides = [
   },
   {
     id: 4,
-    title: "One order, and your inbox explodes with 10 emails",
+    title: "Nowadays one order turns into 10 different mails",
     description: "Every purchase becomes a flood of confirmations, shipping updates, and promotional follow-ups.",
     image: orderSpamImg
   },
@@ -127,7 +129,17 @@ export const LearnMorePage: FC<LearnMorePageProps> = ({ onTabChange }) => {
                           />
                         ))}
                       </div>
-                      <Typography variant="h3" className="feature-title text-center-mobile-left-desktop">{currentSlideData.title}</Typography>
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={`title-${currentSlide}`}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -20 }}
+                          transition={{ duration: 0.225, ease: [0.4, 0.0, 0.2, 1] }}
+                        >
+                          <Typography variant="h3" className="feature-title text-center-mobile-left-desktop">{currentSlideData.title}</Typography>
+                        </motion.div>
+                      </AnimatePresence>
                       {/* Show button on desktop only for last slide */}
                       {currentSlide === 4 && (
                         <Button 
@@ -140,18 +152,34 @@ export const LearnMorePage: FC<LearnMorePageProps> = ({ onTabChange }) => {
                       )}
                     </Stack>
                     <div className="feature-image">
-                      {currentSlideData.useAnimation ? (
-                        <AnimatedInbox 
-                          autoStart={currentSlide === 0} 
-                          className="feature-animation" 
-                        />
-                      ) : (
-                        <img 
-                          src={currentSlideData.image} 
-                          alt={currentSlideData.title} 
-                          className="feature-img" 
-                        />
-                      )}
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={`image-${currentSlide}`}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -20 }}
+                          transition={{ duration: 0.225, ease: [0.4, 0.0, 0.2, 1] }}
+                          style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        >
+                          {currentSlideData.useAnimation ? (
+                            <AnimatedInbox 
+                              autoStart={currentSlide === 0} 
+                              className="feature-animation" 
+                            />
+                          ) : currentSlideData.useEmailAnimation ? (
+                            <AnimatedEmailList 
+                              autoStart={currentSlide === 1} 
+                              className="feature-animation" 
+                            />
+                          ) : (
+                            <img 
+                              src={currentSlideData.image} 
+                              alt={currentSlideData.title} 
+                              className="feature-img" 
+                            />
+                          )}
+                        </motion.div>
+                      </AnimatePresence>
                     </div>
                     {/* Show button on mobile under the image for last slide */}
                     {currentSlide === 4 && (

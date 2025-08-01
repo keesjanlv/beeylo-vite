@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import { NumberedButton, Container, Stack, Card, CardContent, Typography } from '../components/ui'
+import { motion, AnimatePresence } from 'framer-motion'
 import ticketOrderImg from '../assets/ticketorder.webp'
 import brandsDefImg from '../assets/brandsdef.webp'
 import ticketButtonsImg from '../assets/ticketbuttons.webp'
@@ -145,15 +146,46 @@ export const BenefitsPage: FC<BenefitsPageProps> = () => {
                           />
                         ))}
                       </div>
-                      <Typography variant="h3" className="feature-title text-center-mobile-left-desktop">{currentFeatureData.title}</Typography>
-                      <Typography variant="body" color="secondary" className="feature-description text-center-mobile-left-desktop" dangerouslySetInnerHTML={{ __html: currentFeatureData.description }} />
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={`title-${currentFeature}`}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -20 }}
+                          transition={{ duration: 0.225, ease: [0.4, 0.0, 0.2, 1] }}
+                        >
+                          <Typography variant="h3" className="feature-title text-center-mobile-left-desktop">{currentFeatureData.title}</Typography>
+                        </motion.div>
+                      </AnimatePresence>
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={`description-${currentFeature}`}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -20 }}
+                          transition={{ duration: 0.225, ease: [0.4, 0.0, 0.2, 1], delay: 0.05 }}
+                        >
+                          <Typography variant="body" color="secondary" className="feature-description text-center-mobile-left-desktop" dangerouslySetInnerHTML={{ __html: currentFeatureData.description }} />
+                        </motion.div>
+                      </AnimatePresence>
                     </Stack>
                     <div className="feature-image">
-                      <img 
-                        src={currentFeatureData.image} 
-                        alt={currentFeatureData.title} 
-                        className="feature-img" 
-                      />
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={`image-${currentFeature}`}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -20 }}
+                          transition={{ duration: 0.225, ease: [0.4, 0.0, 0.2, 1] }}
+                          style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        >
+                          <img 
+                            src={currentFeatureData.image} 
+                            alt={currentFeatureData.title} 
+                            className="feature-img" 
+                          />
+                        </motion.div>
+                      </AnimatePresence>
                     </div>
                   </Stack>
                 </CardContent>
