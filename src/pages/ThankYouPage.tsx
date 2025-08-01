@@ -122,7 +122,7 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
                   </a>
                   <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="social-card" aria-label="Follow us on X">
                     <TwitterIcon />
-                    <span className="platform-name">x (twitter)</span>
+                    <span className="platform-name">x</span>
                   </a>
                 </div>
               </div>

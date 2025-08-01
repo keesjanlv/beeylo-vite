@@ -27,20 +27,20 @@ const slides = [
     description: "Beeylo only shows you the 10% that actually matters. The rest? Gone.",
     image: inbox5Img
   },
-    {
-    id: 2,
+  {
+    id: 3,
     title: "Beeylo only shows you the 10% that matters",
     description: "Beeylo only shows you the 10% that actually matters. The rest? Gone.",
     image: homeDefImg
   },
   {
-    id: 3,
+    id: 4,
     title: "One order, and your inbox explodes with 10 emails",
     description: "Every purchase becomes a flood of confirmations, shipping updates, and promotional follow-ups.",
     image: orderSpamImg
   },
   {
-    id: 4,
+    id: 5,
     title: "With Beeylo, one order is one overview",
     description: "Every update is added to that same view. No more hunting through dozens of emails.",
     image: ticketOrderImg
@@ -128,11 +128,12 @@ export const LearnMorePage: FC<LearnMorePageProps> = ({ onTabChange }) => {
                         ))}
                       </div>
                       <Typography variant="h3" className="feature-title text-center-mobile-left-desktop">{currentSlideData.title}</Typography>
+                      {/* Show button on desktop only for last slide */}
                       {currentSlide === 4 && (
                         <Button 
                           variant="primary"
                           onClick={() => onTabChange('benefits')}
-                          className="buttonv2"
+                          className="buttonv2 learn-more-button-desktop"
                         >
                           See benefits
                         </Button>
@@ -152,6 +153,18 @@ export const LearnMorePage: FC<LearnMorePageProps> = ({ onTabChange }) => {
                         />
                       )}
                     </div>
+                    {/* Show button on mobile under the image for last slide */}
+                    {currentSlide === 4 && (
+                      <div className="learn-more-button-mobile">
+                        <Button 
+                          variant="primary"
+                          onClick={() => onTabChange('benefits')}
+                          className="buttonv2"
+                        >
+                          See benefits
+                        </Button>
+                      </div>
+                    )}
                   </Stack>
                 </CardContent>
               </Card>

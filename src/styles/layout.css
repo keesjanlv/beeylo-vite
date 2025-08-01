@@ -340,7 +340,7 @@
 /* === PAGE CONTENT UTILITIES === */
 .page-content {
   padding: var(--space-6);
-  max-width: 80%;
+  max-width: 90%;
   min-width: 70%;
   margin: 0 auto;
   justify-content: center;

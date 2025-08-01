@@ -350,6 +350,7 @@
 
 .input::placeholder {
   color: var(--input-placeholder);
+  font-size: var(--text-xs);
 }
 
 .input:disabled {
@@ -2733,6 +2734,7 @@
 
 .home-input::placeholder {
   color: var(--text-muted);
+  font-size: var(--text-xs);
 }
 
 .home-input:focus {
@@ -2841,16 +2843,26 @@
     display: flex;
   }
   
+  .home-mobile-logo img {
+    width: 48px;
+    height: 48px;
+    max-width: 48px;
+    max-height: 48px;
+  }
+  
   .home-hero-image {
-    max-height: 300px;
+    max-height: 250px;
+    max-width: 100%;
+    width: 100%;
+    object-fit: contain;
   }
   
   .home-title-main {
-    font-size: var(--text-3xl);
+    font-size: var(--text-2xl);
   }
   
   .home-title-sub {
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
   }
   
   .home-form-actions {
@@ -2869,6 +2881,51 @@
   
   .home-actions .btn {
     width: 100%;
+  }
+}
+
+/* Extra small mobile screens (like 413px width) */
+@media (max-width: 480px) {
+  .home-mobile-logo img {
+    width: 40px;
+    height: 40px;
+    max-width: 40px;
+    max-height: 40px;
+  }
+  
+  .home-hero-image {
+    max-height: 200px;
+    max-width: 95%;
+    margin: 0 auto;
+  }
+  
+  .home-title-main {
+    font-size: var(--text-xl);
+    line-height: 1.3;
+  }
+  
+  .home-title-sub {
+    font-size: var(--text-base);
+    line-height: 1.4;
+  }
+  
+  .home-subtitle {
+    font-size: var(--text-base);
+    line-height: 1.4;
+  }
+  
+  /* Reduce spacing on very small screens */
+  .home-content-wrapper {
+    gap: var(--space-6);
+  }
+  
+  .home-text-section {
+    padding: 0 var(--space-2);
+  }
+  
+  .home-form-section {
+    margin-top: var(--space-6);
+    padding: 0 var(--space-2);
   }
 }
 
@@ -3765,5 +3822,32 @@
   /* Ensure the button grid maintains consistent width */
   .grid.grid-cols-2.gap-4 {
     min-width: 400px;
+  }
+}
+
+/* === LEARN MORE PAGE BUTTON POSITIONING === */
+/* Control button visibility for mobile vs desktop */
+
+/* Mobile: hide desktop button, show mobile button */
+@media (max-width: 768px) {
+  .learn-more-button-desktop {
+    display: none !important;
+  }
+  
+  .learn-more-button-mobile {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-4);
+  }
+}
+
+/* Desktop: show desktop button, hide mobile button */
+@media (min-width: 769px) {
+  .learn-more-button-desktop {
+    display: inline-flex !important;
+  }
+  
+  .learn-more-button-mobile {
+    display: none !important;
   }
 }

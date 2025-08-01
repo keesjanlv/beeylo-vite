@@ -123,7 +123,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
           <Stack spacing={6}>
             {/* Referral Link Row */}
             <div>
-              <Typography variant="h3" className="mb-4 text-center">
+              <Typography variant="h5" className="mb-4 text-center">
                 Invite Friends
               </Typography>
               <div className="flex items-center gap-2 justify-center">
@@ -143,7 +143,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
             {/* Social Sharing Row */}
             <div>
               <div className="social-section-header">
-                <Typography variant="h5" as="h3">
+                <Typography variant="h5">
                   Share on Social Media
                 </Typography>
                 <span className="social-section-bonus">+1% each</span>
@@ -152,12 +152,12 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
                 <button 
                   onClick={() => window.open(`https://twitter.com/intent/tweet?text=Join me on the Beeylo waitlist!&url=${encodeURIComponent(shareUrl)}`, '_blank')}
                   className="social-card"
-                  aria-label="Share on X (Twitter)"
+                  aria-label="Share on X"
                 >
                   <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                   </svg>
-                  <span className="platform-name">x (twitter)</span>
+                  <span className="platform-name">x</span>
                 </button>
                 
                 <button 
@@ -198,7 +198,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
             {/* Follow Us Row */}
             <div>
               <div className="social-section-header">
-                <Typography variant="h5" as="h3">
+                <Typography variant="h5">
                   Follow Us for Extra Points
                 </Typography>
                 <span className="social-section-bonus">+5% each</span>
@@ -231,7 +231,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
                     <path d="M4 4l11.733 16h4.267l-11.733 -16z"/>
                     <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/>
                   </svg>
-                  <span className="platform-name">x (twitter)</span>
+                  <span className="platform-name">x</span>
                 </a>
               </div>
             </div>

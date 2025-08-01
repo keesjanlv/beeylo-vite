@@ -146,7 +146,7 @@ export const BenefitsPage: FC<BenefitsPageProps> = () => {
                         ))}
                       </div>
                       <Typography variant="h3" className="feature-title text-center-mobile-left-desktop">{currentFeatureData.title}</Typography>
-                      <Typography variant="body" color="secondary" className="feature-description text-center-mobile-left-desktop" dangerouslySetInnerHTML={{ __html: currentFeatureData.description }}>{''}</Typography>
+                      <Typography variant="body" color="secondary" className="feature-description text-center-mobile-left-desktop" dangerouslySetInnerHTML={{ __html: currentFeatureData.description }} />
                     </Stack>
                     <div className="feature-image">
                       <img 

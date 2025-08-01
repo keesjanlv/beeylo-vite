@@ -6,7 +6,7 @@ export interface TypographyProps extends HTMLAttributes<HTMLElement> {
   align?: 'left' | 'center' | 'right' | 'justify'
   weight?: 'normal' | 'medium' | 'semibold' | 'bold'
   as?: ElementType
-  children: ReactNode
+  children?: ReactNode
   className?: string
 }
 
