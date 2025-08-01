@@ -28,7 +28,7 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
     <div className="page-container smart-container">
       <div className="page-content layout-fit thankyou-adaptive">
         <div className="content-center-scroll adaptive-content">
-          <Container size="xl">
+          <Container size="xl" padding={false}>
             <Stack spacing={6} className="thank-you-content items-center text-center">
               {/* Close Button */}
               <div className="flex justify-center">
