@@ -1,0 +1,599 @@
+/* Adaptive Content Scaling System */
+/* Automatically scales content to fit viewport constraints on any device */
+
+/* === VIEWPORT DETECTION === */
+/* Detect constrained height scenarios */
+
+/* Very wide but short screens (ultrawide monitors, some laptops) */
+@media (min-aspect-ratio: 16/9) and (max-height: 600px) {
+  :root {
+    --scale-factor: 0.85;
+    --spacing-scale: 0.8;
+    --font-scale: 0.9;
+  }
+}
+
+/* Extremely wide but short screens */
+@media (min-aspect-ratio: 21/9) and (max-height: 700px) {
+  :root {
+    --scale-factor: 0.75;
+    --spacing-scale: 0.7;
+    --font-scale: 0.85;
+  }
+}
+
+/* Tablet landscape with limited height */
+@media (min-width: 768px) and (max-width: 1024px) and (max-height: 600px) {
+  :root {
+    --scale-factor: 0.8;
+    --spacing-scale: 0.75;
+    --font-scale: 0.9;
+  }
+}
+
+/* Very short screens regardless of width */
+@media (max-height: 500px) {
+  :root {
+    --scale-factor: 0.7;
+    --spacing-scale: 0.6;
+    --font-scale: 0.8;
+  }
+}
+
+/* Default scaling values */
+:root {
+  --scale-factor: 1;
+  --spacing-scale: 1;
+  --font-scale: 1;
+}
+
+/* === ADAPTIVE SCALING CLASSES === */
+
+/* Apply scaling to page containers */
+.adaptive-scale {
+  transform: scale(var(--scale-factor));
+  transform-origin: center center;
+  transition: transform 0.3s ease;
+}
+
+/* Apply to content that should scale */
+.adaptive-content {
+  /* Scale spacing */
+  --space-1: calc(0.25rem * var(--spacing-scale));
+  --space-2: calc(0.5rem * var(--spacing-scale));
+  --space-3: calc(0.75rem * var(--spacing-scale));
+  --space-4: calc(1rem * var(--spacing-scale));
+  --space-5: calc(1.25rem * var(--spacing-scale));
+  --space-6: calc(1.5rem * var(--spacing-scale));
+  --space-8: calc(2rem * var(--spacing-scale));
+  --space-10: calc(2.5rem * var(--spacing-scale));
+  --space-12: calc(3rem * var(--spacing-scale));
+  --space-16: calc(4rem * var(--spacing-scale));
+  --space-20: calc(5rem * var(--spacing-scale));
+  --space-24: calc(6rem * var(--spacing-scale));
+  
+  /* Scale typography */
+  --text-xs: calc(0.75rem * var(--font-scale));
+  --text-sm: calc(0.875rem * var(--font-scale));
+  --text-base: calc(1rem * var(--font-scale));
+  --text-lg: calc(1.125rem * var(--font-scale));
+  --text-xl: calc(1.25rem * var(--font-scale));
+  --text-2xl: calc(1.5rem * var(--font-scale));
+  --text-3xl: calc(1.875rem * var(--font-scale));
+  --text-4xl: calc(2.25rem * var(--font-scale));
+  --text-5xl: calc(3rem * var(--font-scale));
+}
+
+/* === SMART CONTAINER SCALING === */
+
+/* Scale containers intelligently based on content */
+.smart-container {
+  container-type: size;
+  overflow: hidden;
+}
+
+/* Ensure smart containers with adaptive content never overflow */
+.smart-container:has(.waitlist-adaptive),
+.smart-container:has(.home-adaptive),
+.smart-container:has(.giveaway-adaptive),
+.smart-container:has(.about-adaptive),
+.smart-container:has(.thankyou-adaptive),
+.smart-container:has(.menu-adaptive) {
+  overflow: hidden !important;
+}
+
+/* When container height is constrained, apply scaling */
+@container (max-height: 600px) {
+  .smart-container .adaptive-content {
+    --spacing-scale: 0.8;
+    --font-scale: 0.9;
+  }
+}
+
+@container (max-height: 500px) {
+  .smart-container .adaptive-content {
+    --spacing-scale: 0.7;
+    --font-scale: 0.85;
+  }
+}
+
+@container (max-height: 400px) {
+  .smart-container .adaptive-content {
+    --spacing-scale: 0.6;
+    --font-scale: 0.8;
+  }
+}
+
+/* === PAGE-SPECIFIC SCALING === */
+
+/* Page-specific scaling */
+.home-adaptive {
+  --page-scale: var(--scale-factor);
+  transform: scale(var(--page-scale));
+  transform-origin: center center;
+  /* Ensure content fits in available height */
+  overflow: hidden;
+  /* Center content vertically when scaled */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.giveaway-adaptive {
+  --page-scale: var(--scale-factor);
+  transform: scale(var(--page-scale));
+  transform-origin: center center;
+  /* Center content vertically when scaled */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.waitlist-adaptive {
+  --page-scale: var(--scale-factor);
+  transform: scale(var(--page-scale));
+  transform-origin: center center;
+  /* Override layout-scroll overflow when scaling is active */
+  overflow: hidden !important;
+  /* Center content vertically when scaled */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-adaptive {
+  --page-scale: var(--scale-factor);
+  transform: scale(var(--page-scale));
+  transform-origin: center center;
+  /* Override any overflow when scaling is active */
+  overflow: hidden !important;
+  /* Center content vertically when scaled */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.thankyou-adaptive {
+  --page-scale: var(--scale-factor);
+  transform: scale(var(--page-scale));
+  transform-origin: center center;
+  /* Override any overflow when scaling is active */
+  overflow: hidden !important;
+  /* Center content vertically when scaled */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-adaptive {
+  --page-scale: var(--scale-factor);
+  transform: scale(var(--page-scale));
+  transform-origin: center center;
+  /* Override any overflow when scaling is active */
+  overflow: hidden !important;
+  /* Center content vertically when scaled */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Scale home page elements */
+@media (max-height: 700px) {
+  .home-adaptive .home-content-wrapper {
+    gap: calc(var(--space-8) * var(--spacing-scale));
+  }
+  
+  .home-adaptive .home-hero-image {
+    max-height: calc(50vh * var(--scale-factor));
+  }
+  
+  .home-adaptive .home-title-main {
+    font-size: calc(var(--text-4xl) * var(--font-scale)) !important;
+  }
+  
+  .home-adaptive .home-title-sub {
+    font-size: calc(var(--text-2xl) * var(--font-scale)) !important;
+  }
+  
+  .home-adaptive .home-actions {
+    gap: calc(var(--space-4) * var(--spacing-scale));
+  }
+}
+
+/* Giveaway page scaling */
+@media (max-height: 600px) {
+  .giveaway-content {
+    padding: calc(var(--space-4) * var(--spacing-scale));
+  }
+  
+  .modal-content {
+    max-height: calc(80vh * var(--scale-factor));
+  }
+}
+
+/* Waitlist page scaling */
+@media (max-height: 700px) and (min-width: 1024px) {
+  .waitlist-adaptive {
+    --page-scale: 0.9;
+  }
+  
+  .waitlist-content-wrapper {
+    transform: scale(0.95);
+    transform-origin: top center;
+  }
+}
+
+@media (max-height: 600px) {
+  .waitlist-adaptive {
+    --page-scale: 0.85;
+  }
+  
+  .waitlist-content-wrapper {
+    transform: scale(0.9);
+    transform-origin: top center;
+  }
+  
+  /* Scale down button grid */
+  .grid.grid-cols-2.gap-4 {
+    gap: calc(var(--space-2) * var(--spacing-scale));
+  }
+  
+  /* Scale down social cards */
+  .social-cards-container {
+    transform: scale(0.9);
+    transform-origin: center;
+  }
+}
+
+@media (max-height: 500px) {
+  .waitlist-adaptive {
+    --page-scale: 0.8;
+  }
+  
+  .waitlist-content-wrapper {
+    transform: scale(0.85);
+    transform-origin: top center;
+  }
+}
+
+/* Wide but short screens (tablets in landscape, wide laptops with short height) */
+@media (min-aspect-ratio: 16/9) and (max-height: 600px) {
+  .waitlist-adaptive {
+    --page-scale: 0.75;
+  }
+  
+  .waitlist-content-wrapper {
+    transform: scale(0.8);
+    transform-origin: top center;
+  }
+}
+
+/* Very wide, short screens - aggressive scaling */
+@media (min-aspect-ratio: 2/1) and (max-height: 500px) {
+  .waitlist-adaptive {
+    --page-scale: 0.65;
+    overflow: hidden !important;
+  }
+  
+  .waitlist-content-wrapper {
+    transform: scale(0.7);
+    transform-origin: top center;
+  }
+  
+  /* Compact spacing for very constrained heights */
+  .adaptive-content {
+    --space-8: calc(1rem * var(--spacing-scale));
+    --space-6: calc(0.75rem * var(--spacing-scale));
+    --space-4: calc(0.5rem * var(--spacing-scale));
+  }
+}
+
+/* Ultra-wide screens with very short height */
+@media (min-width: 1400px) and (max-height: 450px) {
+  .waitlist-adaptive {
+    --page-scale: 0.6;
+  }
+  
+  .waitlist-content-wrapper {
+    transform: scale(0.65);
+    transform-origin: top center;
+  }
+}
+
+/* About page scaling */
+@media (max-height: 700px) and (min-width: 1024px) {
+  .about-adaptive {
+    --page-scale: 0.9;
+  }
+  
+  .about-header-group {
+    margin-bottom: calc(var(--space-6) * var(--spacing-scale));
+  }
+  
+  .quote-card {
+    padding: calc(var(--space-4) * var(--spacing-scale));
+  }
+}
+
+@media (max-height: 600px) {
+  .about-adaptive {
+    --page-scale: 0.85;
+  }
+  
+  .about-header-group {
+    margin-bottom: calc(var(--space-4) * var(--spacing-scale));
+  }
+  
+  .quote-card {
+    padding: calc(var(--space-3) * var(--spacing-scale));
+  }
+  
+  /* Scale down grid spacing */
+  .grid.desktop\\:grid-cols-2.gap-8 {
+    gap: calc(var(--space-4) * var(--spacing-scale));
+  }
+}
+
+@media (max-height: 500px) {
+  .about-adaptive {
+    --page-scale: 0.8;
+  }
+  
+  .about-header-group {
+    margin-bottom: calc(var(--space-3) * var(--spacing-scale));
+  }
+  
+  .quote-card {
+    padding: calc(var(--space-2) * var(--spacing-scale));
+  }
+}
+
+/* Wide but short screens for About page */
+@media (min-aspect-ratio: 16/9) and (max-height: 600px) {
+  .about-adaptive {
+    --page-scale: 0.75;
+  }
+  
+  .about-header-group {
+    margin-bottom: calc(var(--space-3) * var(--spacing-scale));
+  }
+}
+
+/* Very wide, short screens - aggressive scaling for About page */
+@media (min-aspect-ratio: 2/1) and (max-height: 500px) {
+  .about-adaptive {
+    --page-scale: 0.65;
+    overflow: hidden !important;
+  }
+  
+  .about-header-group {
+    margin-bottom: calc(var(--space-2) * var(--spacing-scale));
+  }
+  
+  /* Compact spacing for very constrained heights */
+  .about-adaptive .adaptive-content {
+    --space-8: calc(1rem * var(--spacing-scale));
+    --space-6: calc(0.75rem * var(--spacing-scale));
+    --space-4: calc(0.5rem * var(--spacing-scale));
+  }
+}
+
+/* Ultra-wide screens with very short height for About page */
+@media (min-width: 1400px) and (max-height: 450px) {
+  .about-adaptive {
+    --page-scale: 0.6;
+  }
+  
+  .about-header-group {
+    margin-bottom: calc(var(--space-2) * var(--spacing-scale));
+  }
+}
+
+/* Thank You page scaling */
+@media (max-height: 700px) and (min-width: 1024px) {
+  .thankyou-adaptive {
+    --page-scale: 0.9;
+  }
+  
+  .thank-you-content {
+    gap: calc(var(--space-4) * var(--spacing-scale));
+  }
+}
+
+@media (max-height: 600px) {
+  .thankyou-adaptive {
+    --page-scale: 0.85;
+  }
+  
+  .thank-you-content {
+    gap: calc(var(--space-3) * var(--spacing-scale));
+  }
+  
+  /* Scale down social cards */
+  .social-cards-container {
+    transform: scale(0.9);
+    transform-origin: center;
+  }
+}
+
+@media (max-height: 500px) {
+  .thankyou-adaptive {
+    --page-scale: 0.8;
+  }
+  
+  .thank-you-content {
+    gap: calc(var(--space-2) * var(--spacing-scale));
+  }
+}
+
+/* Wide but short screens for Thank You page */
+@media (min-aspect-ratio: 16/9) and (max-height: 600px) {
+  .thankyou-adaptive {
+    --page-scale: 0.75;
+  }
+}
+
+/* Very wide, short screens - aggressive scaling for Thank You page */
+@media (min-aspect-ratio: 2/1) and (max-height: 500px) {
+  .thankyou-adaptive {
+    --page-scale: 0.65;
+    overflow: hidden !important;
+  }
+}
+
+/* Ultra-wide screens with very short height for Thank You page */
+@media (min-width: 1400px) and (max-height: 450px) {
+  .thankyou-adaptive {
+    --page-scale: 0.6;
+  }
+}
+
+/* Menu page scaling */
+@media (max-height: 700px) and (min-width: 1024px) {
+  .menu-adaptive {
+    --page-scale: 0.9;
+  }
+  
+  .menu-items-grid {
+    gap: calc(var(--space-3) * var(--spacing-scale));
+  }
+}
+
+@media (max-height: 600px) {
+  .menu-adaptive {
+    --page-scale: 0.85;
+  }
+  
+  .menu-items-grid {
+    gap: calc(var(--space-2) * var(--spacing-scale));
+  }
+  
+  /* Scale down menu cards */
+  .menu-adaptive .menu-card {
+    padding: calc(var(--space-3) * var(--spacing-scale));
+  }
+}
+
+@media (max-height: 500px) {
+  .menu-adaptive {
+    --page-scale: 0.8;
+  }
+  
+  .menu-items-grid {
+    gap: calc(var(--space-1) * var(--spacing-scale));
+  }
+  
+  .menu-adaptive .menu-card {
+    padding: calc(var(--space-2) * var(--spacing-scale));
+  }
+}
+
+/* Wide but short screens for Menu page */
+@media (min-aspect-ratio: 16/9) and (max-height: 600px) {
+  .menu-adaptive {
+    --page-scale: 0.75;
+  }
+}
+
+/* Very wide, short screens - aggressive scaling for Menu page */
+@media (min-aspect-ratio: 2/1) and (max-height: 500px) {
+  .menu-adaptive {
+    --page-scale: 0.65;
+    overflow: hidden !important;
+  }
+}
+
+/* Ultra-wide screens with very short height for Menu page */
+@media (min-width: 1400px) and (max-height: 450px) {
+  .menu-adaptive {
+    --page-scale: 0.6;
+  }
+}
+
+/* === RESPONSIVE SCALING ADJUSTMENTS === */
+
+/* Mobile devices - less aggressive scaling */
+@media (max-width: 768px) {
+  :root {
+    --scale-factor: max(0.9, var(--scale-factor, 1));
+    --font-scale: max(0.95, var(--font-scale, 1));
+  }
+}
+
+/* Desktop - more aggressive scaling when needed */
+@media (min-width: 769px) {
+  /* Allow more scaling on desktop */
+  .adaptive-scale {
+    transform: scale(var(--scale-factor));
+  }
+}
+
+/* === UTILITY CLASSES === */
+
+/* Force content to fit screen height */
+.fit-screen-height {
+  max-height: 100vh;
+  max-height: calc(100 * var(--vh));
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scale content proportionally */
+.proportional-scale {
+  transform: scale(var(--scale-factor));
+  transform-origin: center center;
+}
+
+/* Maintain aspect ratio while scaling */
+.aspect-scale {
+  width: 100%;
+  height: auto;
+  max-height: calc(60vh * var(--scale-factor));
+  object-fit: contain;
+}
+
+/* === ACCESSIBILITY === */
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .adaptive-scale,
+  .proportional-scale {
+    transition: none;
+  }
+}
+
+/* Ensure minimum readable sizes */
+@media (max-height: 400px) {
+  .adaptive-content {
+    --text-xs: max(0.7rem, calc(0.75rem * var(--font-scale)));
+    --text-sm: max(0.8rem, calc(0.875rem * var(--font-scale)));
+    --text-base: max(0.9rem, calc(1rem * var(--font-scale)));
+  }
+}

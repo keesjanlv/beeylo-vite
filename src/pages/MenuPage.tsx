@@ -22,9 +22,9 @@ export const MenuPage: FC<MenuPageProps> = ({
   onLogout, 
   isLoggedIn = false 
 }) => (
-  <div className="page-container">
-    <div className="page-content content-scrollable viewport-constrained">
-      <div className="layout-scroll">
+  <div className="page-container smart-container">
+    <div className="page-content layout-fit menu-adaptive">
+      <div className="content-center-scroll adaptive-content">
         <Container size="lg">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 menu-items-grid">
               {/* Giveaway Campaign */}

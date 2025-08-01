@@ -28,19 +28,21 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   }
 
   if (isLoggedIn) {
-    // Logged-in view - Clean vertical centering
+    // Logged-in view - Clean vertical centering with adaptive scaling
     return (
-      <div className="page-container">
-        <div className="page-content content-center-screen">
-          <div className="container max-w-6xl">
+      <div className="page-container smart-container">
+        <div className="page-content content-center-screen home-adaptive">
+          <div className="container max-w-6xl adaptive-content">
             <div className="home-content-wrapper">
               {/* Text Content */}
               <div className="home-text-section">
-                <Typography variant="h1" className="home-title text-center-mobile-left-desktop">
-                  Welcome to your inbox without the noise.
-                </Typography>
-                <Typography variant="body" color="secondary" className="home-subtitle text-center-mobile-left-desktop">
-                  No spam, no ads and no useless updates. Beeylo only shows you the 10% that actually matters
+                <Typography variant="h1" className="text-center-mobile-left-desktop">
+                  <span className="home-title-main">
+                    Welcome to your inbox without the noise.
+                  </span>
+                  <span className="home-title-sub">
+                    No more spam, ads or useless updates.
+                  </span>
                 </Typography>
                 
                 <div className="home-actions">
@@ -68,7 +70,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                 <img 
                   src={tripleScreenImg} 
                   alt="Beeylo App Interface" 
-                  className="home-hero-image"
+                  className="home-hero-image aspect-scale"
                 />
               </div>
             </div>
@@ -78,20 +80,20 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     )
   }
 
-  // Non-logged-in view - Clean vertical centering
+  // Non-logged-in view - Clean vertical centering with adaptive scaling
   return (
-    <div className="page-container">
-      <div className="page-content content-center-screen">
+    <div className="page-container smart-container">
+      <div className="page-content content-center-screen home-adaptive">
         {/* Mobile logo */}
         <div className="home-mobile-logo">
           <img src={beeyloLogo} alt="Beeylo" className="w-16 h-16" />
         </div>
         
-        <div className="container max-w-6xl">
+        <div className="container max-w-6xl adaptive-content">
           <div className="home-content-wrapper">
             {/* Text and Form Content */}
             <div className="home-text-section">
-              <Typography variant="h1" className="home-title-large text-center-mobile-left-desktop">
+              <Typography variant="h1" className="text-center-mobile-left-desktop">
                 <span className="home-title-main">
                   The new free inbox
                 </span>
@@ -154,7 +156,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
               <img 
                 src={tripleScreenImg} 
                 alt="Beeylo App Interface" 
-                className="home-hero-image"
+                className="home-hero-image aspect-scale"
               />
             </div>
           </div>

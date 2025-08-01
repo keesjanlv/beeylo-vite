@@ -25,9 +25,9 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
   }
 
   return (
-    <div className="page-container">
-      <div className="page-content content-scrollable">
-        <div className="content-center-scroll">
+    <div className="page-container smart-container">
+      <div className="page-content layout-fit thankyou-adaptive">
+        <div className="content-center-scroll adaptive-content">
           <Container size="xl">
             <Stack spacing={6} className="thank-you-content items-center text-center">
               {/* Close Button */}
@@ -56,7 +56,7 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
                   <div className="stats-section-enhanced">
                     <div className="stat-item text-center">
                       <Typography variant="h1" className="stat-number text-center font-roboto font-bold text-sm">
-                        {userPosition.toLocaleString()} of {totalWaitlist.toLocaleString()}
+                        {userPosition.toLocaleString()}
                       </Typography>
                       <Typography variant="body" color="secondary" className="stat-label text-center">
                         Your Position

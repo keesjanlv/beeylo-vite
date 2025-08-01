@@ -7,6 +7,9 @@
 /* Import enhanced stats styling */
 @import './styles/stats-enhanced.css';
 
+/* Import adaptive content scaling system */
+@import './styles/adaptive-scaling.css';
+
 :root {
   font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1.5;

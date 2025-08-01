@@ -38,9 +38,9 @@ export const FAQPage: FC = () => {
   };
 
   return (
-    <div className="page-container">
+    <div className="page-container smart-container">
       <div className="page-content content-scrollable">
-        <div className="content-center-scroll">
+        <div className="content-center-scroll adaptive-content">
           <Container size="lg">
             <Stack spacing={8}>
               {/* Header */}

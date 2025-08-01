@@ -33,7 +33,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
                 <div className="stats-section-enhanced">
                   <div className="stat-item text-center">
                     <Typography variant="h1" className="stat-number text-center font-roboto font-bold text-sm">
-                      {userPosition.toLocaleString()} of {totalWaitlist.toLocaleString()}
+                      {userPosition.toLocaleString()}
                     </Typography>
                     <Typography variant="body" color="secondary" className="stat-label text-center">
                       Your Position
@@ -244,9 +244,9 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
   };
 
   return (
-    <div className="page-container">
-      <div className="page-content layout-scroll">
-        <Container size="lg">
+    <div className="page-container smart-container">
+      <div className="page-content layout-fit waitlist-adaptive">
+        <Container size="lg" className="adaptive-content">
           <Stack spacing={8}>
             {/* Welcome Content - Outside Card */}
             <Stack spacing={4}>
@@ -259,9 +259,9 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
               </Typography>
             </Stack>
 
-            {/* Action Buttons - 2x2 grid layout */}
+            {/* Action Buttons - 1x2 grid layout */}
             <div className="grid grid-cols-2 gap-4">
-              {/* First row: Position and Boost Position */}
+              {/* Position and Boost Position */}
               <Button
                 onClick={() => handleContentToggle('position')}
                 className={`buttonv2 ${activeContent === 'position' ? 'buttonv2-yellow' : ''} h-24 flex flex-col items-center justify-center w-full`}
@@ -273,19 +273,6 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
                 className={`buttonv2 ${activeContent === 'boost' ? 'buttonv2-yellow' : ''} h-24 flex flex-col items-center justify-center w-full`}
               >
                 Boost Position
-              </Button>
-              {/* Second row: How it works and Your Benefits */}
-              <Button
-                onClick={() => handleContentToggle('timeline')}
-                className={`buttonv2 ${activeContent === 'timeline' ? 'buttonv2-yellow' : ''} h-24 flex flex-col items-center justify-center w-full`}
-              >
-                How it works
-              </Button>
-              <Button
-                onClick={() => handleContentToggle('benefits')}
-                className={`buttonv2 ${activeContent === 'benefits' ? 'buttonv2-yellow' : ''} h-24 flex flex-col items-center justify-center w-full`}
-              >
-                Your Benefits
               </Button>
             </div>
 

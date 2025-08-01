@@ -6,9 +6,9 @@ import { SidebarButton } from './ui'
 
 const allTabs: Array<{ id: TabType, label: string, requiresLogin?: boolean, hiddenOnMobile?: boolean, icon?: React.ReactNode }> = [
   { id: 'home', label: 'Home', icon: <HomeIcon /> },
-  { id: 'waitlist', label: 'Waitlist', icon: <WaitlistIcon /> },
-  { id: 'about', label: 'Our Story', icon: <AboutIcon /> },
-  { id: 'faq', label: 'FAQ', icon: <FAQIcon /> }
+  { id: 'waitlist', label: 'Waitlist', requiresLogin: true, icon: <WaitlistIcon /> },
+  { id: 'about', label: 'Our Story', requiresLogin: true, icon: <AboutIcon /> },
+  { id: 'faq', label: 'FAQ', requiresLogin: true, icon: <FAQIcon /> }
 ]
 
 
@@ -18,20 +18,23 @@ interface SidebarProps extends Pick<NavigationProps, 'activeTab' | 'onTabChange'
 }
 
 export const Sidebar: FC<SidebarProps> = ({ activeTab, onTabChange, isLoggedIn = false }) => {
-  const mainTabs = allTabs.filter(tab => !tab.requiresLogin || isLoggedIn)
-
   return (
     <div className="sidebar">
       <div className="sidebar-header">
         <Logo onClick={() => onTabChange('home')} />
       </div>
       <nav className="sidebar-tabs">
-        {mainTabs.map((tab) => (
+        {allTabs.map((tab) => (
           <SidebarButton
             key={tab.id}
-            onClick={() => onTabChange(tab.id)}
+            onClick={() => {
+              if (!tab.requiresLogin || isLoggedIn) {
+                onTabChange(tab.id)
+              }
+            }}
             active={activeTab === tab.id}
             icon={tab.icon}
+            disabled={tab.requiresLogin && !isLoggedIn}
           >
             {tab.label}
           </SidebarButton>
@@ -57,9 +60,6 @@ interface TopNavigationProps extends Pick<NavigationProps, 'activeTab' | 'onTabC
 
 export const TopNavigation: FC<TopNavigationProps> = ({ activeTab, onTabChange, isLoggedIn = false }) => {
   const mainTabs = allTabs.filter(tab => {
-    // Filter out tabs that require login when not logged in
-    if (tab.requiresLogin && !isLoggedIn) return false
-    
     // Filter out tabs that are hidden on mobile (TopNavigation is used on mobile)
     if (tab.hiddenOnMobile) return false
     
@@ -75,9 +75,14 @@ export const TopNavigation: FC<TopNavigationProps> = ({ activeTab, onTabChange, 
         {mainTabs.map((tab) => (
           <SidebarButton
             key={tab.id}
-            onClick={() => onTabChange(tab.id)}
+            onClick={() => {
+              if (!tab.requiresLogin || isLoggedIn) {
+                onTabChange(tab.id)
+              }
+            }}
             active={activeTab === tab.id}
             className="top-nav-button"
+            disabled={tab.requiresLogin && !isLoggedIn}
           >
             {tab.label}
           </SidebarButton>

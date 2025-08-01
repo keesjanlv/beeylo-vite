@@ -256,8 +256,8 @@ export const GiveawayPage: FC<GiveawayPageProps> = ({ onTabChange }) => {
   }
 
   return (
-    <div className="page-content giveaway-page-new">
-      <Container size="lg">
+    <div className="page-content giveaway-page-new smart-container giveaway-adaptive">
+      <Container size="lg" className="adaptive-content">
         <Stack spacing={3}>
           {/* Header */}
           <div className="text-center">

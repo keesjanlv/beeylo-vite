@@ -3,9 +3,9 @@ import { Card, CardContent, Container, Stack, Typography } from '../components/u
 import { PageBadge } from '../components'
 
 export const AboutPage: FC = () => (
-  <div className="page-container">
-    <div className="page-content content-scrollable">
-      <div className="content-center-scroll">
+  <div className="page-container smart-container">
+    <div className="page-content layout-fit about-adaptive">
+      <div className="content-center-scroll adaptive-content">
         <Container size="lg">
           <Stack spacing={8}>
             <div className="about-header-group">

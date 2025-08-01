@@ -226,6 +226,11 @@ const AppContent: FC = () => {
               duration: 0.225, /* 25% faster: 0.3 * 0.75 = 0.225 */
               ease: [0.4, 0.0, 0.2, 1]
             }}
+            style={{
+              willChange: 'transform, opacity',
+              backfaceVisibility: 'hidden',
+              transform: 'translate3d(0, 0, 0)' // Force hardware acceleration
+            }}
           >
             {renderPage()}
           </motion.div>

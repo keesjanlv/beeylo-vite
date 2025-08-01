@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import type { TabType } from '../types'
 import { NumberedButton, Container, Stack, Card, CardContent, Typography, Button } from '../components/ui'
+import { AnimatedInbox } from '../components'
 import inboxOverloadImg from '../assets/inboxoverload.webp'
 import homeDefImg from '../assets/homedef.webp'
+import inbox5Img from '../assets/inbox5.webp'
 import ticketOrderImg from '../assets/ticketorder.webp'
 import orderSpamImg from '../assets/orderspam.webp'
 
@@ -14,25 +16,32 @@ interface LearnMorePageProps {
 const slides = [
   {
     id: 1,
-    title: "You get 40+ emails a day — but only 4 actually matter.",
+    title: "The average person receives 50 emails a day",
     description: "You get 40+ emails a day — but only 4 actually matter. And they get lost in the noise.",
-    image: inboxOverloadImg
+    image: inboxOverloadImg,
+    useAnimation: true
   },
   {
     id: 2,
-    title: "You order one thing... and your inbox explodes with 10 separate emails.",
-    description: "Every purchase becomes a flood of confirmations, shipping updates, and promotional follow-ups.",
-    image: orderSpamImg
+    title: "But needs just 5 of them",
+    description: "Beeylo only shows you the 10% that actually matters. The rest? Gone.",
+    image: inbox5Img
   },
-  {
-    id: 3,
-    title: "Meet your new inbox.",
+    {
+    id: 2,
+    title: "Beeylo only shows you the 10% that matters",
     description: "Beeylo only shows you the 10% that actually matters. The rest? Gone.",
     image: homeDefImg
   },
   {
+    id: 3,
+    title: "One order, and your inbox explodes with 10 emails",
+    description: "Every purchase becomes a flood of confirmations, shipping updates, and promotional follow-ups.",
+    image: orderSpamImg
+  },
+  {
     id: 4,
-    title: "One order = one smart overview.",
+    title: "With Beeylo, one order is one overview",
     description: "Every update is added to that same view. No more hunting through dozens of emails.",
     image: ticketOrderImg
   }
@@ -119,7 +128,7 @@ export const LearnMorePage: FC<LearnMorePageProps> = ({ onTabChange }) => {
                         ))}
                       </div>
                       <Typography variant="h3" className="feature-title text-center-mobile-left-desktop">{currentSlideData.title}</Typography>
-                      {currentSlide === 3 && (
+                      {currentSlide === 4 && (
                         <Button 
                           variant="primary"
                           onClick={() => onTabChange('benefits')}
@@ -130,11 +139,18 @@ export const LearnMorePage: FC<LearnMorePageProps> = ({ onTabChange }) => {
                       )}
                     </Stack>
                     <div className="feature-image">
-                      <img 
-                        src={currentSlideData.image} 
-                        alt={currentSlideData.title} 
-                        className="feature-img" 
-                      />
+                      {currentSlideData.useAnimation ? (
+                        <AnimatedInbox 
+                          autoStart={currentSlide === 0} 
+                          className="feature-animation" 
+                        />
+                      ) : (
+                        <img 
+                          src={currentSlideData.image} 
+                          alt={currentSlideData.title} 
+                          className="feature-img" 
+                        />
+                      )}
                     </div>
                   </Stack>
                 </CardContent>
