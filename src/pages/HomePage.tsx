@@ -36,13 +36,11 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
             <div className="home-content-wrapper">
               {/* Text Content */}
               <div className="home-text-section">
-                <Typography variant="h1" className="text-center-mobile-left-desktop">
-                  <span className="home-title-main">
-                    Welcome to your inbox without the noise.
-                  </span>
-                  <span className="home-title-sub">
-                    No more spam, ads or useless updates.
-                  </span>
+                <Typography variant="h1" className="text-center-mobile-left-desktop" style={{ marginBottom: 'var(--space-4)' }}>
+                  Welcome to your inbox without the noise
+                </Typography>
+                <Typography variant="body" className="text-center-mobile-left-desktop home-subtitle">
+                  No more spam, ads or useless updates
                 </Typography>
                 
                 <div className="home-actions">
@@ -93,13 +91,11 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
           <div className="home-content-wrapper">
             {/* Text and Form Content */}
             <div className="home-text-section">
-              <Typography variant="h1" className="text-center-mobile-left-desktop">
-                <span className="home-title-main">
-                  The new free inbox
-                </span>
-                <span className="home-title-sub" >
-                  No more spam, ads or useless updates
-                </span>
+              <Typography variant="h1" className="text-center-mobile-left-desktop" style={{ marginBottom: 'var(--space-4)' }}>
+                The new free inbox without the noise
+              </Typography>
+              <Typography variant="body" className="text-center-mobile-left-desktop home-subtitle">
+                No more spam, ads or useless updates
               </Typography>
               
               {/* Login form */}
