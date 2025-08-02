@@ -229,7 +229,8 @@ const AppContent: FC = () => {
             style={{
               willChange: 'transform, opacity',
               backfaceVisibility: 'hidden',
-              transform: 'translate3d(0, 0, 0)' // Force hardware acceleration
+              transform: 'translate3d(0, 0, 0)', // Force hardware acceleration
+              height: '100%'
             }}
           >
             {renderPage()}
