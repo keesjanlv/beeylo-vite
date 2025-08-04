@@ -1,10 +1,13 @@
 import type { FC } from 'react'
 import { useState } from 'react'
-import { Container, Stack, Card, CardContent, Button, Input, Typography } from '../components/ui'
 import { PageBadge } from '../components'
 import formbricks from '@formbricks/js'
 
-export const FeedbackPage: FC = () => {
+interface FeedbackPageProps {
+  onBack?: () => void
+}
+
+export const FeedbackPage: FC<FeedbackPageProps> = ({ onBack: _ }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',

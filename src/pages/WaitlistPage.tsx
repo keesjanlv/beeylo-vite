@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { FC } from 'react'
 import type { TabType } from '../types'
-import { Button, Typography, Card, CardContent, Stack, Container } from '../components/ui'
+import { Button, Typography } from '../components/ui'
 import { PageBadge } from '../components'
 import { Link, Hand, Rocket, Gem, Target } from 'lucide-react'
 

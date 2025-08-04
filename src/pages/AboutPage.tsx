@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { Card, CardContent, Container, Stack, Typography } from '../components/ui'
+import { Card, CardContent, Stack, Typography } from '../components/ui'
 import { PageBadge } from '../components'
 
 export const AboutPage: FC = () => (

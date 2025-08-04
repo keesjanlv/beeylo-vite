@@ -51,7 +51,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                   <Typography variant="h1" className="no-scroll-hero-title text-center-mobile-left-desktop" style={{ textWrap: 'balance' }}>
                     Your inbox, without the noise
                   </Typography>
-                  <Typography variant="body" className="no-scroll-hero-subtitle text-center-mobile-left-desktop">
+                  <Typography variant="body" className="no-scroll-hero-subtitle text-center-mobile-left-desktop" style={{ textWrap: 'balance' }}>
                     No more spam, ads or useless updates
                   </Typography>
                   
@@ -114,7 +114,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                 <Typography variant="h1" className="no-scroll-hero-title text-center-mobile-left-desktop" style={{ textWrap: 'balance' }}>
                   Your inbox, without the noise
                 </Typography>
-                <Typography variant="body" className="no-scroll-hero-subtitle text-center-mobile-left-desktop">
+                <Typography variant="body" className="no-scroll-hero-subtitle text-center-mobile-left-desktop" style={{ textWrap: 'balance' }}>
                   No more spam, ads or useless updates
                 </Typography>
                 
