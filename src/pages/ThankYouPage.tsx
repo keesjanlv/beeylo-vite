@@ -26,7 +26,7 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
   }
 
   return (
-    <div className="no-scroll-page">
+    <div className="no-scroll-page thank-you">
       <div className="no-scroll-content">
         <div className="no-scroll-stack">
           {/* Return Button */}

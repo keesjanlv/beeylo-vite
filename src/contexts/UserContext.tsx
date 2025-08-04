@@ -96,6 +96,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         setIsLoggedIn(true);
         localStorage.setItem('beeylo_user_data', JSON.stringify(response.data));
         localStorage.setItem('beeylo_user_email', email);
+        // Set a session storage flag to indicate a fresh form submission
+        sessionStorage.setItem('beeylo_form_submitted', 'true');
         return true;
       } else {
         // User doesn't exist, register them
@@ -112,6 +114,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           setIsLoggedIn(true);
           localStorage.setItem('beeylo_user_data', JSON.stringify(registrationResponse.data));
           localStorage.setItem('beeylo_user_email', email);
+          // Set a session storage flag to indicate a fresh form submission
+          sessionStorage.setItem('beeylo_form_submitted', 'true');
           return true;
         } else {
           setError(registrationResponse.message || 'Registration failed');

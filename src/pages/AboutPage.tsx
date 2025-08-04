@@ -5,7 +5,7 @@ import { PageBadge } from '../components'
 export const AboutPage: FC = () => (
   <div className="no-scroll-page about">
     <div className="no-scroll-content">
-      <div className="no-scroll-stack">
+      <div className="no-scroll-stack about2">
         <div className="no-scroll-section">
           <div className="about-header-group">
             <PageBadge>Our Story</PageBadge>

@@ -1,7 +1,10 @@
 import type { FC } from 'react'
+import { useState } from 'react'
 import type { TabType } from '../types'
 import { Card, CardContent, Typography } from '../components/ui'
-import { Sun, Moon } from 'lucide-react'
+import { Sun, Moon, StickyNote } from 'lucide-react'
+import { TermsOfServiceModal } from '../components/TermsOfServiceModal'
+import { PrivacyPolicyModal } from '../components/PrivacyPolicyModal'
 
 type ThemeType = 'light' | 'dark'
 type StyleType = 'enhanced' | 'minimal'
@@ -22,23 +25,25 @@ export const MenuPage: FC<MenuPageProps> = ({
   onTabChange, 
   onLogout, 
   isLoggedIn = false 
-}) => (
+}) => {
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false)
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false)
+
+  return (
   <div className="no-scroll-page">
     <div className="no-scroll-content">
       <div className="no-scroll-stack">
         <div className="no-scroll-section">
           <div className="no-scroll-menu-grid">
-              {/* Giveaway Campaign */}
+              {/* Blog */}
               <Card className="menu-card">
                 <CardContent className="menu-item">
-                  <div className="menu-icon giveaway-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
+                  <div className="menu-icon blog-icon">
+                    <StickyNote size={20} />
                   </div>
                   <div className="menu-content">
-                    <Typography variant="body" className="font-semibold menu-text-small">Giveaway Campaign</Typography>
-                    <Typography variant="body" color="secondary" className="menu-text-small">View regulations</Typography>
+                    <Typography variant="body" className="font-semibold menu-text-small">Blog</Typography>
+                    <Typography variant="body" color="secondary" className="menu-text-small">Coming Soon</Typography>
                   </div>
                 </CardContent>
               </Card>
@@ -66,7 +71,12 @@ export const MenuPage: FC<MenuPageProps> = ({
 
 
               {/* Terms of Service */}
-              <Card className="menu-card">
+              <Card 
+                className="menu-card"
+                onClick={() => setIsTermsModalOpen(true)}
+                role="button"
+                tabIndex={0}
+              >
                 <CardContent className="menu-item">
                   <div className="menu-icon brand-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -82,7 +92,12 @@ export const MenuPage: FC<MenuPageProps> = ({
               </Card>
 
               {/* Privacy Policy */}
-              <Card className="menu-card">
+              <Card 
+                className="menu-card"
+                onClick={() => setIsPrivacyModalOpen(true)}
+                role="button"
+                tabIndex={0}
+              >
                 <CardContent className="menu-item">
                   <div className="menu-icon privacy-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -204,5 +219,16 @@ export const MenuPage: FC<MenuPageProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <TermsOfServiceModal 
+        isOpen={isTermsModalOpen} 
+        onClose={() => setIsTermsModalOpen(false)} 
+      />
+      <PrivacyPolicyModal 
+        isOpen={isPrivacyModalOpen} 
+        onClose={() => setIsPrivacyModalOpen(false)} 
+      />
     </div>
-)
+  )
+}

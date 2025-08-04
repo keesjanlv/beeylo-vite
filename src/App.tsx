@@ -60,12 +60,16 @@ const AppContent: FC = () => {
     }
   }, [])
 
-  // Auto-navigate to thank you page when user logs in
+  // Auto-navigate to thank you page only after form submission
   useEffect(() => {
-    if (isLoggedIn && activeTab === 'home') {
-      setActiveTab('thank-you')
+    const formSubmitted = sessionStorage.getItem('beeylo_form_submitted') === 'true';
+    
+    if (isLoggedIn && activeTab === 'home' && formSubmitted) {
+      setActiveTab('thank-you');
+      // Clear the flag after navigating to thank you page
+      sessionStorage.removeItem('beeylo_form_submitted');
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn, activeTab])
 
   // Add no-scroll-container class for browser compatibility
   useEffect(() => {

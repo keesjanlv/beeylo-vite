@@ -3,6 +3,8 @@ import type { FC } from 'react'
 import type { TabType } from '../types'
 import { useUser } from '../contexts/UserContext'
 import { Button, Typography } from '../components/ui'
+import { TermsOfServiceModal } from '../components/TermsOfServiceModal'
+import { PrivacyPolicyModal } from '../components/PrivacyPolicyModal'
 import beeyloLogo from '../assets/beeylologo.png'
 import tripleScreenImg from '../assets/triplescreenhomedef.webp'
 
@@ -16,6 +18,8 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const { login, isLoading, error } = useUser()
   const [email, setEmail] = useState('')
   const [loginError, setLoginError] = useState<string | null>(null)
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false)
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -153,7 +157,25 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                   
                   {/* Disclaimer text */}
                   <Typography variant="caption" color="muted" className="no-scroll-disclaimer">
-                    By clicking submit I agree to Beeylo's Terms of Service and Privacy Policy.
+                    By clicking submit I agree to Beeylo's{' '}
+                    <span 
+                      className="disclaimer-link" 
+                      onClick={() => setIsTermsModalOpen(true)}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      Terms of Service
+                    </span>
+                    {' '}and{' '}
+                    <span 
+                      className="disclaimer-link" 
+                      onClick={() => setIsPrivacyModalOpen(true)}
+                      role="button"
+                      tabIndex={0}
+                    >
+                      Privacy Policy
+                    </span>
+                    .
                   </Typography>
                 </div>
               </div>
@@ -170,6 +192,16 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <TermsOfServiceModal 
+        isOpen={isTermsModalOpen} 
+        onClose={() => setIsTermsModalOpen(false)} 
+      />
+      <PrivacyPolicyModal 
+        isOpen={isPrivacyModalOpen} 
+        onClose={() => setIsPrivacyModalOpen(false)} 
+      />
     </div>
   )
 }
