@@ -181,7 +181,7 @@
 
 @media (min-width: 769px) {
   .text-center-mobile-left-desktop { 
-    text-align: left !important; 
+    text-align: start !important; 
   }
 }
 

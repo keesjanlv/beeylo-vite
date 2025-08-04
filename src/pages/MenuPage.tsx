@@ -1,6 +1,7 @@
 import type { FC } from 'react'
 import type { TabType } from '../types'
-import { Container, Card, CardContent, Typography } from '../components/ui'
+import { Card, CardContent, Typography } from '../components/ui'
+import { Sun, Moon } from 'lucide-react'
 
 type ThemeType = 'light' | 'dark'
 type StyleType = 'enhanced' | 'minimal'
@@ -22,11 +23,11 @@ export const MenuPage: FC<MenuPageProps> = ({
   onLogout, 
   isLoggedIn = false 
 }) => (
-  <div className="page-container smart-container">
-    <div className="page-content layout-fit menu-adaptive">
-      <div className="content-center-scroll adaptive-content">
-        <Container size="lg">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 menu-items-grid">
+  <div className="no-scroll-page">
+    <div className="no-scroll-content">
+      <div className="no-scroll-stack">
+        <div className="no-scroll-section">
+          <div className="no-scroll-menu-grid">
               {/* Giveaway Campaign */}
               <Card className="menu-card">
                 <CardContent className="menu-item">
@@ -98,42 +99,19 @@ export const MenuPage: FC<MenuPageProps> = ({
 
               {/* Theme Switch */}
               <Card 
-                className="menu-card theme-switch-card"
+                className="menu-card"
                 onClick={() => onThemeChange(theme === 'light' ? 'dark' : 'light')}
                 role="button"
                 tabIndex={0}
               >
                 <CardContent className="menu-item">
-                  <button 
-                    className={`theme-switch ${theme === 'dark' ? 'dark' : 'light'}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onThemeChange(theme === 'light' ? 'dark' : 'light');
-                    }}
-                    aria-label="Toggle theme"
-                  >
-                    <div className="switch-track">
-                      <div className="switch-thumb">
-                        {theme === 'light' ? (
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <circle cx="12" cy="12" r="5"/>
-                            <line x1="12" y1="1" x2="12" y2="3"/>
-                            <line x1="12" y1="21" x2="12" y2="23"/>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                            <line x1="1" y1="12" x2="3" y2="12"/>
-                            <line x1="21" y1="12" x2="23" y2="12"/>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                          </svg>
-                        ) : (
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                          </svg>
-                        )}
-                      </div>
-                    </div>
-                  </button>
+                  <div className="menu-icon theme-icon">
+                    {theme === 'light' ? (
+                      <Sun size={20} />
+                    ) : (
+                      <Moon size={20} />
+                    )}
+                  </div>
                   <div className="menu-content">
                     <Typography variant="body" className="font-semibold menu-text-small">Theme</Typography>
                     <Typography variant="body" color="secondary" className="menu-text-small">{theme === 'light' ? 'Light' : 'Dark'}</Typography>
@@ -167,8 +145,8 @@ export const MenuPage: FC<MenuPageProps> = ({
             </div>
             
             {/* Social Media Icons Section */}
-            <div className="social-icons-section">
-              <div className="social-icons-grid">
+            <div className="no-scroll-share-social-section">
+              <div className="social-icons-simple">
                 <a 
                   href="https://instagram.com" 
                   target="_blank" 
@@ -176,13 +154,11 @@ export const MenuPage: FC<MenuPageProps> = ({
                   className="social-icon-link"
                   aria-label="Follow us on Instagram"
                 >
-                  <div className="social-icon instagram-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                    </svg>
-                  </div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                  </svg>
                 </a>
                 
                 <a 
@@ -192,11 +168,9 @@ export const MenuPage: FC<MenuPageProps> = ({
                   className="social-icon-link"
                   aria-label="Follow us on TikTok"
                 >
-                  <div className="social-icon tiktok-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
-                    </svg>
-                  </div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+                  </svg>
                 </a>
                 
                 <a 
@@ -206,13 +180,11 @@ export const MenuPage: FC<MenuPageProps> = ({
                   className="social-icon-link"
                   aria-label="Follow us on LinkedIn"
                 >
-                  <div className="social-icon linkedin-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                      <rect x="2" y="9" width="4" height="12"/>
-                      <circle cx="4" cy="4" r="2"/>
-                    </svg>
-                  </div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                    <rect x="2" y="9" width="4" height="12"/>
+                    <circle cx="4" cy="4" r="2"/>
+                  </svg>
                 </a>
                 
                 <a 
@@ -222,17 +194,15 @@ export const MenuPage: FC<MenuPageProps> = ({
                   className="social-icon-link"
                   aria-label="Follow us on X"
                 >
-                  <div className="social-icon x-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M4 4l11.733 16h4.267l-11.733 -16z"/>
-                      <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/>
-                    </svg>
-                  </div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M4 4l11.733 16h4.267l-11.733 -16z"/>
+                    <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/>
+                  </svg>
                 </a>
               </div>
             </div>
-        </Container>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 )

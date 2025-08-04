@@ -4,11 +4,7 @@ import { Container, Stack, Card, CardContent, Button, Input, Typography } from '
 import { PageBadge } from '../components'
 import formbricks from '@formbricks/js'
 
-interface FeedbackPageProps {
-  onBack?: () => void
-}
-
-export const FeedbackPage: FC<FeedbackPageProps> = ({ onBack }) => {
+export const FeedbackPage: FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -60,141 +56,97 @@ export const FeedbackPage: FC<FeedbackPageProps> = ({ onBack }) => {
   }
 
   return (
-    <div className="page-container">
-      <div className="page-content content-scrollable">
-        <div className="layout-scroll">
-          <Container size="md">
-            <Stack spacing={6}>
-              {/* Header */}
-              <Stack spacing={2}>
-                <div className="header-with-back">
-                  {onBack && (
-                    <Button 
-                      variant="ghost" 
-                      onClick={onBack} 
-                      className="back-button"
-                      aria-label="Go back"
-                    >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M19 12H5"/>
-                        <path d="M12 19l-7-7 7-7"/>
-                      </svg>
-                    </Button>
-                  )}
-                  <div className="text-center">
-                    <PageBadge>Feedback</PageBadge>
-                    <Typography variant="h2" className="text-center">Submit Feedback</Typography>
+    <div className="no-scroll-page">
+      <div className="no-scroll-content">
+        <div className="no-scroll-stack">
+          {/* Header */}
+          <div className="no-scroll-welcome">
+            <div className="text-center">
+              <PageBadge>Feedback</PageBadge>
+              <h1 className="no-scroll-welcome-title">Submit Feedback</h1>
+            </div>
+            <p className="no-scroll-welcome-description">
+              Help us improve Beeylo by sharing your thoughts and suggestions
+            </p>
+          </div>
+
+          {/* Feedback Form */}
+          <div className="no-scroll-form-section">
+            {isSubmitted ? (
+              <div className="no-scroll-feedback-success">
+                <div className="success-icon">
+                  <div style={{ width: '48px', height: '48px', margin: '0 auto', backgroundColor: 'var(--primary)', borderRadius: '50%', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                      <polyline points="22,4 12,14.01 9,11.01"/>
+                    </svg>
                   </div>
                 </div>
-                <Typography variant="body" color="secondary" className="text-center">
-                  Help us improve Beeylo by sharing your thoughts and suggestions
-                </Typography>
-              </Stack>
+                <h2 className="no-scroll-feedback-success-title">Thank you for your feedback!</h2>
+                <p className="no-scroll-feedback-success-description">We appreciate your input and will review it carefully.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="no-scroll-form">
+                <div className="no-scroll-form-stack">
+                  {/* Name Field */}
+                  <div className="no-scroll-input-group">
+                    <label htmlFor="name" className="no-scroll-input-label">Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="Your full name"
+                      className="no-scroll-input"
+                    />
+                  </div>
 
-              {/* Feedback Form */}
-              <Card>
-                <CardContent>
-                  {isSubmitted ? (
-                    <div className="feedback-success text-center">
-                      <div className="success-icon mb-4">
-                        <div style={{ width: '48px', height: '48px', margin: '0 auto', backgroundColor: 'var(--primary)', borderRadius: '50%', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                            <polyline points="22,4 12,14.01 9,11.01"/>
-                          </svg>
-                        </div>
-                      </div>
-                      <Typography variant="h3" className="mb-2">Thank you for your feedback!</Typography>
-                      <Typography variant="body" color="secondary">We appreciate your input and will review it carefully.</Typography>
-                    </div>
-                  ) : (
-                    <form onSubmit={handleSubmit}>
-                      <Stack spacing={4}>
-                        {/* Name Field */}
-                        <div>
-                          <Input
-                            type="text"
-                            id="name"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            required
-                            label="Name"
-                            placeholder="Your full name"
-                            style={{ 
-                              width: '100%', 
-                              padding: '8px 12px', 
-                              border: '1px solid var(--border)', 
-                              borderRadius: 'var(--radius-md)', 
-                              background: 'var(--surface)',
-                              color: 'var(--text-primary)',
-                              fontSize: '14px'
-                            }}
-                          />
-                        </div>
+                  {/* Email Field */}
+                  <div className="no-scroll-input-group">
+                    <label htmlFor="email" className="no-scroll-input-label">Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="your.email@example.com"
+                      className="no-scroll-input"
+                    />
+                  </div>
 
-                        {/* Email Field */}
-                        <div>
-                          <Input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            required
-                            label="Email"
-                            placeholder="your.email@example.com"
-                            style={{ 
-                              width: '100%', 
-                              padding: '8px 12px', 
-                              border: '1px solid var(--border)', 
-                              borderRadius: 'var(--radius-md)', 
-                              background: 'var(--surface)',
-                              color: 'var(--text-primary)',
-                              fontSize: '14px'
-                            }}
-                          />
-                        </div>
+                  {/* Message Field */}
+                  <div className="no-scroll-input-group">
+                    <label htmlFor="message" className="no-scroll-input-label">Message</label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="Please share your feedback, suggestions, or report any issues you've encountered..."
+                      rows={4}
+                      className="no-scroll-input no-scroll-textarea"
+                      style={{ resize: 'vertical' }}
+                    />
+                  </div>
 
-                        {/* Message Field */}
-                        <div>
-                          <div className="input-group">
-                            <label htmlFor="message" className="input-label">Message</label>
-                            <div className="input-wrapper">
-                              <textarea
-                                id="message"
-                                name="message"
-                                value={formData.message}
-                                onChange={handleInputChange}
-                                required
-                                placeholder="Please share your feedback, suggestions, or report any issues you've encountered..."
-                                rows={6}
-                                className="input input-md"
-                                style={{ 
-                                  resize: 'vertical',
-                                  fontFamily: 'inherit'
-                                }}
-                              />
-                            </div>
-                          </div>
-                        </div>
-
-                        <Button 
-                          type="submit" 
-                          variant="primary"
-                          disabled={isSubmitting}
-                          className="buttonv2 buttonv2-yellow"
-                          style={{ width: '100%', marginTop: '16px' }}
-                        >
-                          {isSubmitting ? "Submitting..." : "Submit Feedback"}
-                        </Button>
-                      </Stack>
-                    </form>
-                  )}
-                </CardContent>
-              </Card>
-            </Stack>
-          </Container>
+                  <div className="no-scroll-button-group">
+                    <button 
+                      type="submit" 
+                      disabled={isSubmitting}
+                      className="no-scroll-button buttonv2 buttonv2-yellow"
+                    >
+                      {isSubmitting ? "Submitting..." : "Submit Feedback"}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -38,6 +38,29 @@
     backface-visibility: hidden;
   }
   
+  /* Override main-content styles when containing no-scroll pages */
+  .main-content:has(.no-scroll-page) {
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Fallback for browsers without :has() support */
+  .main-content.no-scroll-container {
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Ensure motion wrapper doesn't interfere with no-scroll pages on desktop */
+  .main-content:has(.no-scroll-page) > div,
+  .main-content.no-scroll-container > div {
+    height: 100%;
+    overflow: hidden;
+  }
+  
   .top-navigation {
     display: none;
   }
@@ -72,6 +95,29 @@
     scrollbar-gutter: stable;
     transform: translate3d(0, 0, 0); /* Force hardware acceleration */
     backface-visibility: hidden;
+  }
+  
+  /* Ensure no-scroll pages get full height on mobile */
+  .main-content:has(.no-scroll-page) {
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Fallback for browsers without :has() support on mobile */
+  .main-content.no-scroll-container {
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Ensure motion wrapper doesn't interfere with no-scroll pages */
+  .main-content:has(.no-scroll-page) > div,
+  .main-content.no-scroll-container > div {
+    height: 100%;
+    overflow: hidden;
   }
 }
 
@@ -347,7 +393,7 @@
 
 @media (min-width: 769px) {
   .page-content {
-    padding: var(--space-2);
+    padding: var(--space-12);
     max-width: var(--container-lg);
   }
 }

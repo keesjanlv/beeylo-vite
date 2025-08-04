@@ -26,66 +26,68 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
     switch (activeContent) {
       case 'position':
         return (
-          <Stack spacing={6}>
+          <div className="no-scroll-content-wrapper">
             {/* Waitlist Stats Card */}
-            <Card>
-              <CardContent>
-                <div className="stats-section-enhanced">
-                  <div className="stat-item text-center">
-                    <Typography variant="h1" className="stat-number text-center font-roboto font-bold text-sm">
-                      {userPosition.toLocaleString()}
-                    </Typography>
-                    <Typography variant="body" color="secondary" className="stat-label text-center">
-                      Your Position
-                    </Typography>
-                  </div>
+            <div className="no-scroll-position-card">
+              <div className="stats-section-enhanced">
+                <div className="stat-item text-center">
+                  <Typography variant="h1" className="stat-number text-center font-roboto font-bold">
+                    {userPosition.toLocaleString()}
+                  </Typography>
+                  <Typography variant="body" color="secondary" className="stat-label text-center">
+                    Your Position
+                  </Typography>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* Share Link */}
             <div className="text-center">
-              <Typography variant="body" color="secondary" className="mb-2">
+              <Typography variant="body" color="secondary" className="no-scroll-body mb-2">
                 Your referral link:
               </Typography>
-              <div className="flex items-center gap-2 justify-center">
-                <Typography variant="body" className="font-mono text-sm bg-surface p-2 rounded border flex-1 max-w-md">
-                  {shareUrl}
-                </Typography>
-                <Button 
-                  variant="outline" 
-                  onClick={() => navigator.clipboard.writeText(shareUrl)}
-                  className="buttonv2"
-                >
-                  Copy
-                </Button>
+              <div className="no-scroll-input-group">
+                <div className="flex items-center gap-2 justify-center">
+                  <Typography variant="body" className="font-mono no-scroll-body bg-surface p-2 rounded border flex-1 max-w-md">
+                    {shareUrl}
+                  </Typography>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => navigator.clipboard.writeText(shareUrl)}
+                    className="no-scroll-button buttonv2"
+                  >
+                    Copy
+                  </Button>
+                </div>
               </div>
             </div>
-          </Stack>
+          </div>
         )
       
       case 'benefits':
         return (
-          <div className="steps-container">
-            <div className="modal-step-item">
-              <div className="modal-step-icon"><Rocket size={20} /></div>
-              <div className="modal-step-content">
-                <Typography variant="h4">Early Access</Typography>
-                <Typography variant="body" color="secondary">Be among the first to experience Beeylo when we launch.</Typography>
+          <div className="no-scroll-content-wrapper">
+            <div className="steps-container">
+              <div className="modal-step-item">
+                <div className="modal-step-icon"><Rocket size={20} /></div>
+                <div className="modal-step-content">
+                  <Typography variant="h4" className="no-scroll-subtitle">Early Access</Typography>
+                  <Typography variant="body" color="secondary" className="no-scroll-body">Be among the first to experience Beeylo when we launch.</Typography>
+                </div>
               </div>
-            </div>
-            <div className="modal-step-item">
-              <div className="modal-step-icon"><Gem size={20} /></div>
-              <div className="modal-step-content">
-                <Typography variant="h4">Founding Member Status</Typography>
-                <Typography variant="body" color="secondary">Special badge and exclusive features for early supporters.</Typography>
+              <div className="modal-step-item">
+                <div className="modal-step-icon"><Gem size={20} /></div>
+                <div className="modal-step-content">
+                  <Typography variant="h4" className="no-scroll-subtitle">Founding Member Status</Typography>
+                  <Typography variant="body" color="secondary" className="no-scroll-body">Special badge and exclusive features for early supporters.</Typography>
+                </div>
               </div>
-            </div>
-            <div className="modal-step-item">
-              <div className="modal-step-icon"><Target size={20} /></div>
-              <div className="modal-step-content">
-                <Typography variant="h4">Shape the Platform</Typography>
-                <Typography variant="body" color="secondary">Your feedback directly influences our development roadmap.</Typography>
+              <div className="modal-step-item">
+                <div className="modal-step-icon"><Target size={20} /></div>
+                <div className="modal-step-content">
+                  <Typography variant="h4" className="no-scroll-subtitle">Shape the Platform</Typography>
+                  <Typography variant="body" color="secondary" className="no-scroll-body">Your feedback directly influences our development roadmap.</Typography>
+                </div>
               </div>
             </div>
           </div>
@@ -93,26 +95,28 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
       
       case 'timeline':
         return (
-          <div className="steps-container">
-            <div className="modal-step-item">
-              <div className="modal-step-icon"><Link size={20} /></div>
-              <div className="modal-step-content">
-                <Typography variant="h4">Connect</Typography>
-                <Typography variant="body" color="secondary">Join our waitlist and connect with the community</Typography>
+          <div className="no-scroll-content-wrapper">
+            <div className="steps-container">
+              <div className="modal-step-item">
+                <div className="modal-step-icon"><Link size={20} /></div>
+                <div className="modal-step-content">
+                  <Typography variant="h4" className="no-scroll-subtitle">Connect</Typography>
+                  <Typography variant="body" color="secondary" className="no-scroll-body">Join our waitlist and connect with the community</Typography>
+                </div>
               </div>
-            </div>
-            <div className="modal-step-item">
-              <div className="modal-step-icon"><Hand size={20} /></div>
-              <div className="modal-step-content">
-                <Typography variant="h4">Engage</Typography>
-                <Typography variant="body" color="secondary">Share feedback and help shape the platform</Typography>
+              <div className="modal-step-item">
+                <div className="modal-step-icon"><Hand size={20} /></div>
+                <div className="modal-step-content">
+                  <Typography variant="h4" className="no-scroll-subtitle">Engage</Typography>
+                  <Typography variant="body" color="secondary" className="no-scroll-body">Share feedback and help shape the platform</Typography>
+                </div>
               </div>
-            </div>
-            <div className="modal-step-item">
-              <div className="modal-step-icon"><Rocket size={20} /></div>
-              <div className="modal-step-content">
-                <Typography variant="h4">Launch</Typography>
-                <Typography variant="body" color="secondary">Get early access when we go live</Typography>
+              <div className="modal-step-item">
+                <div className="modal-step-icon"><Rocket size={20} /></div>
+                <div className="modal-step-content">
+                  <Typography variant="h4" className="no-scroll-subtitle">Launch</Typography>
+                  <Typography variant="body" color="secondary" className="no-scroll-body">Get early access when we go live</Typography>
+                </div>
               </div>
             </div>
           </div>
@@ -120,35 +124,17 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
       
       case 'boost':
         return (
-          <Stack spacing={6}>
-            {/* Referral Link Row */}
-            <div>
-              <Typography variant="h5" className="mb-4 text-center">
-                Invite Friends
-              </Typography>
-              <div className="flex items-center gap-2 justify-center">
-                <Typography variant="body" className="font-mono text-sm bg-surface p-2 rounded border flex-1 max-w-md">
-                  {shareUrl}
-                </Typography>
-                <Button 
-                  variant="outline" 
-                  onClick={() => navigator.clipboard.writeText(shareUrl)}
-                  className="buttonv2"
-                >
-                  Copy
-                </Button>
-              </div>
-            </div>
-
-            {/* Social Sharing Row */}
-            <div>
-              <div className="social-section-header">
-                <Typography variant="h5">
-                  Share on Social Media
-                </Typography>
-                <span className="social-section-bonus">+1% each</span>
-              </div>
-              <div className="social-cards-container">
+          <div className="no-scroll-content-wrapper">
+            <div className="no-scroll-share-social-section">
+              {/* Social Sharing Row */}
+              <div>
+                <div className="social-section-header">
+                  <Typography variant="h5" className="no-scroll-subtitle">
+                    Share on Social Media
+                  </Typography>
+                  <span className="social-section-bonus">+1% each</span>
+                </div>
+                <div className="social-cards-container">
                 <button 
                   onClick={() => window.open(`https://twitter.com/intent/tweet?text=Join me on the Beeylo waitlist!&url=${encodeURIComponent(shareUrl)}`, '_blank')}
                   className="social-card"
@@ -198,7 +184,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
             {/* Follow Us Row */}
             <div>
               <div className="social-section-header">
-                <Typography variant="h5">
+                <Typography variant="h5" className="no-scroll-subtitle">
                   Follow Us for Extra Points
                 </Typography>
                 <span className="social-section-bonus">+5% each</span>
@@ -235,7 +221,8 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
                 </a>
               </div>
             </div>
-          </Stack>
+            </div>
+          </div>
         )
       
       default:
@@ -244,44 +231,42 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
   };
 
   return (
-    <div className="page-container smart-container">
-      <div className="page-content layout-fit waitlist-adaptive">
-        <Container size="lg" className="adaptive-content">
-          <Stack spacing={8}>
-            {/* Welcome Content - Outside Card */}
-            <Stack spacing={4}>
-              <PageBadge>Waitlist Dashboard</PageBadge>
-              <Typography variant="h2" className="text-center">
-                Want early access?
-              </Typography>
-              <Typography variant="body" color="secondary" className="text-center">
-                See below what you can do to increase your position.
-              </Typography>
-            </Stack>
+    <div className="no-scroll-page">
+      <div className="no-scroll-content">
+        <div className="no-scroll-stack">
+          {/* Welcome Content */}
+          <div className="no-scroll-welcome">
+            <PageBadge>Waitlist Dashboard</PageBadge>
+            <Typography variant="h2" className="no-scroll-title text-center">
+              Want early access?
+            </Typography>
+            <Typography variant="body" color="secondary" className="no-scroll-body text-center">
+              Boost your position by sharing.
+            </Typography>
+          </div>
 
-            {/* Action Buttons - 1x2 grid layout */}
-            <div className="grid grid-cols-2 gap-4">
-              {/* Position and Boost Position */}
-              <Button
-                onClick={() => handleContentToggle('position')}
-                className={`buttonv2 ${activeContent === 'position' ? 'buttonv2-yellow' : ''} h-24 flex flex-col items-center justify-center w-full`}
-              >
-                Position
-              </Button>
-              <Button
-                onClick={() => handleContentToggle('boost')}
-                className={`buttonv2 ${activeContent === 'boost' ? 'buttonv2-yellow' : ''} h-24 flex flex-col items-center justify-center w-full`}
-              >
-                Boost Position
-              </Button>
-            </div>
+          {/* Action Buttons - 1x2 grid layout */}
+          <div className="no-scroll-action-buttons">
+            {/* Position and Boost Position */}
+            <Button
+              variant={activeContent === 'position' ? 'brand' : 'outline'}
+              onClick={() => handleContentToggle('position')}
+              className={`no-scroll-button buttonv2 ${activeContent === 'position' ? 'buttonv2-yellow' : ''}`}
+            >
+              Position
+            </Button>
+            <Button
+              variant={activeContent === 'boost' ? 'brand' : 'outline'}
+              onClick={() => handleContentToggle('boost')}
+              className={`no-scroll-button buttonv2 ${activeContent === 'boost' ? 'buttonv2-yellow' : ''}`}
+            >
+              Boost Position
+            </Button>
+          </div>
 
-            {/* Dynamic Content */}
-            <div className="waitlist-content-wrapper">
-              {renderContent()}
-            </div>
-            </Stack>
-          </Container>
+          {/* Dynamic Content */}
+          {renderContent()}
+        </div>
       </div>
     </div>
   );

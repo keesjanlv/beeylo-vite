@@ -367,8 +367,7 @@
 }
 
 .input-md {
-  height: var(--input-height-md);
-  padding: 0 var(--space-4);
+  padding: var(--space-4);
   font-size: var(--text-xs);
 }
 
@@ -1151,22 +1150,85 @@
   box-shadow: 0 8px 24px rgba(251, 191, 36, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-/* Feature Navigation */
+/* Feature Navigation & Title Container */
+.feature-nav-title-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
 .feature-navigation {
   display: flex;
   gap: var(--space-3);
-  margin-bottom: var(--space-4);
+}
+
+.feature-title-wrapper {
+  /* Ensure consistent positioning regardless of text length */
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start; /* Ensure consistent alignment */
+  margin-bottom: var(--space-2); /* Add small margin to separate from description */
+}
+
+.feature-title {
+  /* Ensure consistent line height and spacing */
+  line-height: 1.2;
+  margin: 0; /* Remove any default margins */
+}
+
+.feature-description-wrapper {
+  /* Consistent styling for description wrapper */
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-top: 0; /* Remove any top margin to reduce gap */
+}
+
+.feature-description {
+  /* Ensure consistent line height and spacing */
+  line-height: 1.4;
+  margin: 0; /* Remove any default margins */
 }
 
 @media (max-width: 768px) {
   .feature-navigation {
     justify-content: center;
   }
+  
+  .feature-nav-title-container {
+    gap: var(--space-4);
+  }
+  
+  .feature-title-wrapper {
+    justify-content: center;
+  }
+  
+  .feature-description-wrapper {
+    justify-content: center;
+  }
 }
 
 @media (min-width: 769px) {
+  .feature-nav-title-container {
+    position: fixed;
+    top: 35vh; /* Fixed top position instead of center-based to prevent height shifts */
+    z-index: 10;
+    max-width: min(400px, 35vw); /* Responsive max-width */
+    padding: var(--space-8); /* Add some padding for better visual spacing */
+  }
+  
   .feature-navigation {
     justify-content: flex-start;
+  }
+  
+  .feature-title-wrapper {
+    /* Ensure title starts at consistent position */
+    margin-top: 0;
+  }
+  
+  /* Remove the old margin override since we're using the container approach */
+  .feature-text .feature-title {
+    margin-top: 0;
   }
 }
 
@@ -2765,8 +2827,10 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin: 16px 0;
+  margin: 16px auto;
   justify-content: space-between;
+  width: 100%;
+  max-width: 600px; /* Consistent with no-scroll system */
 }
 
 .social-card {
@@ -2814,6 +2878,10 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
+  width: 100%;
+  max-width: 600px; /* Consistent with no-scroll system */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .social-section-header h5 {
@@ -3047,7 +3115,6 @@
   flex-direction: column;
   min-height: 0;
   overflow: hidden;
-  padding: var(--space-6); /* Ensure proper padding */
 }
 
 /* Ensure feature content fills available space */
@@ -3074,13 +3141,18 @@
 /* Mobile-specific adjustments */
 @media (max-width: 768px) {
   .feature-content {
-    height: 100%; /* Ensure full height on mobile */
+    height: auto; /* Allow content to determine height */
+    min-height: 100%; /* Minimum full height */
+    gap: var(--space-4); /* Consistent spacing between text and image */
+  }
+  
+  .feature-card .card-content {
+    overflow-y: auto; /* Allow scrolling if content is too tall */
   }
   
   .feature-image {
-    flex: 1;
-    min-height: 200px;
-    max-height: none; /* Remove height restriction */
+    /* Height is now dynamically calculated via inline styles */
+    flex-shrink: 0; /* Prevent shrinking */
   }
   
   .feature-img {
@@ -3088,6 +3160,17 @@
     height: 100%;
     object-fit: contain;
     max-height: 100%;
+  }
+  
+  /* Ensure animations also respect the dynamic height */
+  .feature-animation {
+    height: 100%;
+  }
+  
+  /* Text area adjustments for mobile */
+  .feature-text {
+    flex-shrink: 0; /* Don't shrink text area */
+    padding-bottom: var(--space-2); /* Small padding before image */
   }
 }
 
@@ -3345,6 +3428,14 @@
   align-items: center;
   gap: calc(var(--space-3) * 1.5); /* Increased gap by 50% */
   padding: calc(var(--space-1) * 1.5); /* Increased padding by 50% */
+  padding-left: var(--space-4); /* Added left padding */
+}
+
+/* Ensure left padding is maintained even with container queries */
+@container no-scroll-container (height < 600px) {
+  .menu-item {
+    padding-left: var(--space-4) !important; /* Maintain left padding at low heights */
+  }
 }
 
 .menu-card .menu-content .typography-h3 {

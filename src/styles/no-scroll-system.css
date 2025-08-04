@@ -1,13 +1,13 @@
 /* ===== NO-SCROLL VIEWPORT SYSTEM ===== */
 /* All elements automatically size to fit within 100vh - no scrolling needed */
 
-/* Core viewport container - exactly 100vh with 5% padding */
+/* Core viewport container - exactly 100vh with responsive padding */
 .no-scroll-page {
   overflow: hidden; /* Prevent any scrolling */
   display: flex;
   flex-direction: column;
   position: relative;
-  padding: 5vh 5vw; /* 5% padding from all edges */
+  padding: 0; /* No padding by default */
   box-sizing: border-box;
   /* Enable container queries for enhanced responsiveness */
   container-type: size;
@@ -15,6 +15,25 @@
   /* Default height for mobile - account for top navigation */
   min-height: calc(100vh - var(--nav-height-mobile)); /* Subtract top nav height */
   min-height: calc(100 * var(--vh) - var(--nav-height-mobile)); /* Dynamic viewport height for mobile */
+  /* Remove gap to prevent social icons from falling off screen */
+  justify-content: center;
+}
+
+/* Add padding on mobile breakpoints with top navigation */
+@media (max-width: 768px) {
+  .no-scroll-page {
+    padding-top: clamp(8px, 1vh, 16px); /* Add top padding to prevent content from being hidden behind navigation */
+    padding-left: clamp(16px, 4vw, 24px); /* Increased side padding */
+    padding-right: clamp(16px, 4vw, 24px); /* Increased side padding */
+    padding-bottom: clamp(8px, 1vh, 16px);
+  }
+}
+
+/* Apply padding only to iPhone SE resolution (smallest height) */
+@media (max-height: 668px) {
+  .no-scroll-page {
+    padding: 5vh 5vw;
+  }
 }
 
 /* Apply full height on desktop where top navigation is hidden */
@@ -22,6 +41,7 @@
   .no-scroll-page {
     height: 100vh;
     min-height: 100vh;
+    padding: clamp(16px, 2vw, 32px); /* Add adaptive padding for desktop */
   }
 }
 
@@ -48,7 +68,7 @@
 @container no-scroll-container (height >= 400px) and (height < 600px) {
   .no-scroll-stack {
     gap: clamp(2px, 0.5vh, 8px);
-    justify-content: space-between;
+    justify-content:center;
   }
 }
 
@@ -71,6 +91,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   height: 100%; /* Use full available height within padding */
   width: 100%; /* Use full available width within padding */
   box-sizing: border-box;
@@ -82,24 +103,43 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  justify-content: center; /* Default: center for normal/tall screens */
-  gap: clamp(8px, 2vh, 32px); /* Proportional gap: 8px min, 2vh preferred, 32px max */
+  align-items: center;
+  gap: clamp(8px, 2vh, 24px); /* Reduced gap for better mobile spacing */
+  width: 100%;
+  margin: 0 auto; /* Center the content horizontally */
+  overflow: hidden; /* Prevent content from breaking layout */
+  flex-shrink: 0;
 }
 
 /* Height-based responsive behavior */
-/* For constrained heights (mobile landscape, short screens), use space-between */
+/* For constrained heights, use space-around with adjusted spacing */
 @media (max-height: 600px) {
   .no-scroll-stack {
-    justify-content: space-between;
-    gap: clamp(4px, 1vh, 16px); /* Tighter proportional spacing for constrained heights */
+    gap: clamp(6px, 1.5vh, 16px); /* Further reduced spacing for constrained heights */
+    padding: clamp(12px, 3vh, 24px) clamp(12px, 3vw, 24px);
   }
 }
 
-/* For very constrained heights, use even tighter spacing */
+/* Mobile-specific spacing optimizations */
+@media (max-width: 768px) {
+  .no-scroll-stack {
+    gap: clamp(6px, 1.5vh, 16px); /* Tighter spacing on mobile */
+  }
+  
+  .no-scroll-hero-content {
+    gap: clamp(8px, 2vh, 20px); /* Reduced gap between text and image on mobile */
+  }
+  
+  .no-scroll-hero-text {
+    gap: clamp(6px, 1.5vh, 16px); /* Tighter spacing within text section */
+  }
+}
+
+/* For very constrained heights, use space-around with minimal spacing */
 @media (max-height: 450px) {
   .no-scroll-stack {
-    justify-content: space-between;
-    gap: clamp(2px, 0.5vh, 8px); /* Minimal proportional spacing for very tight heights */
+    gap: clamp(8px, 1.5vh, 16px); /* Minimal but balanced spacing */
+    padding: clamp(12px, 3vh, 24px) clamp(12px, 3vw, 24px);
   }
 }
 
@@ -144,6 +184,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
+  width: auto !important;
 }
 
 .no-scroll-return-btn:hover {
@@ -171,13 +212,80 @@
   gap: min(1vh, 8px); /* Add gap between title and description */
 }
 
-/* Position card - approximately 11% of viewport height */
+/* Position card - minimum height with content-driven sizing */
 .no-scroll-position-card {
-  height: 11vh;
+  min-height: 11vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   flex-shrink: 0;
+  width: 100%;
+  max-width: 600px; /* Consistent width with no-scroll-stack */
+  margin: 0 auto; /* Center the card */
+  padding: clamp(12px, 2vh, 20px);
+  position: relative;
+  border-radius: 14px;
+  z-index: 1111;
+  overflow: hidden;
+}
+
+/* Animated border background */
+.no-scroll-position-card::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(24px);
+  border-radius: 10px;
+  outline: 2px solid white;
+}
+
+/* Animated blob for border effect */
+.no-scroll-position-card::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #FBBF16;
+  opacity: 0.3;
+  filter: blur(12px);
+  animation: blob-bounce 5s infinite ease;
+}
+
+/* Ensure card content is above the animated background */
+.no-scroll-position-card > * {
+  position: relative;
+  z-index: 3;
+}
+
+@keyframes blob-bounce {
+  0% {
+    transform: translate(-100%, -100%) translate3d(0, 0, 0);
+  }
+
+  25% {
+    transform: translate(-100%, -100%) translate3d(100%, 0, 0);
+  }
+
+  50% {
+    transform: translate(-100%, -100%) translate3d(100%, 100%, 0);
+  }
+
+  75% {
+    transform: translate(-100%, -100%) translate3d(0, 100%, 0);
+  }
+
+  100% {
+    transform: translate(-100%, -100%) translate3d(0, 0, 0);
+  }
 }
 
 /* Override stats-section-enhanced for no-scroll system */
@@ -186,6 +294,229 @@
   padding: 0;
   width: 100%;
   height: 100%;
+}
+
+/* ===== ABOUT PAGE SECTIONS ===== */
+.no-scroll-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Content grid for two-column layout */
+.no-scroll-content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 2vh, 24px);
+  width: 100%;
+  max-width: 800px;
+}
+
+@media (min-width: 768px) {
+  .no-scroll-content-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(24px, 3vh, 32px);
+  }
+}
+
+/* Standard card for no-scroll system */
+.no-scroll-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Preserve AboutPage specific styling */
+.about-header-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1.5vh, 16px);
+  text-align: center;
+}
+
+.about-header-group .typography {
+  text-wrap: balance;
+  max-width: 60ch;
+  margin: 0 auto;
+}
+
+/* Quote card styling for no-scroll */
+.no-scroll-card.quote-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: clamp(16px, 3vh, 24px);
+}
+
+/* Responsive adjustments for About page */
+@container no-scroll-container (height < 500px) {
+  .about-header-group {
+    gap: clamp(4px, 1vh, 8px);
+  }
+  
+  .no-scroll-content-grid {
+    gap: clamp(8px, 1.5vh, 16px);
+  }
+  
+  .no-scroll-card.quote-card {
+    padding: clamp(12px, 2vh, 16px);
+  }
+}
+
+/* About page specific spacing */
+.no-scroll-section {
+  padding: clamp(12px, 2vh, 20px) 0; /* Add vertical spacing between sections */
+}
+
+.no-scroll-section:first-child {
+  padding-top: 0; /* Remove top padding for first section */
+}
+
+.no-scroll-section:last-child {
+  padding-bottom: 0; /* Remove bottom padding for last section */
+}
+
+/* FAQ page specific styles */
+.no-scroll-faq-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 2vh, 1rem);
+  max-width: 600px;
+  margin: 0 auto;
+  flex-shrink: 0; /* Prevent shrinking */
+  padding: clamp(0.5rem, 2vh, 1rem) 0;
+}
+
+/* Responsive typography scaling for FAQ header */
+.no-scroll-faq-header .page-badge {
+  font-size: clamp(10px, 1.5vh, 12px);
+  padding: clamp(4px, 0.8vh, 6px) clamp(12px, 2vh, 16px);
+}
+
+.no-scroll-faq-header h2 {
+  font-size: clamp(1.25rem, 4vh, 2rem) !important;
+  line-height: clamp(1.2, 1.3, 1.3);
+}
+
+.no-scroll-faq-header .text-lg {
+  font-size: clamp(0.9rem, 2.5vh, 1.125rem) !important;
+}
+
+/* Responsive numbered button scaling */
+.no-scroll-faq-header .numbered-button {
+  width: clamp(32px, 5vh, 40px);
+  height: clamp(32px, 5vh, 40px);
+  font-size: clamp(0.8rem, 2vh, 1rem);
+}
+
+.no-scroll-faq-list {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.25rem, 1vh, 0.5rem);
+  min-height: 0; /* Allow shrinking */
+  overflow-y: auto; /* Make scrollable when needed */
+  padding: clamp(0.5rem, 1vh, 1rem) 0;
+}
+
+.no-scroll-faq-footer {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  flex-shrink: 0; /* Prevent shrinking */
+  padding: clamp(0.5rem, 2vh, 1rem) 0;
+}
+
+/* Responsive typography scaling for FAQ footer */
+.no-scroll-faq-footer p {
+  font-size: clamp(0.8rem, 2vh, 1rem) !important;
+}
+
+/* FAQ Navigation */
+.faq-navigation {
+  display: flex;
+  gap: clamp(0.75rem, 2vh, 1rem);
+  justify-content: center;
+  align-items: center;
+  margin-top: clamp(0.5rem, 1.5vh, 1rem);
+}
+
+.faq-tab-content {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 1.5vw, 1rem);
+}
+
+/* Responsive accordion trigger text scaling */
+.no-scroll-faq-list .accordion-trigger {
+  font-size: clamp(0.8rem, 2vh, 1rem) !important;
+  padding: clamp(0.75rem, 2vh, 1rem) clamp(1rem, 2.5vh, 1.25rem);
+}
+
+.no-scroll-faq-list .accordion-content-inner {
+  font-size: clamp(0.75rem, 1.8vh, 0.875rem) !important;
+  padding: 0 clamp(1rem, 2.5vh, 1.25rem) clamp(0.75rem, 2vh, 1rem);
+}
+
+/* Responsive accordion content sizing */
+.no-scroll-faq-list .accordion-content-visible {
+  max-height: clamp(150px, 30vh, 400px);
+}
+
+.no-scroll-faq-list .accordion-content {
+  overflow-y: auto;
+}
+
+/* Responsive adjustments for FAQ */
+@container (max-height: 600px) {
+  .no-scroll-faq-header {
+    gap: clamp(0.25rem, 1vh, 0.75rem);
+    padding: clamp(0.25rem, 1vh, 0.75rem) 0;
+  }
+  
+  .no-scroll-faq-list {
+    gap: clamp(0.125rem, 0.5vh, 0.25rem);
+    padding: clamp(0.25rem, 0.5vh, 0.5rem) 0;
+  }
+  
+  .no-scroll-faq-footer {
+    padding: clamp(0.25rem, 1vh, 0.75rem) 0;
+  }
+  
+  /* Reduce accordion content max-height for smaller viewports */
+  .no-scroll-faq-list .accordion-content-visible {
+    max-height: clamp(100px, 20vh, 250px);
+  }
+}
+
+@container (max-height: 500px) {
+  .no-scroll-faq-header {
+    gap: clamp(0.25rem, 0.5vh, 0.5rem);
+    padding: clamp(0.25rem, 0.5vh, 0.5rem) 0;
+  }
+  
+  .no-scroll-faq-list {
+    gap: clamp(0.125rem, 0.25vh, 0.25rem);
+    padding: clamp(0.25rem, 0.25vh, 0.25rem) 0;
+  }
+  
+  .no-scroll-faq-footer {
+    padding: clamp(0.25rem, 0.5vh, 0.5rem) 0;
+  }
+  
+  /* Further reduce accordion content for very small viewports */
+  .no-scroll-faq-list .accordion-content-visible {
+    max-height: clamp(80px, 15vh, 150px);
+  }
+}
+
+/* Position card styling */
+.no-scroll-position-card {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -216,14 +547,36 @@
   gap: min(1vh, 8px); /* Add gap between subtitle and description */
 }
 
+/* Fix font size for early-access section to match welcome page */
+.no-scroll-early-access .no-scroll-body {
+  font-size: clamp(0.8rem, 1.5vh, 0.95rem) !important;
+}
+
+/* Referral link input styling - smaller font and overflow handling */
+.no-scroll-input-group .font-mono {
+  font-size: clamp(0.6rem, 1.2vh, 0.75rem) !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: text;
+  user-select: all;
+  min-height: auto !important;
+  height: auto !important;
+  line-height: 1.2;
+  padding: 8px 12px !important;
+}
+
 /* Combined share and social section - approximately 24% of viewport height */
 .no-scroll-share-social-section {
-  height: 24vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   flex-shrink: 0;
-  gap: min(2vh, 16px); /* Internal spacing between share and social elements */
+  gap: clamp(16px, 3vh, 32px); /* Internal spacing between share and social elements */
+  width: 100%;
+  max-width: 600px; /* Consistent width with no-scroll-stack */
+  margin: 0 auto; /* Center the section */
+  /* Remove fixed height to allow content-driven sizing */
 }
 
 /* Apply button and input styling to combined section */
@@ -235,111 +588,38 @@
   margin-bottom: min(1vh, 8px);
 }
 
-.no-scroll-share-social-section .no-scroll-input {
-  height: 100%;
-  padding: min(1vh, 8px) min(1.5vh, 12px);
-  font-size: clamp(0.8rem, 1.8vh, 1rem);
-  border-radius: min(1.5vh, 12px);
+/* Simple input and copy button group */
+.simple-input-copy {
+  display: flex;
+  gap: clamp(12px, 2vh, 20px);
+  align-items: center;
+  margin-bottom: min(1vh, 8px);
+  width: 100%;
+}
+
+.simple-input {
+  flex: 1;
+  height: clamp(40px, 6vh, 48px);
+  padding: clamp(8px, 1.5vh, 12px) clamp(12px, 2vh, 16px);
+  font-size: clamp(0.875rem, 2vh, 1rem);
+  border-radius: clamp(8px, 1vh, 12px);
   border: 1px solid var(--border);
   background: var(--canvas);
   color: var(--text-primary);
   box-sizing: border-box;
 }
 
-.no-scroll-share-social-section .no-scroll-button-group {
-  display: flex;
-  gap: min(1vh, 8px);
-  height: min(6vh, 48px);
-}
-
-.no-scroll-share-social-section .no-scroll-button {
-  flex: 1;
-  height: 100%;
-  padding: 0 min(1.5vh, 12px);
-  font-size: clamp(0.8rem, 1.8vh, 1rem);
-  font-weight: 500;
-  border-radius: min(1.5vh, 12px);
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-}
-
-/* Button variants for combined section */
-.no-scroll-share-social-section .no-scroll-button.btn-primary {
-  background-color: var(--primary);
-  color: var(--primary-foreground);
-  border-color: var(--primary);
-}
-
-.no-scroll-share-social-section .no-scroll-button.btn-primary:hover {
-  background-color: var(--primary-hover);
-  border-color: var(--primary-hover);
-  transform: translateY(-1px);
-}
-
-.no-scroll-share-social-section .no-scroll-button.btn-secondary {
-  background-color: var(--surface-secondary);
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-}
-
-.no-scroll-share-social-section .no-scroll-button.btn-secondary:hover {
-  background-color: var(--surface-hover);
-  border-color: var(--border-hover);
-  transform: translateY(-1px);
-}
-
-/* Input focus styles for combined section */
-.no-scroll-share-social-section .no-scroll-input:focus {
+.simple-input:focus {
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
 }
 
-.no-scroll-share-social-section .no-scroll-input:hover {
+.simple-input:hover {
   border-color: var(--border-hover);
 }
 
-/* ButtonV2 specific styles for combined section */
-.no-scroll-share-social-section .no-scroll-button.buttonv2 {
-  color: #090909;
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  box-shadow: 
-    2px 2px 4px rgba(0, 0, 0, 0.08),
-    -2px -2px 4px rgba(255, 255, 255, 0.9);
-}
-
-.no-scroll-share-social-section .no-scroll-button.buttonv2:hover {
-  background: #e8e8e8;
-  border: 1px solid #d0d0d0;
-  transform: translateY(-1px);
-  box-shadow: 
-    3px 3px 6px rgba(0, 0, 0, 0.1),
-    -3px -3px 6px rgba(255, 255, 255, 0.95);
-}
-
-.no-scroll-share-social-section .no-scroll-button.buttonv2-yellow {
-  background: linear-gradient(135deg, #FBBF16, #E6AC14);
-  color: white;
-  border: 1px solid #FBBF16;
-  box-shadow: 
-    2px 2px 4px rgba(251, 191, 22, 0.3),
-    -2px -2px 4px rgba(255, 255, 255, 0.1);
-}
-
-.no-scroll-share-social-section .no-scroll-button.buttonv2-yellow:hover {
-  background: linear-gradient(135deg, #FDD835, #FBBF16);
-  border: 1px solid #FDD835;
-  transform: translateY(-1px);
-  box-shadow: 
-    3px 3px 6px rgba(251, 191, 22, 0.4),
-    -3px -3px 6px rgba(255, 255, 255, 0.15);
-}
+/* All button styling is now handled by the base buttonv2 classes in components.css */
 
 /* Apply social cards styling to combined section */
 .no-scroll-share-social-section .social-cards-container {
@@ -409,6 +689,38 @@
   padding: min(1vh, 8px);
   margin: 0;
   max-width: calc(25% - min(0.75vh, 6px)); /* Ensure 4 cards fit with gaps */
+}
+
+/* ===== HOMEPAGE SPECIFIC OVERRIDES ===== */
+
+/* Remove max-width constraint for homepage only */
+.homepage .no-scroll-stack {
+  max-width: none;
+}
+
+/* Fix button styling for homepage on mobile */
+@media (max-width: 767px) {
+  .homepage .no-scroll-button.buttonv2 {
+    border-radius: 0.5em !important;
+    padding: 0.7em 1.7em !important;
+    font-size: 14px !important;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .homepage .no-scroll-button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .homepage .no-scroll-button-group .no-scroll-button {
+    width: 100%;
+    flex: none;
+  }
 }
 
 /* ===== ENHANCED TYPOGRAPHY SCALING ===== */
@@ -514,13 +826,20 @@
 .no-scroll-input-group {
   display: flex;
   flex-direction: column;
-  gap: min(1vh, 8px);
-  height: min(6vh, 48px);
+  gap: min(0.5vh, 4px);
   margin-bottom: min(1vh, 8px);
+  width: 100%;
+}
+
+.no-scroll-input-label {
+  font-size: clamp(0.75rem, 1.5vh, 0.9rem);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: min(0.25vh, 2px);
 }
 
 .no-scroll-input {
-  height: 100%;
+  height: min(6vh, 48px);
   padding: min(1vh, 8px) min(1.5vh, 12px);
   font-size: clamp(0.8rem, 1.8vh, 1rem);
   border-radius: min(1.5vh, 12px);
@@ -528,17 +847,30 @@
   background: var(--canvas);
   color: var(--text-primary);
   box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.no-scroll-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+}
+
+.no-scroll-textarea {
+  min-height: min(12vh, 96px);
+  height: auto;
+  resize: vertical;
+  font-family: inherit;
 }
 
 .no-scroll-button-group {
   display: flex;
   gap: min(1vh, 8px);
-  height: min(6vh, 48px);
+  margin-top: min(1vh, 8px);
 }
 
 .no-scroll-button {
   flex: 1;
-  height: 100%;
   padding: 0 min(1.5vh, 12px);
   font-size: clamp(0.8rem, 1.8vh, 1rem);
   font-weight: 500;
@@ -590,35 +922,101 @@
   margin: min(0.5vh, 4px) 0 0 0;
 }
 
+/* ===== CONSISTENT SECTION WIDTH SYSTEM ===== */
+
+/* Standardized width control for all no-scroll sections */
+.no-scroll-section-standard {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Override for specific section types to ensure consistency */
+.no-scroll-welcome,
+.no-scroll-position-card,
+.no-scroll-share-social-section,
+.no-scroll-content-wrapper,
+.no-scroll-form-section,
+.no-scroll-early-access,
+.simple-input-copy,
+.social-cards-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Ensure all direct children of no-scroll-stack have consistent width */
+.no-scroll-stack > * {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Responsive width adjustments */
+@media (max-width: 768px) {
+  .no-scroll-section-standard,
+  .no-scroll-welcome,
+  .no-scroll-position-card,
+  .no-scroll-share-social-section,
+  .no-scroll-content-wrapper,
+  .no-scroll-form-section,
+  .no-scroll-early-access,
+  .simple-input-copy,
+  .social-cards-container,
+  .no-scroll-stack > * {
+    max-width: 90%;
+    padding: clamp(12px, 3vw, 24px);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  .no-scroll-section-standard,
+  .no-scroll-welcome,
+  .no-scroll-position-card,
+  .no-scroll-share-social-section,
+  .no-scroll-content-wrapper,
+  .no-scroll-form-section,
+  .no-scroll-early-access,
+  .simple-input-copy,
+  .social-cards-container,
+  .no-scroll-stack > * {
+    max-width: 80%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .no-scroll-section-standard,
+  .no-scroll-welcome,
+  .no-scroll-position-card,
+  .no-scroll-share-social-section,
+  .no-scroll-content-wrapper,
+  .no-scroll-form-section,
+  .no-scroll-early-access,
+  .simple-input-copy,
+  .social-cards-container,
+  .no-scroll-stack > * {
+    max-width: 600px;
+  }
+}
+
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 
 /* For very wide screens, limit maximum sizes while maintaining 5% padding */
 @media (min-width: 1400px) {
   .no-scroll-content {
-    max-width: 600px;
+    max-width: 70%;
     margin: 0 auto;
   }
 }
 
-/* For very short screens, reduce gaps and use minimum padding */
+/* For very short screens, reduce gaps */
 @media (max-height: 600px) {
-  .no-scroll-page {
-    padding: 3vh 3vw; /* Reduce to 3% padding on small screens */
-  }
-  
   .no-scroll-stack {
     gap: min(0.5vh, 4px); /* Tighter gaps */
   }
   
   .no-scroll-card {
     padding: min(1vh, 8px);
-  }
-}
-
-/* For extremely short screens, use minimal padding */
-@media (max-height: 400px) {
-  .no-scroll-page {
-    padding: 2vh 2vw; /* Minimal 2% padding on very small screens */
   }
 }
 
@@ -631,5 +1029,1072 @@
   .no-scroll-social-section .social-card {
     height: min(6vh, 48px);
     padding: min(0.5vh, 4px);
+  }
+}
+
+/* ===== HOMEPAGE SPECIFIC STYLES ===== */
+
+/* Logo Row - Beautiful card design with logo and brand name */
+.no-scroll-logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 16px);
+  padding: clamp(8px, 2vh, 16px) clamp(12px, 3vw, 24px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: clamp(8px, 2vh, 16px);
+  box-shadow: 0 2px 8px var(--shadow-light), 0 1px 3px var(--shadow);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  max-width: fit-content;
+  margin: 0 auto;
+}
+
+.no-scroll-logo-row:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px var(--shadow-light), 0 2px 6px var(--shadow);
+  border-color: var(--border-hover);
+}
+
+.no-scroll-logo-row-image {
+  width: clamp(24px, 4vh, 40px);
+  height: clamp(24px, 4vh, 40px);
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.no-scroll-logo-row-text {
+  font-family: 'Author-Semibold', 'Satoshi', sans-serif;
+  font-weight: 600;
+  font-size: clamp(1rem, 2.5vh, 1.5rem);
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* Hide main logo row on desktop since we have sidebar logo row */
+@media (min-width: 769px) {
+  .no-scroll-logo-row {
+    display: none;
+  }
+}
+
+/* Make sidebar logo row visible and centered on mobile with animation */
+@media (max-width: 768px) {
+  .no-scroll-logo-row-sidebar {
+    position: relative;
+    display: none !important; /* Temporarily hidden */
+    align-items: center;
+    justify-content: center;
+    gap: clamp(8px, 2vw, 16px);
+    padding: clamp(8px, 2vh, 16px) clamp(12px, 3vw, 24px);
+    border-radius: clamp(8px, 2vh, 16px);
+    overflow: hidden;
+    width: fit-content;
+    margin: 0 auto clamp(16px, 3vh, 24px) auto; /* Center and add bottom margin */
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .no-scroll-logo-row-sidebar:hover {
+    transform: translateY(-1px);
+  }
+
+  /* Animated border effect for mobile */
+  .no-scroll-logo-row-sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+      transparent, 
+      var(--primary, #ff9966), 
+      var(--primary-light, #ffaa77), 
+      var(--primary, #ff9966), 
+      transparent
+    );
+    animation: borderRotation 3s infinite linear;
+    z-index: -2;
+  }
+
+  /* Dark theme border colors for mobile */
+  [data-theme="dark"] .no-scroll-logo-row-sidebar::before {
+    background: linear-gradient(90deg, 
+      transparent, 
+      var(--primary, #ff9966), 
+      var(--primary-light, #ffaa77), 
+      var(--primary, #ff9966), 
+      transparent
+    );
+  }
+
+  /* Content background for mobile */
+  .no-scroll-logo-row-sidebar::after {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    background: var(--surface, #ffffff);
+    border-radius: clamp(7px, 1.8vh, 15px);
+    z-index: -1;
+  }
+
+  /* Dark theme content background for mobile */
+  [data-theme="dark"] .no-scroll-logo-row-sidebar::after {
+    background: var(--surface, #1a1a1a);
+  }
+
+  .no-scroll-logo-row-sidebar .no-scroll-logo-row-image {
+    width: clamp(24px, 4vh, 40px);
+    height: clamp(24px, 4vh, 40px);
+    object-fit: contain;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .no-scroll-logo-row-sidebar .no-scroll-logo-row-text {
+    font-family: 'Author-Semibold', 'Satoshi', sans-serif;
+    font-weight: 600;
+    font-size: clamp(1rem, 2.5vh, 1.5rem);
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin: 0;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+}
+
+/* Animated card-style logo row for sidebar breakpoints */
+@media (min-width: 769px) {
+  .no-scroll-logo-row-sidebar {
+    position: relative;
+    display: none;
+    align-items: center;
+    gap: clamp(8px, 1vw, 12px);
+    padding: clamp(6px, 1vh, 10px) clamp(10px, 1.5vw, 16px);
+    border-radius: clamp(6px, 1vh, 10px);
+    overflow: hidden;
+    width: fit-content;
+    margin-bottom: clamp(8px, 1.5vh, 16px);
+    transition: transform 0.3s ease;
+  }
+
+  .no-scroll-logo-row-sidebar:hover {
+    transform: translateY(-1px);
+  }
+
+  /* Animated border effect */
+  .no-scroll-logo-row-sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+      transparent, 
+      var(--primary, #ff9966), 
+      var(--primary-light, #ffaa77), 
+      var(--primary, #ff9966), 
+      transparent
+    );
+    animation: borderRotation 3s infinite linear;
+    z-index: -2;
+  }
+
+  /* Dark theme border colors */
+  [data-theme="dark"] .no-scroll-logo-row-sidebar::before {
+    background: linear-gradient(90deg, 
+      transparent, 
+      var(--primary, #ff9966), 
+      var(--primary-light, #ffaa77), 
+      var(--primary, #ff9966), 
+      transparent
+    );
+  }
+
+  /* Content background */
+  .no-scroll-logo-row-sidebar::after {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    background: var(--surface, #ffffff);
+    border-radius: clamp(5px, 0.8vh, 9px);
+    z-index: -1;
+  }
+
+  /* Dark theme content background */
+  [data-theme="dark"] .no-scroll-logo-row-sidebar::after {
+    background: var(--surface, #1a1a1a);
+  }
+
+  .no-scroll-logo-row-sidebar .no-scroll-logo-row-image {
+    width: clamp(20px, 2.5vh, 28px);
+    height: clamp(20px, 2.5vh, 28px);
+    z-index: 1;
+  }
+
+  .no-scroll-logo-row-sidebar .no-scroll-logo-row-text {
+    font-size: clamp(0.9rem, 1.8vh, 1.1rem);
+    z-index: 1;
+  }
+}
+
+@keyframes borderRotation {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Mobile logo section - only visible on mobile */
+.no-scroll-mobile-logo {
+  height: min(8vh, 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.no-scroll-logo-image {
+  width: min(8vh, 64px);
+  height: min(8vh, 64px);
+  object-fit: contain;
+}
+
+/* Hide mobile logo on desktop */
+@media (min-width: 769px) {
+  .no-scroll-mobile-logo {
+    display: none;
+  }
+}
+
+/* Hero section - main content area */
+.no-scroll-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  min-height: 0;
+}
+
+.no-scroll-hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 3vh, 32px);
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+/* Desktop layout - side by side */
+@media (min-width: 769px) {
+  .no-scroll-hero-content {
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(24px, 5vw, 80px);
+  }
+  
+  .no-scroll-hero-text {
+    flex: 1;
+    max-width: 50%;
+  }
+  
+  .no-scroll-hero-image {
+    flex: 1;
+    max-width: 50%;
+  }
+}
+
+/* Hero text section */
+.no-scroll-hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 2vh, 24px);
+  text-align: center;
+}
+
+/* Desktop text alignment */
+@media (min-width: 769px) {
+  .no-scroll-hero-text {
+    text-align: left;
+  }
+}
+
+.no-scroll-hero-title {
+  font-size: clamp(1.5rem, 4vh, 2.5rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.no-scroll-hero-subtitle {
+  font-size: clamp(1rem, 2.5vh, 1.25rem);
+  line-height: 1.4;
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+/* Hero image section */
+.no-scroll-hero-image {
+  flex: 0 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: min(25vh, 200px);
+  max-height: 50vh;
+}
+
+/* Further reduce image height on mobile */
+@media (max-width: 768px) {
+  .no-scroll-hero-image {
+    min-height: min(20vh, 160px);
+    max-height: 40vh;
+  }
+}
+
+.no-scroll-image {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: min(2vh, 16px);
+}
+
+/* Form section specific to HomePage */
+.no-scroll-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.5vh, 16px);
+  width: 100%;
+  max-width: 360px; /* Reduced max-width for better centering */
+  margin: 0 auto;
+}
+
+.no-scroll-form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.5vh, 16px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: min(2vh, 16px);
+  padding: clamp(12px, 2vh, 24px);
+}
+
+/* Input highlight state for HomePage */
+.no-scroll-input-highlight {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-alpha);
+}
+
+.no-scroll-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-alpha);
+}
+
+.no-scroll-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Error and disclaimer text */
+.no-scroll-error {
+  font-size: clamp(0.75rem, 1.5vh, 0.875rem);
+  color: var(--error);
+  margin: 0;
+  text-align: center;
+}
+
+.no-scroll-disclaimer {
+  font-size: clamp(0.7rem, 1.3vh, 0.8rem);
+  color: var(--text-muted);
+  margin: 0;
+  text-align: center;
+  line-height: 1.3;
+}
+
+
+
+/* Button group adjustments for HomePage */
+.no-scroll-hero .no-scroll-button-group {
+  flex-direction: column;
+  gap: clamp(8px, 1.5vh, 16px);
+  width: 100%;
+  max-width: 360px; /* Reduced max-width for better centering */
+  margin: 0 auto;
+}
+
+/* Desktop button layout */
+@media (min-width: 769px) {
+  .no-scroll-hero .no-scroll-button-group {
+    flex-direction: row;
+    max-width: none;
+    margin: 0;
+  }
+  
+  /* Form section alignment on sidebar breakpoint */
+  .no-scroll-form-section {
+    margin: 0; /* Remove auto centering */
+    max-width: none; /* Remove max-width constraint */
+  }
+}
+
+/* Button hover states */
+.no-scroll-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.no-scroll-button:active {
+  transform: translateY(0);
+}
+
+/* Responsive adjustments for constrained heights */
+@media (max-height: 600px) {
+  .no-scroll-hero-content {
+    gap: clamp(8px, 2vh, 16px);
+  }
+  
+  .no-scroll-hero-text {
+    gap: clamp(4px, 1vh, 8px);
+  }
+  
+  .no-scroll-form {
+    padding: clamp(8px, 1.5vh, 16px);
+  }
+  
+  .no-scroll-hero-title {
+    font-size: clamp(1.2rem, 3vh, 2rem);
+  }
+  
+  .no-scroll-hero-subtitle {
+    font-size: clamp(0.9rem, 2vh, 1.1rem);
+  }
+}
+
+/* Very constrained heights */
+@media (max-height: 450px) {
+  .no-scroll-mobile-logo {
+    height: min(6vh, 48px);
+  }
+  
+  .no-scroll-logo-image {
+    width: min(6vh, 48px);
+    height: min(6vh, 48px);
+  }
+  
+  .no-scroll-hero-image {
+    min-height: min(20vh, 160px);
+  }
+}
+
+/* ===== WAITLISTPAGE SPECIFIC STYLES ===== */
+
+/* Welcome section adjustments for WaitlistPage */
+.no-scroll-welcome {
+  height: auto; /* Allow content-driven height instead of fixed 13vh */
+  min-height: clamp(80px, 12vh, 120px); /* Ensure minimum usable height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  flex-shrink: 0;
+  gap: clamp(8px, 1.5vh, 16px); /* Responsive gap between elements */
+  padding: clamp(8px, 2vh, 16px) 0; /* Add vertical padding for better spacing */
+}
+
+/* Ensure welcome section typography scales properly */
+.no-scroll-welcome h2 {
+  font-size: clamp(1.5rem, 4vh, 2.5rem);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.no-scroll-welcome p {
+  font-size: clamp(0.9rem, 2vh, 1.1rem);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Content wrapper for dynamic content sections */
+.no-scroll-content-wrapper {
+  width: 100%;
+  max-width: 600px; /* Consistent width with no-scroll-stack */
+  margin: 0 auto; /* Center the wrapper */
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 3vh, 32px);
+  /* Removed flex: 1 to allow proper vertical centering */
+  min-height: 0; /* Allow flex shrinking */
+  overflow: hidden; /* Prevent content from breaking layout */
+}
+
+/* Dynamic content area - handles changing content */
+.no-scroll-content-wrapper > * {
+  width: 100%;
+  flex-shrink: 0; /* Prevent content from shrinking unexpectedly */
+}
+
+/* Action buttons section for WaitlistPage */
+.no-scroll-action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(12px, 2vh, 16px);
+  flex-shrink: 0; /* Prevent button area from shrinking */
+  width: 100%;
+  max-width: 600px; /* Limit button width on larger screens */
+  margin: clamp(8px, 2vh, 16px) auto; /* Center the button grid with vertical margin */
+  padding: 0 clamp(8px, 2vw, 16px); /* Add responsive padding */
+}
+
+/* Ensure buttons maintain proper height within no-scroll system */
+.no-scroll-action-buttons .no-scroll-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Legacy support for existing grid classes */
+.no-scroll-stack .grid {
+  flex-shrink: 0; /* Prevent button area from shrinking */
+  width: 100%;
+  max-width: 600px; /* Limit button width on larger screens */
+  margin: 0 auto; /* Center the button grid */
+}
+
+.no-scroll-stack .grid .no-scroll-button {
+  height: clamp(60px, 8vh, 96px); /* Responsive button height */
+  min-height: 60px; /* Minimum usable height */
+}
+
+/* Position card with waitlist button section */
+.no-scroll-position-waitlist-section {
+  display: flex;
+  gap: clamp(12px, 2vh, 20px);
+  align-items: stretch;
+  width: 100%;
+}
+
+.no-scroll-position-waitlist-section .no-scroll-position-card {
+  flex: 1;
+  position: relative;
+}
+
+.no-scroll-waitlist-button {
+  flex: 1;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure stats work properly within no-scroll system */
+.no-scroll-position-card .stats-section-enhanced {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.no-scroll-position-card .stat-item {
+  text-align: center;
+}
+
+.no-scroll-position-card .stat-number {
+  font-size: clamp(1.5rem, 4vh, 2.5rem);
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.no-scroll-position-card .stat-label {
+  font-size: clamp(0.875rem, 2vh, 1rem);
+  color: var(--text-secondary);
+  margin-top: clamp(4px, 1vh, 8px);
+}
+
+/* Steps container for benefits/timeline sections */
+.no-scroll-content-wrapper .steps-container {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vh, 20px);
+}
+
+.no-scroll-content-wrapper .modal-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(12px, 2vh, 16px);
+  padding: clamp(12px, 2vh, 20px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: min(1.5vh, 12px);
+  transition: all 0.2s ease;
+}
+
+.no-scroll-content-wrapper .modal-step-item:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.no-scroll-content-wrapper .modal-step-icon {
+  flex-shrink: 0;
+  width: clamp(32px, 5vh, 40px);
+  height: clamp(32px, 5vh, 40px);
+  background: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.no-scroll-content-wrapper .modal-step-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 1vh, 8px);
+}
+
+.no-scroll-content-wrapper .modal-step-content h4 {
+  font-size: clamp(1rem, 2.2vh, 1.25rem);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.no-scroll-content-wrapper .modal-step-content p {
+  font-size: clamp(0.875rem, 1.8vh, 1rem);
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Responsive adjustments for WaitlistPage */
+@media (max-height: 600px) {
+  .no-scroll-content-wrapper {
+    gap: clamp(12px, 2vh, 20px);
+  }
+  
+  .no-scroll-position-card {
+    padding: clamp(12px, 2vh, 20px);
+  }
+  
+  .no-scroll-content-wrapper .modal-step-item {
+    padding: clamp(8px, 1.5vh, 16px);
+    gap: clamp(8px, 1.5vh, 12px);
+  }
+  
+  .no-scroll-content-wrapper .modal-step-icon {
+    width: clamp(28px, 4vh, 32px);
+    height: clamp(28px, 4vh, 32px);
+  }
+}
+
+/* Very constrained heights for WaitlistPage */
+@media (max-height: 450px) {
+  .no-scroll-content-wrapper .steps-container {
+    gap: clamp(8px, 1.5vh, 12px);
+  }
+  
+  .no-scroll-content-wrapper .modal-step-content h4 {
+    font-size: clamp(0.9rem, 2vh, 1.1rem);
+  }
+  
+  .no-scroll-content-wrapper .modal-step-content p {
+    font-size: clamp(0.8rem, 1.6vh, 0.9rem);
+  }
+  
+  /* Adjust social section for very constrained heights */
+  .no-scroll-content-wrapper .no-scroll-share-social-section {
+    gap: clamp(12px, 2vh, 20px);
+  }
+}
+
+/* Social cards container and cards styling */
+.social-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(8px, 1.5vh, 16px);
+  justify-content: center;
+  margin: clamp(8px, 2vh, 16px) 0;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Social Share Section - positioned at bottom */
+.no-scroll-share-social-section {
+  flex-shrink: 0; /* Don't shrink this section */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Simplified Social Icons (no cards) */
+.social-icons-simple {
+  display: flex;
+  justify-content: center;
+  gap: clamp(16px, 4vw, 24px);
+  flex-wrap: wrap;
+  width: 100%;
+  padding: clamp(8px, 2vh, 16px) clamp(12px, 3vw, 20px); /* Increased padding for better spacing */
+}
+
+.social-icon-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  opacity: 0.8;
+  padding: clamp(8px, 2vh, 12px); /* Added padding around individual icons */
+  border-radius: 8px; /* Subtle border radius for better touch targets */
+}
+
+.social-icon-link:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.social-card {
+  flex: 1 1 calc(25% - clamp(6px, 1.125vh, 12px));
+  min-width: clamp(60px, 10vw, 80px);
+  max-width: clamp(80px, 15vw, 120px);
+  height: clamp(60px, 8vh, 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: clamp(8px, 1.5vh, 12px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: clamp(8px, 1.5vh, 12px);
+  transition: all 0.2s ease;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.social-card:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.social-card .social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(24px, 4vh, 32px);
+  height: clamp(24px, 4vh, 32px);
+  background: var(--surface-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.social-card:hover .social-icon {
+  background: var(--surface-accent);
+  border-color: var(--border-hover);
+  color: var(--text-on-accent);
+}
+
+.social-card .platform-name {
+  font-size: clamp(0.6rem, 1.2vh, 0.8rem);
+  margin-top: 4px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Support for social cards in content wrapper (for backward compatibility) */
+.no-scroll-content-wrapper .social-cards-container {
+  margin: clamp(8px, 2vh, 16px) 0;
+}
+
+.no-scroll-content-wrapper .social-card {
+  flex: 1 1 calc(25% - clamp(6px, 1.125vh, 12px));
+  min-width: clamp(60px, 10vw, 80px);
+  max-width: clamp(80px, 15vw, 120px);
+  height: clamp(60px, 8vh, 80px);
+}
+
+/* Generic Section Container */
+.no-scroll-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 4vh, 40px);
+  /* Remove flex: 1 to allow proper centering */
+  min-height: 0;
+}
+
+/* On mobile, don't center vertically to maximize space usage */
+@media (max-width: 767px) {
+  .no-scroll-section {
+    justify-content: flex-start;
+  }
+}
+
+/* Responsive adjustments for section container */
+@container no-scroll-container (height < 600px) {
+  .no-scroll-section {
+    gap: clamp(12px, 2.5vh, 24px);
+  }
+}
+
+@container no-scroll-container (height < 500px) {
+  .no-scroll-section {
+    gap: clamp(8px, 2vh, 16px);
+  }
+}
+
+@container no-scroll-container (height < 400px) {
+  .no-scroll-section {
+    gap: clamp(6px, 1.5vh, 12px);
+  }
+}
+
+/* Menu Page Specific Styles */
+.no-scroll-menu-grid {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 2vh, 16px);
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  align-content: start;
+}
+
+/* Grid layout for desktop */
+@media (min-width: 768px) {
+  .no-scroll-menu-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Menu card styles - Override utility classes for proper scaling */
+.menu-card {
+  background: var(--card-background) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: min(2vh, 16px) !important;
+  padding: clamp(4px, 2vh, 16px) !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  height: auto;
+  min-height: clamp(40px, 8vh, 80px);
+  /* Override utility classes */
+  --space-4: clamp(4px, 2vh, 16px) !important;
+  /* Override card utility classes */
+  --card-padding: clamp(4px, 2vh, 16px) !important;
+}
+
+.menu-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(6px, 2.5vh, 16px);
+  width: 100%;
+}
+
+.menu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(28px, 5vh, 48px);
+  height: clamp(28px, 5vh, 48px);
+  background: var(--surface-accent);
+  color: var(--text-on-accent);
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.menu-content {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1px, 0.5vh, 3px);
+  flex: 1;
+}
+
+.menu-text-small {
+  font-size: clamp(0.75rem, 1.8vh, 1rem);
+  line-height: 1.3;
+}
+
+/* Title text should be black/primary color */
+.menu-content .font-semibold {
+  color: var(--text-primary);
+}
+
+/* Subtitle text should be grey/secondary color */
+.menu-content [color="secondary"] {
+  color: var(--text-secondary);
+}
+
+/* Responsive adjustments for different container heights */
+@container no-scroll-container (height < 600px) {
+  .no-scroll-menu-grid {
+    gap: clamp(4px, 1vh, 8px);
+  }
+  
+  .menu-card {
+    padding: clamp(3px, 1vh, 8px) !important;
+    min-height: clamp(35px, 7vh, 60px);
+  }
+  
+  .menu-item {
+    gap: clamp(4px, 1vh, 8px) !important;
+    padding: clamp(2px, 0.5vh, 4px) !important;
+  }
+  
+  .menu-icon {
+    width: clamp(20px, 3vh, 28px);
+    height: clamp(20px, 3vh, 28px);
+  }
+  
+  .menu-text-small {
+    font-size: clamp(0.65rem, 1.4vh, 0.8rem);
+  }
+  
+  /* Override card utility classes for height scaling */
+  .card-padding-md {
+    padding: clamp(3px, 1vh, 8px) !important;
+  }
+  
+  .card-content {
+    padding: 0 20px !important;
+  }
+}
+
+@container no-scroll-container (height < 500px) {
+  .no-scroll-menu-grid {
+    gap: clamp(2px, 0.8vh, 6px);
+  }
+  
+  .menu-card {
+    padding: clamp(2px, 0.8vh, 6px) !important;
+    min-height: clamp(30px, 6vh, 45px);
+  }
+  
+  .menu-item {
+    gap: clamp(3px, 0.8vh, 5px) !important;
+    padding: clamp(1px, 0.3vh, 2px) !important;
+  }
+  
+  .menu-icon {
+    width: clamp(16px, 2.5vh, 22px);
+    height: clamp(16px, 2.5vh, 22px);
+  }
+  
+  .menu-text-small {
+    font-size: clamp(0.6rem, 1.2vh, 0.75rem);
+  }
+  
+  /* Override card utility classes for height scaling */
+  .card-padding-md {
+    padding: clamp(2px, 0.8vh, 6px) !important;
+  }
+  
+  .card-content {
+    padding: 0 !important;
+  }
+}
+
+/* Very constrained heights - aggressive scaling */
+@container no-scroll-container (height < 450px) {
+  .no-scroll-menu-grid {
+    gap: clamp(1px, 0.5vh, 3px);
+  }
+  
+  .menu-card {
+    padding: clamp(1px, 0.6vh, 4px) !important;
+    min-height: clamp(25px, 5vh, 35px);
+  }
+  
+  .menu-item {
+    gap: clamp(2px, 0.6vh, 4px) !important;
+    padding: 0 !important;
+  }
+  
+  .menu-icon {
+    width: clamp(14px, 2vh, 18px);
+    height: clamp(14px, 2vh, 18px);
+  }
+  
+  .menu-text-small {
+    font-size: clamp(0.55rem, 1.1vh, 0.7rem);
+  }
+  
+  /* Override card utility classes for height scaling */
+  .card-padding-md {
+    padding: clamp(1px, 0.6vh, 4px) !important;
+  }
+  
+  .card-content {
+    padding: 0 !important;
+  }
+}
+
+/* Extremely constrained heights - maximum compression */
+@container no-scroll-container (height < 400px) {
+  .no-scroll-menu-grid {
+    gap: clamp(1px, 0.3vh, 2px);
+  }
+  
+  .menu-card {
+    padding: clamp(1px, 0.5vh, 3px) !important;
+    min-height: clamp(20px, 4vh, 30px);
+  }
+  
+  .menu-item {
+    gap: clamp(1px, 0.5vh, 3px) !important;
+    padding: 0 !important;
+  }
+  
+  .menu-icon {
+    width: clamp(12px, 1.8vh, 16px);
+    height: clamp(12px, 1.8vh, 16px);
+  }
+  
+  .menu-text-small {
+    font-size: clamp(0.5rem, 1vh, 0.65rem);
+  }
+  
+  /* Override card utility classes for height scaling */
+  .card-padding-md {
+    padding: clamp(1px, 0.5vh, 3px) !important;
+  }
+  
+  .card-content {
+    padding: 0 !important;
   }
 }

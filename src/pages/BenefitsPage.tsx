@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import type { FC } from 'react'
 import { NumberedButton, Container, Stack, Card, CardContent, Typography } from '../components/ui'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -19,25 +19,25 @@ const features: Feature[] = [
     id: 1,
     image: brandsDefImg,
     title: 'Inbox overload done',
-    description: 'Every brand you interact with has its <strong>own clean hub</strong> inside Beeylo. So <strong>all your conversations</strong> stay exactly <strong>where they belong</strong>.'
+    description: 'Every brand you interact with has its <strong>own clean hub</strong> inside Beeylo.'
   },
   {
     id: 2,
     image: ticketButtonsImg,
     title: 'No more switching apps',
-    description: 'Beeylo lets you <strong>take action</strong> the moment you see a message. <strong>Return</strong> an item, <strong>download</strong> a receipt, <strong>check</strong> your warranty, <strong>ask</strong> a question and all from <strong>one place</strong>.'
+    description: '<strong>Return</strong> an item, <strong>download</strong> a receipt, <strong>check</strong> your warranty, <strong>ask</strong> a question and all from <strong>one place</strong>.'
   },
   {
     id: 3,
-    image: ticketKwikImg,
-    title: 'No more long emails',
-    description: 'Beeylo\'s smart AI summarizes your emails, so you <strong>instantly see what matters</strong>.'
+    image: ticketOrderImg,
+    title: 'One order, one overview',
+    description: 'Beeylo brings every message together in <strong>one smart overview</strong>.'
   },
   {
     id: 4,
-    image: ticketOrderImg,
-    title: 'One ticket per order',
-    description: 'Ten separate emails for one simple order — from confirmation to return? That\'s old school. <strong>Beeylo brings everything together in one smart overview</strong>.'
+    image: ticketKwikImg,
+    title: 'No more long emails',
+    description: 'Beeylo\'s smart AI summarizes your emails, so you <strong>instantly see what matters</strong>.'
   }
 ]
 
@@ -49,6 +49,9 @@ export const BenefitsPage: FC<BenefitsPageProps> = () => {
   const [currentFeature, setCurrentFeature] = useState(0)
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
+  const [maxTextHeight, setMaxTextHeight] = useState<number>(0)
+  const [isMobile, setIsMobile] = useState<boolean>(false)
+  const textContainerRef = useRef<HTMLDivElement>(null)
   
   const handleFeatureChange = (index: number) => {
     setCurrentFeature(index)
@@ -121,6 +124,65 @@ export const BenefitsPage: FC<BenefitsPageProps> = () => {
       return () => container.removeEventListener('wheel', handleWheel)
     }
   }, [])
+  
+  // Check if device is mobile and calculate maximum text height for dynamic image sizing
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth <= 768
+      setIsMobile(mobile)
+      return mobile
+    }
+
+    const calculateMaxTextHeight = () => {
+      const mobile = checkMobile()
+      
+      // Only calculate height on mobile devices
+      if (!mobile || !textContainerRef.current) {
+        setMaxTextHeight(0)
+        return
+      }
+
+      let maxHeight = 0
+      const container = textContainerRef.current
+      
+      // Create a temporary element to measure each title
+      const tempElement = document.createElement('div')
+      tempElement.style.position = 'absolute'
+      tempElement.style.visibility = 'hidden'
+      tempElement.style.width = container.offsetWidth + 'px'
+      tempElement.className = 'feature-nav-title-container'
+      document.body.appendChild(tempElement)
+
+      features.forEach((feature) => {
+        // Create the full structure for accurate measurement
+        tempElement.innerHTML = `
+          <div class="feature-navigation">
+            ${features.map((_, index) => `<button class="numbered-button ${index === 0 ? 'active' : ''}"></button>`).join('')}
+          </div>
+          <div class="feature-title-wrapper">
+            <h3 class="feature-title text-center-mobile-left-desktop">${feature.title}</h3>
+          </div>
+          <div class="feature-description-wrapper">
+            <p class="feature-description text-center-mobile-left-desktop">${feature.description}</p>
+          </div>
+        `
+        
+        const height = tempElement.offsetHeight
+        if (height > maxHeight) {
+          maxHeight = height
+        }
+      })
+
+      document.body.removeChild(tempElement)
+      setMaxTextHeight(maxHeight)
+    }
+
+    // Calculate on mount and window resize
+    calculateMaxTextHeight()
+    window.addEventListener('resize', calculateMaxTextHeight)
+    
+    return () => window.removeEventListener('resize', calculateMaxTextHeight)
+  }, [])
 
   const currentFeatureData = features[currentFeature]
 
@@ -135,48 +197,63 @@ export const BenefitsPage: FC<BenefitsPageProps> = () => {
         <Card variant="outline" className="feature-card">
           <CardContent>
             <Stack spacing={6} className="feature-content">
-                    <Stack spacing={4} className="feature-text">
-                      <div className="feature-navigation">
-                        {features.map((_, index) => (
-                          <NumberedButton
-                            key={index}
-                            number={index + 1}
-                            active={currentFeature === index}
-                            onClick={() => handleFeatureChange(index)}
-                          />
-                        ))}
+                    <div className="feature-text">
+                      <div 
+                        ref={textContainerRef}
+                        className="feature-nav-title-container"
+                        style={{ minHeight: isMobile && maxTextHeight > 0 ? `${maxTextHeight}px` : 'auto' }}
+                      >
+                        <div className="feature-navigation">
+                          {features.map((_, index) => (
+                            <NumberedButton
+                              key={index}
+                              number={index + 1}
+                              active={currentFeature === index}
+                              onClick={() => handleFeatureChange(index)}
+                            />
+                          ))}
+                        </div>
+                        <AnimatePresence mode="wait">
+                          <motion.div
+                            key={`title-${currentFeature}`}
+                            initial={{ opacity: 0.7, x: 10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0.7, x: -10 }}
+                            transition={{ duration: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+                            className="feature-title-wrapper"
+                          >
+                            <Typography variant="h3" className="feature-title text-center-mobile-left-desktop">{currentFeatureData.title}</Typography>
+                          </motion.div>
+                        </AnimatePresence>
+                        <AnimatePresence mode="wait">
+                          <motion.div
+                            key={`description-${currentFeature}`}
+                            initial={{ opacity: 0.7, x: 10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0.7, x: -10 }}
+                            transition={{ duration: 0.15, ease: [0.25, 0.1, 0.25, 1], delay: 0.03 }}
+                            className="feature-description-wrapper"
+                          >
+                            <Typography variant="body" color="secondary" className="feature-description text-center-mobile-left-desktop" dangerouslySetInnerHTML={{ __html: currentFeatureData.description }} />
+                          </motion.div>
+                        </AnimatePresence>
                       </div>
-                      <AnimatePresence mode="wait">
-                        <motion.div
-                          key={`title-${currentFeature}`}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -20 }}
-                          transition={{ duration: 0.225, ease: [0.4, 0.0, 0.2, 1] }}
-                        >
-                          <Typography variant="h3" className="feature-title text-center-mobile-left-desktop">{currentFeatureData.title}</Typography>
-                        </motion.div>
-                      </AnimatePresence>
-                      <AnimatePresence mode="wait">
-                        <motion.div
-                          key={`description-${currentFeature}`}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -20 }}
-                          transition={{ duration: 0.225, ease: [0.4, 0.0, 0.2, 1], delay: 0.05 }}
-                        >
-                          <Typography variant="body" color="secondary" className="feature-description text-center-mobile-left-desktop" dangerouslySetInnerHTML={{ __html: currentFeatureData.description }} />
-                        </motion.div>
-                      </AnimatePresence>
-                    </Stack>
-                    <div className="feature-image">
+                    </div>
+                    <div 
+                      className="feature-image"
+                      style={isMobile && maxTextHeight > 0 ? { 
+                        height: `calc(100vh - ${maxTextHeight + 120}px)`,
+                        minHeight: '250px',
+                        maxHeight: '500px'
+                      } : {}}
+                    >
                       <AnimatePresence mode="wait">
                         <motion.div
                           key={`image-${currentFeature}`}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -20 }}
-                          transition={{ duration: 0.225, ease: [0.4, 0.0, 0.2, 1] }}
+                          initial={{ opacity: 0.7, x: 10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0.7, x: -10 }}
+                          transition={{ duration: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
                           style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                         >
                           <img 

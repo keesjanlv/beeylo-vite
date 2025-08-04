@@ -37,7 +37,7 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
             aria-label="Return to home"
           >
             <ArrowLeft size={16} />
-            <span>Return</span>
+            <span>Close</span>
           </button>
 
           {/* Welcome Message */}
@@ -48,22 +48,31 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
             </p>
           </div>
 
-          {/* Waitlist Position Card */}
-          <div className="no-scroll-position-card">
-            <Card>
-              <CardContent>
-                <div className="stats-section-enhanced">
-                  <div className="stat-item text-center">
-                    <Typography variant="h1" className="stat-number text-center font-roboto font-bold text-sm">
-                      {userPosition.toLocaleString()}
-                    </Typography>
-                    <Typography variant="body" color="secondary" className="stat-label text-center">
-                      Your Position
-                    </Typography>
+          {/* Waitlist Position Card with Waitlist Button */}
+          <div className="no-scroll-position-waitlist-section">
+            <div className="no-scroll-position-card">
+              <Card>
+                <CardContent>
+                  <div className="stats-section-enhanced">
+                    <div className="stat-item text-center">
+                      <Typography variant="h1" className="stat-number text-center font-roboto font-bold text-sm">
+                        {userPosition.toLocaleString()}
+                      </Typography>
+                      <Typography variant="body" color="secondary" className="stat-label text-center">
+                        Your Position
+                      </Typography>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
+            <Button 
+              variant="secondary"
+              onClick={() => onTabChange('waitlist')}
+              className="no-scroll-button buttonv2 no-scroll-waitlist-button"
+            >
+              Waitlist
+            </Button>
           </div>
 
           {/* Early Access Header */}
@@ -76,28 +85,18 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
 
           {/* Share and Social Section - Combined */}
           <div className="no-scroll-share-social-section">
-            <div className="no-scroll-input-group">
+            <div className="simple-input-copy">
               <Input 
                 value={shareUrl} 
                 readOnly 
-                className="no-scroll-input"
+                className="simple-input"
               />
-            </div>
-            
-            <div className="no-scroll-button-group">
               <Button 
                 variant="primary"
                 onClick={copyToClipboard}
-                className="no-scroll-button buttonv2 buttonv2-yellow"
+                className="buttonv2 buttonv2-yellow"
               >
                 Copy Link
-              </Button>
-              <Button 
-                variant="secondary"
-                onClick={() => onTabChange('waitlist')}
-                className="no-scroll-button buttonv2"
-              >
-                See waitlist
               </Button>
             </div>
 

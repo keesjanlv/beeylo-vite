@@ -21,40 +21,47 @@ export const AnimatedInbox: FC<AnimatedInboxProps> = ({
     setIsAnimating(true)
     setCount(0)
     
-    const duration = 3000 // 3 seconds total
-    const totalCounts = 50
-    const interval = duration / totalCounts
+    // Increasing delays: 500-700-900-1100-1300 ms
+    const delays = [500, 700, 900, 1100, 1300]
     
-    // Add extra animation to bubble during counting
+    // Remove any existing animation from bubble during counting
     if (bubbleRef.current) {
-      bubbleRef.current.style.animation = 'pulse 0.3s infinite'
+      bubbleRef.current.style.animation = 'none'
     }
     
     let currentCount = 0
-    const animationInterval = setInterval(() => {
-      currentCount++
-      setCount(currentCount)
-      
-      // Add a subtle scale effect for each number change
-      if (counterRef.current) {
-        counterRef.current.style.transform = 'scale(1.2)'
+    
+    const scheduleNextCount = () => {
+      if (currentCount < 5) {
         setTimeout(() => {
+          currentCount++
+          setCount(currentCount)
+          
+          // Add a subtle scale effect for each number change
           if (counterRef.current) {
-            counterRef.current.style.transform = 'scale(1)'
+            counterRef.current.style.transform = 'scale(1.2)'
+            setTimeout(() => {
+              if (counterRef.current) {
+                counterRef.current.style.transform = 'scale(1)'
+              }
+            }, 50)
           }
-        }, 50)
+          
+          if (currentCount >= 5) {
+            setIsAnimating(false)
+            
+            // Keep bubble animation off
+            if (bubbleRef.current) {
+              bubbleRef.current.style.animation = 'none'
+            }
+          } else {
+            scheduleNextCount()
+          }
+        }, delays[currentCount - 1] || 500)
       }
-      
-      if (currentCount >= totalCounts) {
-        clearInterval(animationInterval)
-        setIsAnimating(false)
-        
-        // Reset bubble animation
-        if (bubbleRef.current) {
-          bubbleRef.current.style.animation = 'pulse 2s infinite'
-        }
-      }
-    }, interval)
+    }
+    
+    scheduleNextCount()
   }
 
   useEffect(() => {
@@ -104,13 +111,12 @@ export const AnimatedInbox: FC<AnimatedInboxProps> = ({
           right: -2px;
           width: 36px;
           height: 36px;
-          background: linear-gradient(135deg, #ef4444, #dc2626);
+          background: linear-gradient(135deg, #FCB425, #f59e0b);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-          animation: pulse 2s infinite;
+          box-shadow: 0 4px 12px rgba(252, 180, 37, 0.4);
         }
 
         .notification-count {
@@ -124,15 +130,15 @@ export const AnimatedInbox: FC<AnimatedInboxProps> = ({
         @keyframes pulse {
           0% {
             transform: scale(1);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+            box-shadow: 0 4px 12px rgba(252, 180, 37, 0.4);
           }
           50% {
             transform: scale(1.05);
-            box-shadow: 0 6px 16px rgba(239, 68, 68, 0.6);
+            box-shadow: 0 6px 16px rgba(252, 180, 37, 0.6);
           }
           100% {
             transform: scale(1);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+            box-shadow: 0 4px 12px rgba(252, 180, 37, 0.4);
           }
         }
 

@@ -28,48 +28,61 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   }
 
   if (isLoggedIn) {
-    // Logged-in view - Clean vertical centering with adaptive scaling
+    // Logged-in view - No-scroll system
     return (
-      <div className="page-container smart-container">
-        <div className="page-content content-center-screen home-adaptive">
-          <div className="container max-w-6xl adaptive-content">
-            <div className="home-content-wrapper">
-              {/* Text Content */}
-              <div className="home-text-section">
-                <Typography variant="h1" className="text-center-mobile-left-desktop" style={{ marginBottom: 'var(--space-4)' }}>
-                  Welcome to your inbox without the noise
-                </Typography>
-                <Typography variant="body" className="text-center-mobile-left-desktop home-subtitle">
-                  No more spam, ads or useless updates
-                </Typography>
-                
-                <div className="home-actions">
-                  <Button 
-                    variant="brand"
-                    size="lg"
-                    onClick={() => onTabChange('learn-more')}
-                    className="buttonv2 buttonv2-yellow"
-                  >
-                    Discover
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    size="lg"
-                    onClick={() => onTabChange('benefits')}
-                    className="buttonv2"
-                  >
-                    Benefits
-                  </Button>
+      <div className="no-scroll-page homepage">
+        <div className="no-scroll-content">
+          <div className="no-scroll-stack">
+            {/* Beautiful Logo Row - Uses same element as non-logged-in view */}
+            <div className="no-scroll-logo-row-sidebar">
+              <img 
+                src={beeyloLogo} 
+                alt="Beeylo Logo" 
+                className="no-scroll-logo-row-image"
+              />
+              <span className="no-scroll-logo-row-text">Beeylo</span>
+            </div>
+            
+            {/* Hero Section */}
+            <div className="no-scroll-hero">
+              <div className="no-scroll-hero-content">
+                {/* Text Content */}
+                <div className="no-scroll-hero-text">
+                  <Typography variant="h1" className="no-scroll-hero-title text-center-mobile-left-desktop" style={{ textWrap: 'balance' }}>
+                    Your inbox, without the noise
+                  </Typography>
+                  <Typography variant="body" className="no-scroll-hero-subtitle text-center-mobile-left-desktop">
+                    No more spam, ads or useless updates
+                  </Typography>
+                  
+                  <div className="no-scroll-button-group">
+                    <Button 
+                      variant="brand"
+                      size="lg"
+                      onClick={() => onTabChange('learn-more')}
+                      className="no-scroll-button buttonv2 buttonv2-yellow"
+                    >
+                      Discover
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      size="lg"
+                      onClick={() => onTabChange('benefits')}
+                      className="no-scroll-button buttonv2"
+                    >
+                      Benefits
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              
-              {/* Image Content */}
-              <div className="home-image-section">
-                <img 
-                  src={tripleScreenImg} 
-                  alt="Beeylo App Interface" 
-                  className="home-hero-image aspect-scale"
-                />
+                
+                {/* Image Content */}
+                <div className="no-scroll-hero-image">
+                  <img 
+                    src={tripleScreenImg} 
+                    alt="Beeylo App Interface" 
+                    className="no-scroll-image"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -78,82 +91,81 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     )
   }
 
-  // Non-logged-in view - Clean vertical centering with adaptive scaling
+  // Non-logged-in view - No-scroll system
   return (
-    <div className="page-container smart-container">
-      <div className="page-content content-center-screen home-adaptive">
-        {/* Mobile logo */}
-        <div className="home-mobile-logo">
-          <img src={beeyloLogo} alt="Beeylo" className="w-16 h-16" />
-        </div>
-        
-        <div className="container max-w-6xl adaptive-content">
-          <div className="home-content-wrapper">
-            {/* Text and Form Content */}
-            <div className="home-text-section">
-              <Typography variant="h1" className="text-center-mobile-left-desktop" style={{ marginBottom: 'var(--space-4)' }}>
-                The new free inbox without the noise
-              </Typography>
-              <Typography variant="body" className="text-center-mobile-left-desktop home-subtitle">
-                No more spam, ads or useless updates
-              </Typography>
-              
-              {/* Login form */}
-              <div className="home-form-section">
-                <form onSubmit={handleSubmit} className="home-form bg-surface">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className={`home-input ${emailFormHighlight ? 'home-input-highlight' : ''}`}
-                    disabled={isLoading}
-                  />
-                  <div className="home-form-actions">
-                    <Button 
-                      type="submit" 
-                      variant="brand" 
-                      size="lg" 
-                      fullWidth
-                      loading={isLoading}
-                      disabled={isLoading}
-                      className="buttonv2 buttonv2-yellow"
-                    >
-                      {isLoading ? 'Loading...' : 'End my inbox chaos'}
-                    </Button>
-                    {/* 90 sec explainer button - temporarily hidden
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      size="lg" 
-                      fullWidth
-                      onClick={() => onTabChange('learn-more')}
-                      disabled={isLoading}
-                      className="buttonv2"
-                    >
-                      90 sec explainer (video)
-                    </Button>
-                    */}
-                  </div>
-                  {(loginError || error) && (
-                    <Typography variant="small" color="error" className="home-error">
-                      {loginError || error}
-                    </Typography>
-                  )}
-                  <Typography variant="caption" color="muted" className="home-disclaimer">
+    <div className="no-scroll-page homepage">
+      <div className="no-scroll-content">
+        <div className="no-scroll-stack">
+          {/* Beautiful Logo Row - Uses same element as logged-in view */}
+          <div className="no-scroll-logo-row-sidebar">
+            <img 
+              src={beeyloLogo} 
+              alt="Beeylo Logo" 
+              className="no-scroll-logo-row-image"
+            />
+            <span className="no-scroll-logo-row-text">Beeylo</span>
+          </div>
+          
+          {/* Hero Section */}
+          <div className="no-scroll-hero">
+            <div className="no-scroll-hero-content">
+              {/* Text Content */}
+              <div className="no-scroll-hero-text">
+                <Typography variant="h1" className="no-scroll-hero-title text-center-mobile-left-desktop" style={{ textWrap: 'balance' }}>
+                  Your inbox, without the noise
+                </Typography>
+                <Typography variant="body" className="no-scroll-hero-subtitle text-center-mobile-left-desktop">
+                  No more spam, ads or useless updates
+                </Typography>
+                
+                {/* Login form - Back in the hero text section */}
+                <div className="no-scroll-form-section">
+                  <form onSubmit={handleSubmit} className="no-scroll-form">
+                    <div className="no-scroll-input-group">
+                      <input
+                        type="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className={`no-scroll-input ${emailFormHighlight ? 'no-scroll-input-highlight' : ''}`}
+                        disabled={isLoading}
+                      />
+                    </div>
+                    <div className="no-scroll-button-group">
+                      <Button 
+                        type="submit" 
+                        variant="brand" 
+                        size="lg" 
+                        fullWidth
+                        loading={isLoading}
+                        disabled={isLoading}
+                        className="no-scroll-button buttonv2 buttonv2-yellow"
+                      >
+                        {isLoading ? 'Loading...' : 'End my inbox chaos'}
+                      </Button>
+                    </div>
+                    {(loginError || error) && (
+                      <Typography variant="small" color="error" className="no-scroll-error">
+                        {loginError || error}
+                      </Typography>
+                    )}
+                  </form>
+                  
+                  {/* Disclaimer text */}
+                  <Typography variant="caption" color="muted" className="no-scroll-disclaimer">
                     By clicking submit I agree to Beeylo's Terms of Service and Privacy Policy.
                   </Typography>
-                </form>
+                </div>
               </div>
-            </div>
-            
-            {/* Image Content */}
-            <div className="home-image-section">
-              <img 
-                src={tripleScreenImg} 
-                alt="Beeylo App Interface" 
-                className="home-hero-image aspect-scale"
-              />
+              
+              {/* Image Content */}
+              <div className="no-scroll-hero-image">
+                <img 
+                  src={tripleScreenImg} 
+                  alt="Beeylo App Interface" 
+                  className="no-scroll-image"
+                />
+              </div>
             </div>
           </div>
         </div>

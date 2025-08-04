@@ -67,6 +67,21 @@ const AppContent: FC = () => {
     }
   }, [isLoggedIn])
 
+  // Add no-scroll-container class for browser compatibility
+  useEffect(() => {
+    const mainContent = document.querySelector('.main-content')
+    if (mainContent) {
+      // Pages that use the no-scroll system
+      const noScrollPages = ['waitlist', 'thank-you']
+      
+      if (noScrollPages.includes(activeTab)) {
+        mainContent.classList.add('no-scroll-container')
+      } else {
+        mainContent.classList.remove('no-scroll-container')
+      }
+    }
+  }, [activeTab])
+
   const handleBackToDashboard = () => {
     setActiveTab('dashboard')
   }
@@ -223,7 +238,7 @@ const AppContent: FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ 
-              duration: 0.225, /* 25% faster: 0.3 * 0.75 = 0.225 */
+              duration: 0.225, /* Page transitions */
               ease: [0.4, 0.0, 0.2, 1]
             }}
             style={{
