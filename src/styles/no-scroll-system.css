@@ -974,7 +974,6 @@
   .simple-input-copy,
   .social-cards-container,
   .no-scroll-stack > * {
-    max-width: 90%;
     padding: clamp(12px, 3vw, 24px);
   }
 }
