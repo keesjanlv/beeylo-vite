@@ -231,7 +231,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
   };
 
   return (
-    <div className="no-scroll-page">
+    <div className="no-scroll-page waitlist">
       <div className="no-scroll-content">
         <div className="no-scroll-stack">
           {/* Welcome Content */}

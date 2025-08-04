@@ -59,7 +59,7 @@ export const FAQPage: FC = () => {
   const currentFaqs = faqTabs[currentTab].faqs;
 
   return (
-    <div className="no-scroll-page">
+    <div className="no-scroll-page faq">
       <div className="no-scroll-content">
         <div className="no-scroll-stack">
           {/* Header */}

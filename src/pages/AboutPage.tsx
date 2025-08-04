@@ -3,7 +3,7 @@ import { Card, CardContent, Stack, Typography } from '../components/ui'
 import { PageBadge } from '../components'
 
 export const AboutPage: FC = () => (
-  <div className="no-scroll-page">
+  <div className="no-scroll-page about">
     <div className="no-scroll-content">
       <div className="no-scroll-stack">
         <div className="no-scroll-section">

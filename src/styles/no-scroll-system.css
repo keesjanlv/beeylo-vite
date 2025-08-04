@@ -45,6 +45,13 @@
   }
 }
 
+/* Page-specific styles */
+.waitlist,
+.about,
+.faq {
+  width: 100%;
+}
+
 /* ===== CONTAINER QUERIES FOR PRECISE CONTROL ===== */
 /* These provide more accurate responsive behavior than viewport queries */
 
@@ -105,7 +112,6 @@
   height: 100%;
   align-items: center;
   gap: clamp(8px, 2vh, 24px); /* Reduced gap for better mobile spacing */
-  width: 100%;
   margin: 0 auto; /* Center the content horizontally */
   overflow: hidden; /* Prevent content from breaking layout */
   flex-shrink: 0;
@@ -948,7 +954,12 @@
 /* Ensure all direct children of no-scroll-stack have consistent width */
 .no-scroll-stack > * {
   width: 100%;
-  max-width: 600px;
+  margin: 0 auto;
+}
+
+.no-scroll-hero {
+  width: 100%;
+  padding: clamp(16px, 5vw, 50px);
   margin: 0 auto;
 }
 
@@ -983,27 +994,12 @@
   }
 }
 
-@media (min-width: 1200px) {
-  .no-scroll-section-standard,
-  .no-scroll-welcome,
-  .no-scroll-position-card,
-  .no-scroll-share-social-section,
-  .no-scroll-content-wrapper,
-  .no-scroll-form-section,
-  .no-scroll-early-access,
-  .simple-input-copy,
-  .social-cards-container,
-  .no-scroll-stack > * {
-    max-width: 600px;
-  }
-}
-
 /* ===== RESPONSIVE ADJUSTMENTS ===== */
 
 /* For very wide screens, limit maximum sizes while maintaining 5% padding */
 @media (min-width: 1400px) {
   .no-scroll-content {
-    max-width: 70%;
+    max-width: 80%;
     margin: 0 auto;
   }
 }
@@ -1572,7 +1568,6 @@
 .no-scroll-stack .grid {
   flex-shrink: 0; /* Prevent button area from shrinking */
   width: 100%;
-  max-width: 600px; /* Limit button width on larger screens */
   margin: 0 auto; /* Center the button grid */
 }
 
