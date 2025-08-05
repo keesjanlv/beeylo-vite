@@ -91,7 +91,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       const response = await api.getUserStatus(email);
       
       if (response.success) {
-        // User exists, log them in
+        // User exists, log them in without sending to Brevo again
         setUserData(response.data);
         setIsLoggedIn(true);
         localStorage.setItem('beeylo_user_data', JSON.stringify(response.data));
@@ -107,6 +107,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
           form_version: '1.0',
           session_id: `react_${Date.now()}`,
           submission_time: Date.now(),
+          skip_brevo: false, // New users should be sent to Brevo
         });
 
         if (registrationResponse.success) {

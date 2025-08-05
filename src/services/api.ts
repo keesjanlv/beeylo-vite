@@ -13,6 +13,7 @@ export interface WaitlistRegistrationRequest {
   submission_time?: number;
   form_version?: string;
   session_id?: string;
+  skip_brevo?: boolean; // Flag to skip sending to Brevo API for existing users
 }
 
 export interface WaitlistRegistrationResponse {

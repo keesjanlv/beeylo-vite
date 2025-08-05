@@ -12,10 +12,6 @@ interface ThankYouPageProps {
 export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) => {
   const shareUrl = userData?.referral_url || 'https://beeylo.com/ref/sample'
   
-  // Mock data - in real app, this would come from API
-  // const totalWaitlist = 15847  // Commented out as it's not used
-  const userPosition = 1234
-  
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl)
@@ -56,7 +52,7 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
                   <div className="stats-section-enhanced">
                     <div className="stat-item text-center">
                       <Typography variant="h1" className="stat-number text-center font-roboto font-bold text-sm">
-                        {userPosition.toLocaleString()}
+                        {userData?.position ? userData.position.toLocaleString() : '-'}
                       </Typography>
                       <Typography variant="body" color="secondary" className="stat-label text-center">
                         Your Position
