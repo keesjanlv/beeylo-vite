@@ -61,7 +61,7 @@ export const FAQPage: FC = () => {
   return (
     <div className="no-scroll-page faq">
       <div className="no-scroll-content">
-        <div className="no-scroll-stack">
+        <div className="no-scroll-stack faq2">
           {/* Header */}
           <div className="no-scroll-faq-header">
             <PageBadge>Support</PageBadge>
