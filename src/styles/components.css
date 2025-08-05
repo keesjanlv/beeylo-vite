@@ -2441,8 +2441,8 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font-family: 'Author', 'Author-Bold', 'Satoshi', sans-serif;
-  font-weight: 700;
+  font-family: 'Author', 'Satoshi', sans-serif;
+  font-weight: 600;
   font-size: var(--text-lg);
   color: var(--text-primary);
 }
@@ -4111,21 +4111,33 @@
   }
 }
 
+/* === LOGO COMPONENT STYLES === */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-image {
+  height: 1.2em;
+  width: auto;
+}
+
 /* === DISCLAIMER LINK STYLES === */
 .disclaimer-link {
-  color: var(--brand);
+  color: #555;
   cursor: pointer;
   text-decoration: underline;
   transition: color 0.2s ease;
 }
 
 .disclaimer-link:hover {
-  color: var(--brand-hover);
+  color: #333;
   text-decoration: underline;
 }
 
 .disclaimer-link:focus {
-  outline: 2px solid var(--brand);
+  outline: 2px solid #333;
   outline-offset: 2px;
   border-radius: 2px;
 }

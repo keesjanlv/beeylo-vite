@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import type { FC } from 'react'
-import { NumberedButton, Container, Stack, Card, CardContent, Typography } from '../components/ui'
+import type { TabType } from '../types'
+import { NumberedButton, Container, Stack, Card, CardContent, Typography, Button } from '../components/ui'
 import { motion, AnimatePresence } from 'framer-motion'
 import ticketOrderImg from '../assets/ticketorder.webp'
 import brandsDefImg from '../assets/brandsdef.webp'
@@ -42,10 +43,10 @@ const features: Feature[] = [
 ]
 
 interface BenefitsPageProps {
-  // No props needed
+  onTabChange: (tab: TabType) => void
 }
 
-export const BenefitsPage: FC<BenefitsPageProps> = () => {
+export const BenefitsPage: FC<BenefitsPageProps> = ({ onTabChange }) => {
   const [currentFeature, setCurrentFeature] = useState(0)
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
@@ -165,6 +166,7 @@ export const BenefitsPage: FC<BenefitsPageProps> = () => {
           <div class="feature-description-wrapper">
             <p class="feature-description text-center-mobile-left-desktop">${feature.description}</p>
           </div>
+          ${feature.id === 4 ? '<button class="buttonv2 learn-more-button-mobile">Our story</button>' : ''}
         `
         
         const height = tempElement.offsetHeight
@@ -237,6 +239,16 @@ export const BenefitsPage: FC<BenefitsPageProps> = () => {
                             <Typography variant="body" color="secondary" className="feature-description text-center-mobile-left-desktop" dangerouslySetInnerHTML={{ __html: currentFeatureData.description }} />
                           </motion.div>
                         </AnimatePresence>
+                        {/* Show button on desktop only for last slide - now inside container */}
+                        {currentFeature === 3 && (
+                          <Button 
+                            variant="primary"
+                            onClick={() => onTabChange('about')}
+                            className="buttonv2 learn-more-button-desktop"
+                          >
+                            Our story
+                          </Button>
+                        )}
                       </div>
                     </div>
                     <div 
@@ -264,6 +276,18 @@ export const BenefitsPage: FC<BenefitsPageProps> = () => {
                         </motion.div>
                       </AnimatePresence>
                     </div>
+                    {/* Show button on mobile under the image for last slide */}
+                    {currentFeature === 3 && (
+                      <div className="learn-more-button-mobile">
+                        <Button 
+                          variant="primary"
+                          onClick={() => onTabChange('about')}
+                          className="buttonv2"
+                        >
+                          Our story
+                        </Button>
+                      </div>
+                    )}
                   </Stack>
                 </CardContent>
               </Card>

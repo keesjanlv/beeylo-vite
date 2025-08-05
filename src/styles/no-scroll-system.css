@@ -1015,7 +1015,7 @@
   .no-scroll-form-section,
   .no-scroll-early-access,
   .simple-input-copy,
-  .social-cards-container,{
+  .social-cards-container {
     max-width: 80%;
   }
 }
@@ -1088,7 +1088,7 @@
 
 .no-scroll-logo-row-text {
   font-family: 'Author', 'Author-Bold', 'Satoshi', sans-serif;
-  font-weight: 700;
+  font-weight: 500;
   font-size: clamp(1rem, 2.5vh, 1.5rem);
   color: var(--text-primary);
   letter-spacing: -0.02em;
@@ -1182,7 +1182,7 @@
 
   .no-scroll-logo-row-sidebar .no-scroll-logo-row-text {
     font-family: 'Author', 'Author-Bold', 'Satoshi', sans-serif;
-    font-weight: 700;
+    font-weight: 500;
     font-size: clamp(1rem, 2.5vh, 1.5rem);
     color: var(--text-primary);
     letter-spacing: -0.02em;
@@ -1296,36 +1296,20 @@
 }
 
 /* Mobile logo container - full width with enhanced depth */
-.mobile-logo-container {
-  display: none; /* Hidden by default, shown only on mobile */
-  align-items: center;
+/* Glass Button Mobile Container - only visible on mobile breakpoints */
+.glass-button-mobile-container {
+  display: flex;
   justify-content: center;
-  gap: clamp(12px, 3vw, 16px);
-  padding: clamp(6px, 1.5vh, 8px) clamp(16px, 4vw, 20px);
-  border-radius: clamp(8px, 2vw, 12px);
-  background-color: var(--surface-raised);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08), inset 0 1px 0px rgba(255, 255, 255, 0.15);
-  width: 100%;
-  margin: 0 0 clamp(16px, 3vh, 24px) 0;
-  position: relative;
-  overflow: hidden;
+  align-items: center;
+  margin: 0 0 clamp(20px, 4vh, 32px) 0;
+  padding: 0 clamp(16px, 4vw, 24px);
 }
 
-.mobile-logo-container .mobile-logo-image {
-  width: clamp(28px, 6vh, 36px);
-  height: clamp(28px, 6vh, 36px);
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-.mobile-logo-container .mobile-logo-text {
-  font-family: 'Author', 'Author-Bold', 'Satoshi', sans-serif;
-  font-weight: 700;
-  font-size: clamp(1.1rem, 3vh, 1.4rem);
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-  margin: 0;
-  flex-shrink: 0;
+/* Hide glass button on desktop */
+@media (min-width: 769px) {
+  .glass-button-mobile-container {
+    display: none !important;
+  }
 }
 
 /* Hide mobile logo on desktop */

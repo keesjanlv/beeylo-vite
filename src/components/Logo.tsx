@@ -6,15 +6,15 @@ interface LogoProps {
 }
 
 export const Logo: FC<LogoProps> = ({ onClick }) => (
-  <div 
+  <span 
     className={`logo ${onClick ? 'logo-clickable' : ''}`}
     onClick={onClick}
     role={onClick ? 'button' : undefined}
     tabIndex={onClick ? 0 : undefined}
   >
     <img src={beeyloLogo} alt="Beeylo" className="logo-image" />
-    <span className="logo-text hidden-mobile">Beeylo</span>
-  </div>
+    <span className="logo-text hidden-on-mobile">Beeylo</span>
+  </span>
 )
 
 export const SingleHexagon: FC<{ className?: string, children?: React.ReactNode }> = ({ 

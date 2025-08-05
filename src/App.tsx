@@ -18,7 +18,8 @@ import {
   FeedbackPage,
   FAQPage,
   LearnMorePage,
-  ThankYouPage
+  ThankYouPage,
+  ComponentDemoPage
 } from './pages'
 import { UserProvider, useUser } from './contexts/UserContext'
 import './index.css'
@@ -185,7 +186,7 @@ const AppContent: FC = () => {
       case 'dashboard':
         return isLoggedIn ? <DashboardPage userData={userData} onLogout={handleLogout} onTabChange={handleTabChange} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
       case 'benefits':
-        return <BenefitsPage />
+        return <BenefitsPage onTabChange={handleTabChange} />
       case 'giveaway':
         return <GiveawayPage onTabChange={handleTabChange} />
       case 'waitlist':
@@ -215,6 +216,8 @@ const AppContent: FC = () => {
           onLogout={handleLogout}
           isLoggedIn={isLoggedIn}
         />
+      case 'component-demo':
+        return <ComponentDemoPage />
       default:
         return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
     }

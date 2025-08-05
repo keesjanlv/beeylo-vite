@@ -12,6 +12,26 @@
 /* Author font family declarations for unified usage */
 @font-face {
   font-family: 'Author';
+  src: url('../../fonts/Author/fonts/Author-Regular.woff2') format('woff2'),
+       url('../../fonts/Author/fonts/Author-Regular.woff') format('woff'),
+       url('../../fonts/Author/fonts/Author-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Author';
+  src: url('../../fonts/Author/fonts/Author-Semibold.woff2') format('woff2'),
+       url('../../fonts/Author/fonts/Author-Semibold.woff') format('woff'),
+       url('../../fonts/Author/fonts/Author-Semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Author';
   src: url('../../fonts/Author/fonts/Author-Bold.woff2') format('woff2'),
        url('../../fonts/Author/fonts/Author-Bold.woff') format('woff'),
        url('../../fonts/Author/fonts/Author-Bold.ttf') format('truetype');

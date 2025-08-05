@@ -70,6 +70,8 @@ export const MenuPage: FC<MenuPageProps> = ({
 
 
 
+
+
               {/* Terms of Service */}
               <Card 
                 className="menu-card"

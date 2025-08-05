@@ -226,4 +226,8 @@ input::placeholder, textarea::placeholder {
     padding: 10px 20px;
     font-size: 0.9rem;
   }
+  
+  .hidden-on-mobile {
+    display: none;
+  }
 }

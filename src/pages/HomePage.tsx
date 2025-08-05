@@ -5,8 +5,88 @@ import { useUser } from '../contexts/UserContext'
 import { Button, Typography } from '../components/ui'
 import { TermsOfServiceModal } from '../components/TermsOfServiceModal'
 import { PrivacyPolicyModal } from '../components/PrivacyPolicyModal'
+import { Logo } from '../components/Logo'
 import beeyloLogo from '../assets/beeylologo.png'
 import tripleScreenImg from '../assets/triplescreenhomedef.webp'
+
+// Enhanced Glass Button Component with custom styling
+const GlassButton: FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({ children, ...rest }) => {
+  const [isActive, setIsActive] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+
+  const buttonStyle: React.CSSProperties = {
+    // reset
+    border: 'none',
+    
+    // gradient "border" - grijs aan zijkanten, wit onder
+    padding: '2px', // border thickness
+    borderRadius: '14px',
+    background: `
+      linear-gradient(to right, 
+        rgba(180, 180, 180, 0.7) 0%,
+        rgba(255, 255, 255, 0) 20%,
+        rgba(255, 255, 255, 0) 80%,
+        rgba(180, 180, 180, 0.7) 100%
+      ),
+      linear-gradient(to bottom,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0) 60%,
+        rgba(255, 255, 255, 0.9) 100%
+      )
+    `,
+    
+    // meer shadow aan de buitenkant voor diepte
+    boxShadow: `
+      0 10px 25px -5px rgba(0, 0, 0, 0.15),
+      0 4px 10px -4px rgba(0, 0, 0, 0.1),
+      inset 0 -1px 1px rgba(255, 255, 255, 0.3)
+    `,
+    
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
+    transform: isActive ? 'scale(.98)' : isHovered ? 'scale(1.02)' : 'scale(1)',
+  }
+
+  const surfaceStyle: React.CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '8px',
+    padding: '14px 32px',
+    borderRadius: '12px', // 14px – 2px padding
+    
+    // witte achtergrond met heel lichte grijs gradient
+    background: `
+      linear-gradient(135deg, 
+        rgba(255, 255, 255, 1) 0%,
+        rgba(248, 248, 248, 1) 50%,
+        rgba(245, 245, 245, 1) 100%
+      )
+    `,
+
+    color: '#1a1a1a', // zwarte tekst
+    fontSize: '1rem',
+    fontWeight: '500',
+    textShadow: 'none',
+    transition: 'all 0.2s ease',
+  }
+
+  return (
+    <button 
+      style={buttonStyle}
+      onMouseDown={() => setIsActive(true)}
+      onMouseUp={() => setIsActive(false)}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsActive(false)
+        setIsHovered(false)
+      }}
+      {...rest}
+    >
+      <span style={surfaceStyle}>{children}</span>
+    </button>
+  )
+}
 
 interface HomePageProps {
   isLoggedIn?: boolean
@@ -23,9 +103,26 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const emailToUse = email.trim() || 'sample@beeylo.com' // Use sample account if email is empty
+    
+    // Check if email is empty
+    if (!email.trim()) {
+      // In development, use sample account
+      if (import.meta.env.DEV || window.location.hostname === 'localhost') {
+        setLoginError(null)
+        const success = await login('sample@beeylo.com')
+        if (!success) {
+          setLoginError(error || 'Login failed. Please try again.')
+        }
+      } else {
+        // In production, require email
+        setLoginError('Please enter your email address')
+      }
+      return
+    }
+    
+    // Process valid email
     setLoginError(null)
-    const success = await login(emailToUse)
+    const success = await login(email.trim())
     if (!success) {
       setLoginError(error || 'Login failed. Please try again.')
     }
@@ -52,15 +149,6 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
               <div className="no-scroll-hero-content">
                 {/* Text Content */}
                 <div className="no-scroll-hero-text">
-                  {/* Mobile Logo Container - only visible on mobile */}
-                  <div className="mobile-logo-container">
-                    <img 
-                      src={beeyloLogo} 
-                      alt="Beeylo Logo" 
-                      className="mobile-logo-image"
-                    />
-                    <span className="mobile-logo-text">Beeylo</span>
-                  </div>
                   
                   <Typography variant="h1" className="no-scroll-hero-title text-center-mobile-left-desktop" style={{ textWrap: 'balance' }}>
                     Your inbox, without the noise
@@ -141,6 +229,14 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                   <Typography variant="body" className="no-scroll-hero-subtitle text-center-mobile-left-desktop" style={{ textWrap: 'balance' }}>
                     No more spam, ads or useless updates
                   </Typography>
+                  
+                  {/* Glass Button - only visible on mobile breakpoints with top navigation */}
+                  <div className="glass-button-mobile-container">
+                    <GlassButton onClick={() => onTabChange('learn-more')}>
+                      <Logo />
+                      <span>Beeylo</span>
+                    </GlassButton>
+                  </div>
                 
                 {/* Login form - Back in the hero text section */}
                 <div className="no-scroll-form-section">
