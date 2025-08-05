@@ -88,7 +88,36 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
 
     // Check if currently processing
     if (socialFollowState[platform]?.isProcessing) {
-      showFeedbackMessage('Please wait, your previous request is still being processed.', 'info')
+      // Get the display name of the platform (capitalized version)
+      const platformDisplayName = platform.charAt(0).toUpperCase() + platform.slice(1);
+      showFeedbackMessage(`We have not yet verified your action, this may take up to 24 hours. Something went wrong? Try again with the button below.`, 'info')
+      
+      // Add a button to try again and reduce background opacity
+      setTimeout(() => {
+        // Make background more transparent
+        const feedbackBg = document.querySelector('.feedback-message') as HTMLElement;
+        if (feedbackBg) {
+          feedbackBg.style.background = 'rgba(255, 255, 255, 0.2)'; // 20% opacity
+        }
+        
+        const feedbackDiv = document.querySelector('.feedback-content');
+        if (feedbackDiv) {
+          const tryAgainButton = document.createElement('button');
+          tryAgainButton.className = 'try-again-button';
+          tryAgainButton.textContent = `${platformDisplayName} page`;
+          tryAgainButton.onclick = (e) => {
+            e.stopPropagation();
+            window.open({
+              'instagram': 'https://instagram.com/beeyloapp',
+              'tiktok': 'https://tiktok.com/@beeyloapp',
+              'linkedin': 'https://linkedin.com/company/beeylo',
+              'x': 'https://x.com/beeylo'
+            }[platform], '_blank');
+          };
+          feedbackDiv.appendChild(tryAgainButton);
+        }
+      }, 100);
+      
       return
     }
 
@@ -108,7 +137,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
 
     // Show feedback message
     showFeedbackMessage(
-      'Updating your position may take a few minutes.',
+      'Verifying may take up to 24 hours.',
       'info'
     )
 
@@ -373,6 +402,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
                   className={getSocialCardClassName('instagram')} 
                   onClick={() => handleSocialFollow('instagram', 'https://instagram.com/beeyloapp')}
                   aria-label="Follow us on Instagram"
+                  data-platform-name="Instagram"
                 >
                   {getSocialCardIcon('instagram', 
                     <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -387,6 +417,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
                   className={getSocialCardClassName('tiktok')} 
                   onClick={() => handleSocialFollow('tiktok', 'https://tiktok.com/@beeyloapp')}
                   aria-label="Follow us on TikTok"
+                  data-platform-name="TikTok"
                 >
                   {getSocialCardIcon('tiktok',
                     <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -399,6 +430,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
                   className={getSocialCardClassName('linkedin')} 
                   onClick={() => handleSocialFollow('linkedin', 'https://linkedin.com/company/beeylo')}
                   aria-label="Follow us on LinkedIn"
+                  data-platform-name="LinkedIn"
                 >
                   {getSocialCardIcon('linkedin',
                     <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -413,6 +445,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
                   className={getSocialCardClassName('x')} 
                   onClick={() => handleSocialFollow('x', 'https://x.com/beeylo')}
                   aria-label="Follow us on X"
+                  data-platform-name="X"
                 >
                   {getSocialCardIcon('x',
                     <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
