@@ -149,6 +149,13 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
               <div className="no-scroll-hero-content">
                 {/* Text Content */}
                 <div className="no-scroll-hero-text">
+                  {/* Glass Button - only visible on mobile breakpoints with top navigation */}
+                  <div className="glass-button-mobile-container">
+                    <GlassButton onClick={() => onTabChange('learn-more')}>
+                      <Logo />
+                      <span>Beeylo</span>
+                    </GlassButton>
+                  </div>
                   
                   <Typography variant="h1" className="no-scroll-hero-title text-center-mobile-left-desktop" style={{ textWrap: 'balance' }}>
                     Your inbox, without the noise
@@ -213,14 +220,12 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
               <div className="no-scroll-hero-content">
                 {/* Text Content */}
                 <div className="no-scroll-hero-text">
-                  {/* Mobile Logo Container - only visible on mobile */}
-                  <div className="mobile-logo-container">
-                    <img 
-                      src={beeyloLogo} 
-                      alt="Beeylo Logo" 
-                      className="mobile-logo-image"
-                    />
-                    <span className="mobile-logo-text">Beeylo</span>
+                  {/* Glass Button - only visible on mobile breakpoints with top navigation */}
+                  <div className="glass-button-mobile-container">
+                    <GlassButton onClick={() => onTabChange('learn-more')}>
+                      <Logo />
+                      <span>Beeylo</span>
+                    </GlassButton>
                   </div>
                   
                   <Typography variant="h1" className="no-scroll-hero-title text-center-mobile-left-desktop" style={{ textWrap: 'balance' }}>

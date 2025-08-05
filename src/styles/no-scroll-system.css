@@ -1298,10 +1298,9 @@
 /* Mobile logo container - full width with enhanced depth */
 /* Glass Button Mobile Container - only visible on mobile breakpoints */
 .glass-button-mobile-container {
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
-  margin: 0 0 clamp(20px, 4vh, 32px) 0;
   padding: 0 clamp(16px, 4vw, 24px);
 }
 
