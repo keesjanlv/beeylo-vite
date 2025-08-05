@@ -8,7 +8,7 @@ interface TermsOfServiceModalProps {
 
 export const TermsOfServiceModal: FC<TermsOfServiceModalProps> = ({ isOpen, onClose }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Terms of Service">
+    <Modal isOpen={isOpen} onClose={onClose} title="Terms of Service" modalClassName="terms-modal">
       <div className="modal-text-content">
         <h3>1. Acceptance of Terms</h3>
         <p>

@@ -1,26 +1,183 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { FC } from 'react'
 import type { TabType } from '../types'
 import { Button, Typography } from '../components/ui'
 import { PageBadge } from '../components'
-import { Link, Hand, Rocket, Gem, Target } from 'lucide-react'
+import { Link, Hand, Rocket, Gem, Target, Clock, CheckCircle } from 'lucide-react'
+import { useUser } from '../contexts/UserContext'
+import { api } from '../services/api'
 
 interface WaitlistPageProps {
   onTabChange?: (tab: TabType) => void
 }
 
+interface SocialFollowState {
+  [platform: string]: {
+    isFollowed: boolean;
+    isProcessing: boolean;
+    isCompleted: boolean;
+    followedAt?: Date;
+  }
+}
+
+interface FeedbackMessage {
+  show: boolean;
+  message: string;
+  type: 'success' | 'info' | 'error';
+}
+
 export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange }) => {
+  const { userData, refreshUserData } = useUser()
   const [activeContent, setActiveContent] = useState<string>('position') // Default to position tab
+  const [socialFollowState, setSocialFollowState] = useState<SocialFollowState>({})
+  const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage>({ show: false, message: '', type: 'info' })
   
-  // Mock data - in real app, this would come from API
-  // const totalWaitlist = 15847  // Commented out as it's not used
-  const userPosition = 1234
+  // Use real user data if available, fallback to mock data
+  const userPosition = userData?.position || 1234
 
   const handleContentToggle = (content: string) => {
     setActiveContent(content)
   }
 
-  const shareUrl = `https://beeylo.com/waitlist?ref=${userPosition}`;
+  // Load social follow state from localStorage on component mount
+  useEffect(() => {
+    const savedState = localStorage.getItem('beeylo_social_follow_state')
+    if (savedState) {
+      try {
+        const parsedState = JSON.parse(savedState)
+        // Convert followedAt strings back to Date objects
+        Object.keys(parsedState).forEach(platform => {
+          if (parsedState[platform].followedAt) {
+            parsedState[platform].followedAt = new Date(parsedState[platform].followedAt)
+          }
+        })
+        setSocialFollowState(parsedState)
+      } catch (error) {
+        console.error('Failed to parse saved social follow state:', error)
+      }
+    }
+  }, [])
+
+  // Save social follow state to localStorage whenever it changes
+  useEffect(() => {
+    if (Object.keys(socialFollowState).length > 0) {
+      localStorage.setItem('beeylo_social_follow_state', JSON.stringify(socialFollowState))
+    }
+  }, [socialFollowState])
+
+  // Removed auto-hide functionality - message stays until manually dismissed
+
+  const showFeedbackMessage = (message: string, type: 'success' | 'info' | 'error') => {
+    setFeedbackMessage({ show: true, message, type })
+  }
+
+  // Development reset function
+  const resetSocialFollowState = () => {
+    setSocialFollowState({})
+    localStorage.removeItem('beeylo_social_follow_state')
+    setFeedbackMessage({ show: false, message: '', type: 'info' })
+    showFeedbackMessage('Social follow status has been reset!', 'success')
+  }
+
+  const handleSocialFollow = async (platform: string, url: string) => {
+    // Check if already followed
+    if (socialFollowState[platform]?.isCompleted) {
+      showFeedbackMessage(`You've already claimed your reward for following us on ${platform}!`, 'info')
+      return
+    }
+
+    // Check if currently processing
+    if (socialFollowState[platform]?.isProcessing) {
+      showFeedbackMessage('Please wait, your previous request is still being processed.', 'info')
+      return
+    }
+
+    // Open the social media link
+    window.open(url, '_blank')
+
+    // Update state to processing
+    setSocialFollowState(prev => ({
+      ...prev,
+      [platform]: {
+        isFollowed: true,
+        isProcessing: true,
+        isCompleted: false,
+        followedAt: new Date()
+      }
+    }))
+
+    // Show feedback message
+    showFeedbackMessage(
+      'Updating your position may take a few minutes.',
+      'info'
+    )
+
+    // Simulate the verification process (5 minutes in production, 10 seconds in development)
+    const verificationDelay = import.meta.env.DEV ? 10 * 1000 : 5 * 60 * 1000; // 10 seconds in dev, 5 minutes in prod
+    setTimeout(async () => {
+      try {
+        // In a real implementation, this would call the API to verify and award points
+        if (userData?.user_id) {
+          await api.trackSocialFollow({
+            user_id: userData.user_id,
+            platform: platform as 'linkedin' | 'instagram' | 'tiktok' | 'x',
+            verification_method: 'manual'
+          })
+        }
+
+        // Update state to completed
+        setSocialFollowState(prev => ({
+          ...prev,
+          [platform]: {
+            ...prev[platform],
+            isProcessing: false,
+            isCompleted: true
+          }
+        }))
+
+        // Success message removed - just update the card state
+
+        // Refresh user data to get updated position
+        if (refreshUserData) {
+          await refreshUserData()
+        }
+
+      } catch (error) {
+        console.error('Failed to track social follow:', error)
+        
+        // Reset state on error
+        setSocialFollowState(prev => ({
+          ...prev,
+          [platform]: {
+            isFollowed: false,
+            isProcessing: false,
+            isCompleted: false
+          }
+        }))
+
+        showFeedbackMessage(
+          `Sorry, there was an error verifying your follow on ${platform}. Please try again later.`,
+          'error'
+        )
+       }
+     }, verificationDelay)
+  }
+
+  const getSocialCardClassName = (platform: string) => {
+    const state = socialFollowState[platform]
+    if (state?.isCompleted) return 'social-card social-card-completed'
+    if (state?.isProcessing) return 'social-card social-card-processing'
+    return 'social-card'
+  }
+
+  const getSocialCardIcon = (platform: string, defaultIcon: React.ReactNode) => {
+    const state = socialFollowState[platform]
+    if (state?.isCompleted) return <CheckCircle size={20} />
+    if (state?.isProcessing) return <Clock size={20} />
+    return defaultIcon
+  }
+
+  const shareUrl = 'https://www.beeylo.com';
 
   const renderContent = () => {
     switch (activeContent) {
@@ -136,7 +293,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
                 </div>
                 <div className="social-cards-container">
                 <button 
-                  onClick={() => window.open(`https://twitter.com/intent/tweet?text=Join me on the Beeylo waitlist!&url=${encodeURIComponent(shareUrl)}`, '_blank')}
+                  onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}`, '_blank')}
                   className="social-card"
                   aria-label="Share on X"
                 >
@@ -169,7 +326,7 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
                 </button>
                 
                 <button 
-                  onClick={() => window.open(`https://wa.me/?text=Join me on the Beeylo waitlist! ${shareUrl}`, '_blank')}
+                  onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(shareUrl)}`, '_blank')}
                   className="social-card"
                   aria-label="Share on WhatsApp"
                 >
@@ -187,38 +344,84 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
                 <Typography variant="h5" className="no-scroll-subtitle">
                   Follow Us for Extra Points
                 </Typography>
-                <span className="social-section-bonus">+5% each</span>
+                <div className="flex items-center gap-2">
+                  <span className="social-section-bonus">+5% each</span>
+                  {/* Development Reset Button */}
+                  {import.meta.env.DEV && (
+                    <button
+                      onClick={resetSocialFollowState}
+                      className="dev-reset-button"
+                      title="Reset social follow status (Dev only)"
+                      style={{
+                        fontSize: '12px',
+                        padding: '4px 8px',
+                        background: '#ff4444',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        opacity: 0.7
+                      }}
+                    >
+                      Reset
+                    </button>
+                  )}
+                </div>
               </div>
               <div className="social-cards-container">
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-card" aria-label="Follow us on Instagram">
-                  <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                  </svg>
+                <button 
+                  className={getSocialCardClassName('instagram')} 
+                  onClick={() => handleSocialFollow('instagram', 'https://instagram.com/beeyloapp')}
+                  aria-label="Follow us on Instagram"
+                >
+                  {getSocialCardIcon('instagram', 
+                    <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                    </svg>
+                  )}
                   <span className="platform-name">instagram</span>
-                </a>
-                <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="social-card" aria-label="Follow us on TikTok">
-                  <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
-                  </svg>
+                </button>
+                <button 
+                  className={getSocialCardClassName('tiktok')} 
+                  onClick={() => handleSocialFollow('tiktok', 'https://tiktok.com/@beeyloapp')}
+                  aria-label="Follow us on TikTok"
+                >
+                  {getSocialCardIcon('tiktok',
+                    <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
+                    </svg>
+                  )}
                   <span className="platform-name">tiktok</span>
-                </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-card" aria-label="Follow us on LinkedIn">
-                  <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                    <rect x="2" y="9" width="4" height="12"/>
-                    <circle cx="4" cy="4" r="2"/>
-                  </svg>
+                </button>
+                <button 
+                  className={getSocialCardClassName('linkedin')} 
+                  onClick={() => handleSocialFollow('linkedin', 'https://linkedin.com/company/beeylo')}
+                  aria-label="Follow us on LinkedIn"
+                >
+                  {getSocialCardIcon('linkedin',
+                    <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                      <rect x="2" y="9" width="4" height="12"/>
+                      <circle cx="4" cy="4" r="2"/>
+                    </svg>
+                  )}
                   <span className="platform-name">linkedin</span>
-                </a>
-                <a href="https://x.com" target="_blank" rel="noopener noreferrer" className="social-card" aria-label="Follow us on X">
-                  <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path d="M4 4l11.733 16h4.267l-11.733 -16z"/>
-                    <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/>
-                  </svg>
+                </button>
+                <button 
+                  className={getSocialCardClassName('x')} 
+                  onClick={() => handleSocialFollow('x', 'https://x.com/beeylo')}
+                  aria-label="Follow us on X"
+                >
+                  {getSocialCardIcon('x',
+                    <svg fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M4 4l11.733 16h4.267l-11.733 -16z"/>
+                      <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/>
+                    </svg>
+                  )}
                   <span className="platform-name">x</span>
-                </a>
+                </button>
               </div>
             </div>
             </div>
@@ -232,6 +435,29 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
 
   return (
     <div className="no-scroll-page waitlist">
+      {/* Feedback Message */}
+      {feedbackMessage.show && (
+        <div 
+          className="feedback-message"
+          onClick={() => setFeedbackMessage(prev => ({ ...prev, show: false }))}
+        >
+          <div 
+            className={`feedback-message-${feedbackMessage.type}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="feedback-content">
+              <span>{feedbackMessage.message}</span>
+              <button 
+                className="feedback-close"
+                onClick={() => setFeedbackMessage(prev => ({ ...prev, show: false }))}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
       <div className="no-scroll-content">
         <div className="no-scroll-stack">
           {/* Welcome Content */}

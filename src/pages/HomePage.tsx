@@ -52,6 +52,16 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
               <div className="no-scroll-hero-content">
                 {/* Text Content */}
                 <div className="no-scroll-hero-text">
+                  {/* Mobile Logo Container - only visible on mobile */}
+                  <div className="mobile-logo-container">
+                    <img 
+                      src={beeyloLogo} 
+                      alt="Beeylo Logo" 
+                      className="mobile-logo-image"
+                    />
+                    <span className="mobile-logo-text">Beeylo</span>
+                  </div>
+                  
                   <Typography variant="h1" className="no-scroll-hero-title text-center-mobile-left-desktop" style={{ textWrap: 'balance' }}>
                     Your inbox, without the noise
                   </Typography>
@@ -111,16 +121,26 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
           </div>
           
           {/* Hero Section */}
-          <div className="no-scroll-hero">
-            <div className="no-scroll-hero-content">
-              {/* Text Content */}
-              <div className="no-scroll-hero-text">
-                <Typography variant="h1" className="no-scroll-hero-title text-center-mobile-left-desktop" style={{ textWrap: 'balance' }}>
-                  Your inbox, without the noise
-                </Typography>
-                <Typography variant="body" className="no-scroll-hero-subtitle text-center-mobile-left-desktop" style={{ textWrap: 'balance' }}>
-                  No more spam, ads or useless updates
-                </Typography>
+            <div className="no-scroll-hero">
+              <div className="no-scroll-hero-content">
+                {/* Text Content */}
+                <div className="no-scroll-hero-text">
+                  {/* Mobile Logo Container - only visible on mobile */}
+                  <div className="mobile-logo-container">
+                    <img 
+                      src={beeyloLogo} 
+                      alt="Beeylo Logo" 
+                      className="mobile-logo-image"
+                    />
+                    <span className="mobile-logo-text">Beeylo</span>
+                  </div>
+                  
+                  <Typography variant="h1" className="no-scroll-hero-title text-center-mobile-left-desktop" style={{ textWrap: 'balance' }}>
+                    Your inbox, without the noise
+                  </Typography>
+                  <Typography variant="body" className="no-scroll-hero-subtitle text-center-mobile-left-desktop" style={{ textWrap: 'balance' }}>
+                    No more spam, ads or useless updates
+                  </Typography>
                 
                 {/* Login form - Back in the hero text section */}
                 <div className="no-scroll-form-section">

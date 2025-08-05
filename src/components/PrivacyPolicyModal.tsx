@@ -8,7 +8,7 @@ interface PrivacyPolicyModalProps {
 
 export const PrivacyPolicyModal: FC<PrivacyPolicyModalProps> = ({ isOpen, onClose }) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Privacy Policy">
+    <Modal isOpen={isOpen} onClose={onClose} title="Privacy Policy" modalClassName="terms-modal">
       <div className="modal-text-content">
         <h3>1. Information We Collect</h3>
         <p>
