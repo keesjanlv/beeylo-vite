@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import type { TabType } from '../types'
 import { Button, Typography } from '../components/ui'
 import { PageBadge } from '../components'
-import { Link, Hand, Rocket, Gem, Target, Clock, CheckCircle } from 'lucide-react'
+import { Link, Hand, Rocket, Gem, Target, Clock, CheckCircle, ArrowLeft } from 'lucide-react'
 import { useUser } from '../contexts/UserContext'
 import { api } from '../services/api'
 
@@ -92,19 +92,14 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
       const platformDisplayName = platform.charAt(0).toUpperCase() + platform.slice(1);
       showFeedbackMessage(`We have not yet verified your action, this may take up to 24 hours. Something went wrong? Try again with the button below.`, 'info')
       
-      // Add a button to try again and reduce background opacity
+      // Add a button to try again
       setTimeout(() => {
-        // Make background more transparent
-        const feedbackBg = document.querySelector('.feedback-message') as HTMLElement;
-        if (feedbackBg) {
-          feedbackBg.style.background = 'rgba(255, 255, 255, 0.2)'; // 20% opacity
-        }
         
         const feedbackDiv = document.querySelector('.feedback-content');
         if (feedbackDiv) {
           const tryAgainButton = document.createElement('button');
           tryAgainButton.className = 'try-again-button';
-          tryAgainButton.textContent = `${platformDisplayName} page`;
+          tryAgainButton.textContent = `Visit ${platformDisplayName}`;
           tryAgainButton.onclick = (e) => {
             e.stopPropagation();
             window.open({
@@ -478,14 +473,18 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
             className={`feedback-message-${feedbackMessage.type}`}
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Return Button */}
+            <button 
+              type="button"
+              className="no-scroll-return-btn feedback-return-btn"
+              onClick={() => setFeedbackMessage(prev => ({ ...prev, show: false }))}
+              aria-label="Return"
+            >
+              <ArrowLeft size={16} />
+              <span>Close</span>
+            </button>
             <div className="feedback-content">
               <span>{feedbackMessage.message}</span>
-              <button 
-                className="feedback-close"
-                onClick={() => setFeedbackMessage(prev => ({ ...prev, show: false }))}
-              >
-                ×
-              </button>
             </div>
           </div>
         </div>
