@@ -25,6 +25,7 @@ interface UserContextType {
   isLoggedIn: boolean;
   isLoading: boolean;
   error: string | null;
+  loadingMessage: string | null; // New: specific loading messages
   login: (email: string) => Promise<boolean>;
   logout: () => void;
   refreshUserData: () => Promise<void>;
@@ -49,6 +50,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
 
   // Check for existing session on app load
   useEffect(() => {
@@ -130,15 +132,18 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         await new Promise(resolve => setTimeout(resolve, 300));
       }
       
-      // Simplified approach: Always call register endpoint
-      // Let the backend handle duplicate user detection and Brevo logic
+      // Optimized registration request with better parameters
       const registrationResponse = await api.registerUser({
         email,
         source: 'react_app',
-        form_version: '1.0',
-        session_id: `react_${Date.now()}`,
+        form_version: '2.1', // Updated to match documentation
+        session_id: `react_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         submission_time: Date.now(),
-        skip_brevo: false, // Let backend decide whether to send to Brevo
+        skip_brevo: false, // Let backend handle email service integration
+        // Add user agent info for better backend processing
+        ...(typeof navigator !== 'undefined' && {
+          user_agent: navigator.userAgent
+        })
       });
 
       if (registrationResponse.success) {
@@ -160,22 +165,44 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     } catch (error) {
       console.error('Login/Registration failed:', error);
       
-      // Handle rate limiting (429 errors)
-      if (error instanceof Error && error.message.includes('429')) {
-        // Extract wait time from error message if available
-        const waitTimeMatch = error.message.match(/wait (\d+) seconds/);
-        const waitTime = waitTimeMatch ? waitTimeMatch[1] : 'a few minutes';
+      // Handle different types of errors based on backend documentation
+      if (error instanceof Error) {
+        const errorMessage = error.message;
         
-        // Only show rate limit message after multiple attempts
-        if (newAttemptCount > 5) {
-          setError(`Too many login attempts. Please wait ${waitTime} before trying again.`);
+        if (errorMessage.includes('429')) {
+          // Extract wait time from error message if available
+          const waitTimeMatch = errorMessage.match(/wait (\d+) seconds/);
+          const waitTime = waitTimeMatch ? waitTimeMatch[1] : 'a few minutes';
+          
+          // Only show rate limit message after multiple attempts
+          if (newAttemptCount > 5) {
+            setError(`Too many login attempts. Please wait ${waitTime} before trying again.`);
+          } else {
+            setError('Server is busy. Please try again in a moment.');
+          }
+        } else if (errorMessage.includes('403')) {
+          // Invalid origin error
+          setError('Access denied. Please try refreshing the page.');
+        } else if (errorMessage.includes('422')) {
+          // Validation or security error
+          if (errorMessage.includes('Security validation failed')) {
+            setError('Security check failed. Please try again or contact support.');
+          } else {
+            setError('Invalid information provided. Please check your email and try again.');
+          }
+        } else if (errorMessage.includes('500')) {
+          setError('Server error. Please try again later or contact support.');
         } else {
-          setError('Server is busy. Please try again in a moment.');
+          // Extract clean error message from API response if available
+          const apiErrorMatch = errorMessage.match(/API Error: \d+ - (.+)/);
+          if (apiErrorMatch && apiErrorMatch[1]) {
+            setError(apiErrorMatch[1]);
+          } else {
+            setError('An error occurred. Please try again.');
+          }
         }
-      } else if (error instanceof Error && error.message.includes('500')) {
-        setError('Server error. Please try again later or contact support.');
       } else {
-        setError(error instanceof Error ? error.message : 'An error occurred');
+        setError('An unexpected error occurred. Please try again.');
       }
       return false;
     } finally {
@@ -218,6 +245,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     isLoggedIn,
     isLoading,
     error,
+    loadingMessage,
     login,
     logout,
     refreshUserData,

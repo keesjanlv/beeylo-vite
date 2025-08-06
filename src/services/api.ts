@@ -196,14 +196,27 @@ class BeeyloAPI {
       if (!response.ok) {
         // Handle rate limiting specifically
         if (response.status === 429) {
-          // Get retry-after header if available
-          const retryAfter = response.headers.get('Retry-After');
-          const waitTime = retryAfter ? parseInt(retryAfter, 10) : 10; // Default to just 10 seconds if no header
+          // Try to get response body for retry_after value
+          let retryAfter = response.headers.get('Retry-After');
+          let waitTime = 10; // Default fallback
+          
+          try {
+            const errorData = await response.json();
+            // Backend documentation shows retry_after in response body
+            if (errorData.retry_after) {
+              waitTime = errorData.retry_after;
+            } else if (retryAfter) {
+              waitTime = parseInt(retryAfter, 10);
+            }
+          } catch (e) {
+            // If we can't parse the response, use header or default
+            waitTime = retryAfter ? parseInt(retryAfter, 10) : 10;
+          }
           
           // Try to automatically retry a few times with exponential backoff
           if (this.retryCount < this.maxRetries) {
             this.retryCount++;
-            const backoffTime = Math.min(waitTime, 2 ** this.retryCount); // Exponential backoff, but respect server limits
+            const backoffTime = Math.min(waitTime, Math.pow(2, this.retryCount) * 2); // Exponential backoff, but respect server limits
             console.log(`Rate limited. Retrying in ${backoffTime} seconds (attempt ${this.retryCount}/${this.maxRetries})`);
             
             // Wait and retry
@@ -219,7 +232,44 @@ class BeeyloAPI {
           throw new Error(`API Error: 429 - Rate limited. Please wait ${adjustedWaitTime} seconds before trying again.`);
         }
         
-        throw new Error(`API Error: ${response.status} - ${response.statusText || 'Unknown error'}`);
+        // Handle 500 errors with retry logic (common for new user registration)
+        if (response.status === 500) {
+          let errorMessage = 'Server error';
+          try {
+            const errorData = await response.json();
+            if (errorData.message) {
+              errorMessage = errorData.message;
+            }
+          } catch (e) {
+            errorMessage = response.statusText || 'Internal server error';
+          }
+          
+          // Retry 500 errors automatically for registration endpoints
+          if (endpoint.includes('/waitlist/register') && this.retryCount < this.maxRetries) {
+            this.retryCount++;
+            const backoffTime = Math.pow(2, this.retryCount); // 2, 4, 8 seconds
+            console.log(`Server error (500). Retrying in ${backoffTime} seconds (attempt ${this.retryCount}/${this.maxRetries})`);
+            
+            // Wait and retry
+            await new Promise(resolve => setTimeout(resolve, backoffTime * 1000));
+            return this.request<T>(endpoint, options);
+          }
+          
+          throw new Error(`API Error: 500 - ${errorMessage}`);
+        }
+        
+        // Handle other HTTP errors
+        let errorMessage = `API Error: ${response.status}`;
+        try {
+          const errorData = await response.json();
+          if (errorData.message) {
+            errorMessage += ` - ${errorData.message}`;
+          }
+        } catch (e) {
+          errorMessage += ` - ${response.statusText || 'Unknown error'}`;
+        }
+        
+        throw new Error(errorMessage);
       }
 
       // Reset retry count on success
@@ -257,10 +307,30 @@ class BeeyloAPI {
       return mockApi.getUserStatus(email);
     }
     
-    return this.request('/waitlist/status', {
-      method: 'POST',
-      body: JSON.stringify({ email }),
-    });
+    try {
+      // Try GET method first (as documented)
+      return await this.request(`/waitlist/status?email=${encodeURIComponent(email)}`);
+    } catch (error) {
+      // If GET fails, try POST method as fallback
+      if (error instanceof Error && error.message.includes('404')) {
+        try {
+          return await this.request('/waitlist/status', {
+            method: 'POST',
+            body: JSON.stringify({ email }),
+          });
+        } catch (postError) {
+          // If both methods fail with 404, return a proper "not found" response
+          if (postError instanceof Error && postError.message.includes('404')) {
+            return {
+              success: false,
+              data: null as any // This will be handled by the calling code
+            };
+          }
+          throw postError;
+        }
+      }
+      throw error;
+    }
   }
 
   // Leaderboard data
