@@ -266,7 +266,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                         disabled={isLoading}
                         className="no-scroll-button buttonv2 buttonv2-yellow"
                       >
-                        {isLoading ? 'Loading...' : 'End my inbox chaos'}
+                        {isLoading ? 'Loading...' : 'Discover Beeylo'}
                       </Button>
                     </div>
                     {(loginError || error) && (
