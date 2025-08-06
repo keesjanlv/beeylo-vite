@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import type { FC } from 'react'
 import type { TabType } from '../types'
 import { useUser } from '../contexts/UserContext'
@@ -8,6 +8,7 @@ import { PrivacyPolicyModal } from '../components/PrivacyPolicyModal'
 import { Logo } from '../components/Logo'
 import beeyloLogo from '../assets/beeylologo.png'
 import tripleScreenImg from '../assets/triplescreenhomedef.webp'
+import FingerprintJS from '@fingerprintjs/fingerprintjs'
 
 // Enhanced Glass Button Component with custom styling
 const GlassButton: FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({ children, ...rest }) => {
@@ -96,20 +97,48 @@ interface HomePageProps {
 
 export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighlight = false, onTabChange }) => {
   const { login, isLoading, error } = useUser()
+
   const [email, setEmail] = useState('')
   const [loginError, setLoginError] = useState<string | null>(null)
   const [isTermsModalOpen, setIsTermsModalOpen] = useState(false)
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false)
+  const [fingerprint, setFingerprint] = useState('')
+  const [honeypot, setHoneypot] = useState('') // Honeypot veld
+  const pageLoadTime = useRef<number>(Date.now())
+  
+  // Genereer fingerprint bij het laden van de pagina
+  useEffect(() => {
+    const generateFingerprint = async () => {
+      try {
+        const fp = await FingerprintJS.load()
+        const result = await fp.get()
+        setFingerprint(result.visitorId)
+      } catch (error) {
+        console.error('FingerprintJS error:', error)
+      }
+    }
+    generateFingerprint()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Honeypot check - als dit veld is ingevuld, is het een bot
+    if (honeypot.trim() !== '') {
+      console.log('Bot detected via honeypot')
+      setLoginError('Security check failed. Please try again.')
+      return // Stop hier, geen API call
+    }
     
     // Check if email is empty
     if (!email.trim()) {
       // In development, use a sample account for quick testing
       if (import.meta.env.DEV || window.location.hostname === 'localhost') {
         setLoginError(null);
-        const success = await login('sample@beeylo.com');
+        const success = await login('sample@beeylo.com', {
+          fingerprint, // Voeg fingerprint toe
+          submission_time: Date.now() - pageLoadTime.current // Voeg submission time toe
+        });
         if (!success) {
           setLoginError(error || 'Login failed. Please try again.');
         }
@@ -123,7 +152,10 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     
     // Process valid email
     setLoginError(null)
-    const success = await login(email.trim())
+    const success = await login(email.trim(), {
+      fingerprint, // Voeg fingerprint toe
+      submission_time: Date.now() - pageLoadTime.current // Voeg submission time toe
+    })
     if (!success) {
       setLoginError(error || 'Login failed. Please try again.')
     }
@@ -247,6 +279,21 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                 {/* Login form - Back in the hero text section */}
                 <div className="no-scroll-form-section">
                   <form onSubmit={handleSubmit} className="no-scroll-form">
+                    {/* Honeypot veld - onzichtbaar voor gebruikers, maar zichtbaar voor bots */}
+                    <input
+                      type="text"
+                      name="website"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                      style={{ 
+                        position: 'absolute', 
+                        left: '-9999px', 
+                        opacity: 0, 
+                        pointerEvents: 'none' 
+                      }}
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
                     <div className="no-scroll-input-group">
                       <input
                         type="email"
