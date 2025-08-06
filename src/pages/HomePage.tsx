@@ -106,18 +106,19 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     
     // Check if email is empty
     if (!email.trim()) {
-      // In development, use sample account
+      // In development, use a sample account for quick testing
       if (import.meta.env.DEV || window.location.hostname === 'localhost') {
-        setLoginError(null)
-        const success = await login('sample@beeylo.com')
+        setLoginError(null);
+        const success = await login('sample@beeylo.com');
         if (!success) {
-          setLoginError(error || 'Login failed. Please try again.')
+          setLoginError(error || 'Login failed. Please try again.');
         }
       } else {
-        // In production, require email
-        setLoginError('Please enter your email address')
+        // In production, if the email is empty, just show an error and do nothing.
+        // This prevents the accidental API call on page load.
+        setLoginError('Please enter your email address');
       }
-      return
+      return; // Crucially, we exit the function here for empty emails in production.
     }
     
     // Process valid email
