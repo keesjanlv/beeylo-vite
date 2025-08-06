@@ -59,7 +59,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [loadingMessage] = useState<string | null>(null);
+  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
 
   // Check for existing session on app load
   useEffect(() => {
@@ -104,6 +104,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const login = async (email: string, securityData?: SecurityData): Promise<boolean> => {
     setIsLoading(true);
     setError(null);
+    setLoadingMessage(null);
+    
+    // Set loading message after 2 seconds
+    const loadingTimer = setTimeout(() => {
+      setLoadingMessage('Looking for your reservation...');
+    }, 2000);
 
     try {
       // No client-side delays needed - backend handles rate limiting
@@ -187,7 +193,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       }
       return false;
     } finally {
+      clearTimeout(loadingTimer);
       setIsLoading(false);
+      setLoadingMessage(null);
     }
   };
 
@@ -204,6 +212,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
     setIsLoading(true);
     setError(null);
+    setLoadingMessage(null);
+    
+    // Set loading message after 2 seconds
+    const loadingTimer = setTimeout(() => {
+      setLoadingMessage('Looking for your reservation...');
+    }, 2000);
 
     try {
       const response = await api.getUserStatus(userData.email);
@@ -225,7 +239,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       console.error('Failed to refresh user data:', error);
       setError(error instanceof Error ? error.message : 'Failed to refresh data');
     } finally {
+      clearTimeout(loadingTimer);
       setIsLoading(false);
+      setLoadingMessage(null);
     }
   };
 

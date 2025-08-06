@@ -96,7 +96,7 @@ interface HomePageProps {
 }
 
 export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighlight = false, onTabChange }) => {
-  const { login, isLoading, error } = useUser()
+  const { login, isLoading, error, loadingMessage } = useUser()
 
   const [email, setEmail] = useState('')
   const [loginError, setLoginError] = useState<string | null>(null)
@@ -314,7 +314,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                         disabled={isLoading}
                         className="no-scroll-button buttonv2 buttonv2-yellow"
                       >
-                        {isLoading ? 'Loading...' : 'Discover Beeylo'}
+                        {isLoading ? (loadingMessage || 'Loading...') : 'Discover Beeylo'}
                       </Button>
                     </div>
                     {(loginError || error) && (
