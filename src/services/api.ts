@@ -172,6 +172,10 @@ class BeeyloAPI {
     console.log('Mode:', import.meta.env.MODE);
   }
 
+  // Track retry attempts for rate limiting
+  private retryCount = 0;
+  private maxRetries = 2; // Allow up to 2 automatic retries
+  
   private async request<T>(
     endpoint: string, 
     options: RequestInit = {}
@@ -190,8 +194,40 @@ class BeeyloAPI {
       });
 
       if (!response.ok) {
-        throw new Error(`API Error: ${response.status} - ${response.statusText}`);
+        // Handle rate limiting specifically
+        if (response.status === 429) {
+          // Get retry-after header if available
+          const retryAfter = response.headers.get('Retry-After');
+          const waitTime = retryAfter ? parseInt(retryAfter, 10) : 10; // Default to just 10 seconds if no header
+          
+          // Try to automatically retry a few times with exponential backoff
+          if (this.retryCount < this.maxRetries) {
+            this.retryCount++;
+            const backoffTime = Math.min(waitTime, 2 ** this.retryCount); // Exponential backoff, but respect server limits
+            console.log(`Rate limited. Retrying in ${backoffTime} seconds (attempt ${this.retryCount}/${this.maxRetries})`);
+            
+            // Wait and retry
+            await new Promise(resolve => setTimeout(resolve, backoffTime * 1000));
+            return this.request<T>(endpoint, options);
+          }
+          
+          // If we've exhausted retries, store the rate limit info
+          const adjustedWaitTime = Math.max(5, waitTime); // Ensure minimum 5 seconds wait
+          sessionStorage.setItem('beeylo_rate_limited', 'true');
+          sessionStorage.setItem('beeylo_rate_limit_reset', String(Date.now() + adjustedWaitTime * 1000));
+          
+          throw new Error(`API Error: 429 - Rate limited. Please wait ${adjustedWaitTime} seconds before trying again.`);
+        }
+        
+        throw new Error(`API Error: ${response.status} - ${response.statusText || 'Unknown error'}`);
       }
+
+      // Reset retry count on success
+      this.retryCount = 0;
+      
+      // Clear rate limit flags on successful request
+      sessionStorage.removeItem('beeylo_rate_limited');
+      sessionStorage.removeItem('beeylo_rate_limit_reset');
 
       const data = await response.json();
       return data;

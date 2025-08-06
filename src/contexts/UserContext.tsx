@@ -83,10 +83,53 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   const login = async (email: string): Promise<boolean> => {
+    // Check if we're currently rate limited
+    const isRateLimited = sessionStorage.getItem('beeylo_rate_limited') === 'true';
+    const rateLimitReset = sessionStorage.getItem('beeylo_rate_limit_reset');
+    
+    // Track login attempts in session storage to allow a reasonable number of attempts
+    const loginAttempts = parseInt(sessionStorage.getItem('beeylo_login_attempts') || '0', 10);
+    const lastAttemptTime = parseInt(sessionStorage.getItem('beeylo_last_attempt') || '0', 10);
+    const currentTime = Date.now();
+    
+    // Reset attempt counter if it's been more than 5 minutes since last attempt
+    if (currentTime - lastAttemptTime > 5 * 60 * 1000) {
+      sessionStorage.setItem('beeylo_login_attempts', '0');
+    }
+    
+    // Only enforce client-side rate limiting after multiple attempts
+    if (loginAttempts > 5) {
+      if (isRateLimited && rateLimitReset) {
+        const resetTime = parseInt(rateLimitReset, 10);
+        
+        if (currentTime < resetTime) {
+          // Still rate limited
+          const secondsRemaining = Math.ceil((resetTime - currentTime) / 1000);
+          setError(`Too many requests. Please wait ${secondsRemaining} seconds before trying again.`);
+          return false;
+        } else {
+          // Rate limit has expired, clear the flags
+          sessionStorage.removeItem('beeylo_rate_limited');
+          sessionStorage.removeItem('beeylo_rate_limit_reset');
+          sessionStorage.setItem('beeylo_login_attempts', '0');
+        }
+      }
+    }
+    
+    // Track this login attempt
+    const newAttemptCount = loginAttempts + 1;
+    sessionStorage.setItem('beeylo_login_attempts', String(newAttemptCount));
+    sessionStorage.setItem('beeylo_last_attempt', String(currentTime));
+    
     setIsLoading(true);
     setError(null);
 
     try {
+      // Only add a small delay after multiple attempts
+      if (newAttemptCount > 3) {
+        await new Promise(resolve => setTimeout(resolve, 300));
+      }
+      
       // Simplified approach: Always call register endpoint
       // Let the backend handle duplicate user detection and Brevo logic
       const registrationResponse = await api.registerUser({
@@ -99,6 +142,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       });
 
       if (registrationResponse.success) {
+        // Reset attempt counter on success
+        sessionStorage.removeItem('beeylo_login_attempts');
+        sessionStorage.removeItem('beeylo_last_attempt');
+        
         setUserData(registrationResponse.data);
         setIsLoggedIn(true);
         localStorage.setItem('beeylo_user_data', JSON.stringify(registrationResponse.data));
@@ -115,7 +162,16 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       
       // Handle rate limiting (429 errors)
       if (error instanceof Error && error.message.includes('429')) {
-        setError('Too many requests. Please wait a moment and try again.');
+        // Extract wait time from error message if available
+        const waitTimeMatch = error.message.match(/wait (\d+) seconds/);
+        const waitTime = waitTimeMatch ? waitTimeMatch[1] : 'a few minutes';
+        
+        // Only show rate limit message after multiple attempts
+        if (newAttemptCount > 5) {
+          setError(`Too many login attempts. Please wait ${waitTime} before trying again.`);
+        } else {
+          setError('Server is busy. Please try again in a moment.');
+        }
       } else if (error instanceof Error && error.message.includes('500')) {
         setError('Server error. Please try again later or contact support.');
       } else {
