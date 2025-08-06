@@ -33,7 +33,8 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
   const [feedbackMessage, setFeedbackMessage] = useState<FeedbackMessage>({ show: false, message: '', type: 'info' })
   
   // Use real user data if available, fallback to mock data
-  const userPosition = userData?.position || 1234
+  // Use position_in_queue (boosted position) if available, otherwise fall back to position
+  const userPosition = userData?.position_in_queue || userData?.position || 1234
 
   const handleContentToggle = (content: string) => {
     setActiveContent(content)

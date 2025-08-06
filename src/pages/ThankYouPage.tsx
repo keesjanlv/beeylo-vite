@@ -52,7 +52,7 @@ export const ThankYouPage: FC<ThankYouPageProps> = ({ userData, onTabChange }) =
                   <div className="stats-section-enhanced">
                     <div className="stat-item text-center">
                       <Typography variant="h1" className="stat-number text-center font-roboto font-bold text-sm">
-                        {userData?.position ? userData.position.toLocaleString() : '-'}
+                        {userData?.position_in_queue ? userData.position_in_queue.toLocaleString() : (userData?.position ? userData.position.toLocaleString() : '-')}
                       </Typography>
                       <Typography variant="body" color="secondary" className="stat-label text-center">
                         Your Position

@@ -5,7 +5,9 @@ import { api } from '../services/api';
 interface UserData {
   user_id: number;
   email: string;
-  position: number;
+  position: number; // Legacy field
+  position_in_queue: number; // Boosted position (the one we want to show)
+  fair_position: number; // Actual position without boosts
   referral_code: string;
   referral_url: string;
   referral_count: number;
@@ -26,9 +28,16 @@ interface UserContextType {
   isLoading: boolean;
   error: string | null;
   loadingMessage: string | null; // New: specific loading messages
-  login: (email: string) => Promise<boolean>;
+  login: (email: string, securityData?: SecurityData) => Promise<boolean>;
   logout: () => void;
   refreshUserData: () => Promise<void>;
+}
+
+interface SecurityData {
+  fingerprint?: string;
+  submission_time?: number;
+  form_version?: string;
+  session_id?: string;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -76,15 +85,23 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     try {
       const response = await api.getUserStatus(email);
       if (response.success) {
-        setUserData(response.data);
-        localStorage.setItem('beeylo_user_data', JSON.stringify(response.data));
+        // Transform the data to ensure it has all required fields
+        const transformedData = {
+          ...response.data,
+          // Use position_in_queue if available, otherwise fall back to position
+          position_in_queue: (response.data as any).position_in_queue || response.data.position,
+          // Use fair_position if available, otherwise use position
+          fair_position: (response.data as any).fair_position || response.data.position
+        };
+        setUserData(transformedData);
+        localStorage.setItem('beeylo_user_data', JSON.stringify(transformedData));
       }
     } catch (error) {
       console.error('Failed to refresh user data silently:', error);
     }
   };
 
-  const login = async (email: string): Promise<boolean> => {
+  const login = async (email: string, securityData?: SecurityData): Promise<boolean> => {
     // Check if we're currently rate limited
     const isRateLimited = sessionStorage.getItem('beeylo_rate_limited') === 'true';
     const rateLimitReset = sessionStorage.getItem('beeylo_rate_limit_reset');
@@ -132,14 +149,16 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         await new Promise(resolve => setTimeout(resolve, 300));
       }
       
-      // Optimized registration request with better parameters
+      // Optimized registration request with better parameters and security data
       const registrationResponse = await api.registerUser({
         email,
-        source: 'react_app',
+        source: window.location.hostname,
         form_version: '2.1', // Updated to match documentation
-        session_id: `react_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-        submission_time: Date.now(),
+        session_id: `react_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
         skip_brevo: false, // Let backend handle email service integration
+        // Add security data for behavioral analysis and fingerprinting
+        ...(securityData?.fingerprint && { fingerprint: securityData.fingerprint }),
+        ...(securityData?.submission_time && { submission_time: securityData.submission_time }),
         // Add user agent info for better backend processing
         ...(typeof navigator !== 'undefined' && {
           user_agent: navigator.userAgent
@@ -151,9 +170,19 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         sessionStorage.removeItem('beeylo_login_attempts');
         sessionStorage.removeItem('beeylo_last_attempt');
         
-        setUserData(registrationResponse.data);
+        // Transform the data to ensure it has all required fields
+        const responseData = registrationResponse.data as any;
+        const transformedData: UserData = {
+          ...responseData,
+          // Use position_in_queue if available, otherwise fall back to position
+          position_in_queue: responseData.position_in_queue || responseData.position,
+          // Use fair_position if available, otherwise use position
+          fair_position: responseData.fair_position || responseData.position
+        };
+        
+        setUserData(transformedData);
         setIsLoggedIn(true);
-        localStorage.setItem('beeylo_user_data', JSON.stringify(registrationResponse.data));
+        localStorage.setItem('beeylo_user_data', JSON.stringify(transformedData));
         localStorage.setItem('beeylo_user_email', email);
         // Set a session storage flag to indicate a fresh form submission
         sessionStorage.setItem('beeylo_form_submitted', 'true');
@@ -227,8 +256,16 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     try {
       const response = await api.getUserStatus(userData.email);
       if (response.success) {
-        setUserData(response.data);
-        localStorage.setItem('beeylo_user_data', JSON.stringify(response.data));
+        // Transform the data to ensure it has all required fields
+        const transformedData = {
+          ...response.data,
+          // Use position_in_queue if available, otherwise fall back to position
+          position_in_queue: (response.data as any).position_in_queue || response.data.position,
+          // Use fair_position if available, otherwise use position
+          fair_position: (response.data as any).fair_position || response.data.position
+        };
+        setUserData(transformedData);
+        localStorage.setItem('beeylo_user_data', JSON.stringify(transformedData));
       } else {
         setError('Failed to refresh user data');
       }
