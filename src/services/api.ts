@@ -148,15 +148,28 @@ class BeeyloAPI {
   constructor() {
     // Use Vite environment variable for the API base URL, with a fallback
     this.baseURL = import.meta.env.VITE_API_BASE_URL || 'https://api.beeylo.com/api';
-    this.isDevelopment = import.meta.env.DEV || 
-                        window.location.hostname === 'localhost' ||
-                        window.location.hostname === 'staging.beeylo.com';
+    
+    // More explicit development detection:
+    // ONLY use mock API for localhost, 127.0.0.1, or staging.beeylo.com
+    // NEVER use mock API for production beeylo.com
+    const hostname = window.location.hostname;
+    const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
+    const isStaging = hostname === 'staging.beeylo.com';
+    const isProduction = hostname === 'beeylo.com' || hostname === 'www.beeylo.com';
+    
+    // Force production mode for beeylo.com domains
+    if (isProduction) {
+      this.isDevelopment = false;
+    } else {
+      this.isDevelopment = import.meta.env.DEV === true || isLocalhost || isStaging;
+    }
     
     // Debug information
     console.log('API Base URL:', this.baseURL);
     console.log('Is Development Mode:', this.isDevelopment);
-    console.log('Window Location:', window.location.hostname);
+    console.log('Window Location:', hostname);
     console.log('DEV env variable:', import.meta.env.DEV);
+    console.log('Mode:', import.meta.env.MODE);
   }
 
   private async request<T>(
