@@ -112,7 +112,15 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       }
     } catch (error) {
       console.error('Login/Registration failed:', error);
-      setError(error instanceof Error ? error.message : 'An error occurred');
+      
+      // Handle rate limiting (429 errors)
+      if (error instanceof Error && error.message.includes('429')) {
+        setError('Too many requests. Please wait a moment and try again.');
+      } else if (error instanceof Error && error.message.includes('500')) {
+        setError('Server error. Please try again later or contact support.');
+      } else {
+        setError(error instanceof Error ? error.message : 'An error occurred');
+      }
       return false;
     } finally {
       setIsLoading(false);
