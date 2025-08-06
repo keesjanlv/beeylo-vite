@@ -151,6 +151,12 @@ class BeeyloAPI {
     this.isDevelopment = import.meta.env.DEV || 
                         window.location.hostname === 'localhost' ||
                         window.location.hostname === 'staging.beeylo.com';
+    
+    // Debug information
+    console.log('API Base URL:', this.baseURL);
+    console.log('Is Development Mode:', this.isDevelopment);
+    console.log('Window Location:', window.location.hostname);
+    console.log('DEV env variable:', import.meta.env.DEV);
   }
 
   private async request<T>(
