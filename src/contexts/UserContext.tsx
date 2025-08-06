@@ -87,55 +87,28 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     setError(null);
 
     try {
-      // First, try to get existing user status
-      let userExists = false;
-      let existingUserData = null;
-      
-      try {
-        const response = await api.getUserStatus(email);
-        if (response.success) {
-          userExists = true;
-          existingUserData = response.data;
-        }
-      } catch (statusError) {
-        // If getUserStatus fails (404, endpoint doesn't exist, etc.), 
-        // assume user doesn't exist and proceed with registration
-        console.log('User status check failed, proceeding with registration:', statusError);
-        userExists = false;
-      }
-      
-      if (userExists && existingUserData) {
-        // User exists, log them in without sending to Brevo again
-        setUserData(existingUserData);
+      // Simplified approach: Always call register endpoint
+      // Let the backend handle duplicate user detection and Brevo logic
+      const registrationResponse = await api.registerUser({
+        email,
+        source: 'react_app',
+        form_version: '1.0',
+        session_id: `react_${Date.now()}`,
+        submission_time: Date.now(),
+        skip_brevo: false, // Let backend decide whether to send to Brevo
+      });
+
+      if (registrationResponse.success) {
+        setUserData(registrationResponse.data);
         setIsLoggedIn(true);
-        localStorage.setItem('beeylo_user_data', JSON.stringify(existingUserData));
+        localStorage.setItem('beeylo_user_data', JSON.stringify(registrationResponse.data));
         localStorage.setItem('beeylo_user_email', email);
         // Set a session storage flag to indicate a fresh form submission
         sessionStorage.setItem('beeylo_form_submitted', 'true');
         return true;
       } else {
-        // User doesn't exist, register them
-        const registrationResponse = await api.registerUser({
-          email,
-          source: 'react_app',
-          form_version: '1.0',
-          session_id: `react_${Date.now()}`,
-          submission_time: Date.now(),
-          skip_brevo: false, // New users should be sent to Brevo
-        });
-
-        if (registrationResponse.success) {
-          setUserData(registrationResponse.data);
-          setIsLoggedIn(true);
-          localStorage.setItem('beeylo_user_data', JSON.stringify(registrationResponse.data));
-          localStorage.setItem('beeylo_user_email', email);
-          // Set a session storage flag to indicate a fresh form submission
-          sessionStorage.setItem('beeylo_form_submitted', 'true');
-          return true;
-        } else {
-          setError(registrationResponse.message || 'Registration failed');
-          return false;
-        }
+        setError(registrationResponse.message || 'Registration failed');
+        return false;
       }
     } catch (error) {
       console.error('Login/Registration failed:', error);
