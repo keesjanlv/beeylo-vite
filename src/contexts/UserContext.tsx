@@ -88,13 +88,27 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
     try {
       // First, try to get existing user status
-      const response = await api.getUserStatus(email);
+      let userExists = false;
+      let existingUserData = null;
       
-      if (response.success) {
+      try {
+        const response = await api.getUserStatus(email);
+        if (response.success) {
+          userExists = true;
+          existingUserData = response.data;
+        }
+      } catch (statusError) {
+        // If getUserStatus fails (404, endpoint doesn't exist, etc.), 
+        // assume user doesn't exist and proceed with registration
+        console.log('User status check failed, proceeding with registration:', statusError);
+        userExists = false;
+      }
+      
+      if (userExists && existingUserData) {
         // User exists, log them in without sending to Brevo again
-        setUserData(response.data);
+        setUserData(existingUserData);
         setIsLoggedIn(true);
-        localStorage.setItem('beeylo_user_data', JSON.stringify(response.data));
+        localStorage.setItem('beeylo_user_data', JSON.stringify(existingUserData));
         localStorage.setItem('beeylo_user_email', email);
         // Set a session storage flag to indicate a fresh form submission
         sessionStorage.setItem('beeylo_form_submitted', 'true');
