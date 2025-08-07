@@ -14,7 +14,7 @@ interface SEOProps {
 
 const SEO: React.FC<SEOProps> = ({
   title = 'Beeylo',
-  description = 'The new free inbox. No more spam, ads and useless updates.',
+  description = 'Your new free inbox, without the noise. No more spam, ads and useless updates. Join the waitlist today and claim your chance at early access.',
   keywords = 'email management, productivity, waitlist, early access, inbox organization, email client, competition, referral program',
   image = '/beeylo-og-image.jpg',
   url = 'https://beeylo.com',

@@ -136,7 +136,7 @@ const AppContent: FC = () => {
       case 'waitlist':
         return {
           title: 'Join the Waitlist - Beeylo',
-          description: 'Join Beeylo\'s exclusive waitlist and be among the first to experience the future of email management. Early access, exclusive benefits, and founder perks await.',
+          description: 'Your new free inbox, without the noise. No more spam, ads and useless updates. Join the waitlist today and claim your chance at early access.',
           url: '/waitlist'
         }
       case 'how-it-works':
