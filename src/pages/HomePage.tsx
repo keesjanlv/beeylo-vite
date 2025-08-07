@@ -109,6 +109,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const [isWaitingForTurnstile, setIsWaitingForTurnstile] = useState(false)
   const turnstileRef = useRef<TurnstileRef>(null)
   const pageLoadTime = useRef<number>(Date.now())
+  const waitingTimeoutRef = useRef<number | null>(null)
   
   // Genereer fingerprint bij het laden van de pagina
   useEffect(() => {
@@ -131,7 +132,15 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     
     // If we were waiting for Turnstile, proceed with form submission
     if (isWaitingForTurnstile) {
+      console.log('Turnstile token received while waiting, proceeding with submission')
       setIsWaitingForTurnstile(false)
+      
+      // Clear any pending timeout
+      if (waitingTimeoutRef.current) {
+        clearTimeout(waitingTimeoutRef.current)
+        waitingTimeoutRef.current = null
+      }
+      
       // Trigger form submission after token is received
       setTimeout(() => {
         proceedWithSubmission(token)
@@ -144,6 +153,13 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     setIsWaitingForTurnstile(false)
     console.error('Turnstile verification failed')
     setLoginError('Security verification failed. Please try again.')
+    
+    // Clear any pending timeout
+    if (waitingTimeoutRef.current) {
+      clearTimeout(waitingTimeoutRef.current)
+      waitingTimeoutRef.current = null
+    }
+    
     // Auto-retry after a short delay
     setTimeout(() => {
       turnstileRef.current?.reset()
@@ -163,6 +179,13 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     setIsWaitingForTurnstile(false)
     console.error('Turnstile timeout - taking too long')
     setLoginError('Security verification timed out. Please try again.')
+    
+    // Clear any pending timeout
+    if (waitingTimeoutRef.current) {
+      clearTimeout(waitingTimeoutRef.current)
+      waitingTimeoutRef.current = null
+    }
+    
     // Reset and try again
     setTimeout(() => {
       turnstileRef.current?.reset()
@@ -230,21 +253,37 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
         setIsWaitingForTurnstile(true)
         setLoginError(null) // Clear any previous errors
         
-        // Try to reset Turnstile to get a new token if needed
+        // Only reset if we don't already have a token being generated
+        // Check if Turnstile widget exists and try to get current response first
+        const currentToken = turnstileRef.current?.getToken()
+        if (currentToken) {
+          console.log('Found existing token, using it')
+          setTurnstileToken(currentToken)
+          setIsWaitingForTurnstile(false)
+          await proceedWithSubmission(currentToken)
+          return
+        }
+        
+        // Only reset if no token is available
+        console.log('No existing token found, requesting new one')
         turnstileRef.current?.reset()
         
         // Set a timeout in case Turnstile never responds
-        setTimeout(() => {
-          if (isWaitingForTurnstile) {
-            setIsWaitingForTurnstile(false)
-            setLoginError('Security verification timed out. Please try again.')
-          }
+        if (waitingTimeoutRef.current) {
+          clearTimeout(waitingTimeoutRef.current)
+        }
+        waitingTimeoutRef.current = setTimeout(() => {
+          console.log('Turnstile verification timeout reached')
+          setIsWaitingForTurnstile(false)
+          setLoginError('Security verification timed out. Please try again.')
+          waitingTimeoutRef.current = null
         }, 10000) // 10 second timeout
       }
       return
     }
     
     // If we have a token, proceed immediately
+    console.log('Using existing Turnstile token for submission')
     await proceedWithSubmission()
   }
 
