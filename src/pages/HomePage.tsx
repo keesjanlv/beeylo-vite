@@ -294,7 +294,8 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
           turnstileRef.current?.reset()
           gracePeriodTimeoutRef.current = null
           
-          // Set main timeout for reset attempt
+          // DON'T clear isWaitingForTurnstile here - keep waiting for the token from reset
+          // Set main timeout for reset attempt (but keep waiting state active)
           if (waitingTimeoutRef.current) {
             clearTimeout(waitingTimeoutRef.current)
           }
@@ -303,7 +304,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
             setIsWaitingForTurnstile(false)
             setLoginError('Security verification timed out. Please try again.')
             waitingTimeoutRef.current = null
-          }, 10000) // 10 second timeout for reset attempt
+          }, 15000) // 15 second timeout for reset attempt (longer to allow for token generation)
         }, 3000) // 3 second grace period
       }
       return
