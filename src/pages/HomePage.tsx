@@ -110,6 +110,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const turnstileRef = useRef<TurnstileRef>(null)
   const pageLoadTime = useRef<number>(Date.now())
   const waitingTimeoutRef = useRef<number | null>(null)
+  const gracePeriodTimeoutRef = useRef<number | null>(null)
   
   // Genereer fingerprint bij het laden van de pagina
   useEffect(() => {
@@ -135,10 +136,14 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
       console.log('Turnstile token received while waiting, proceeding with submission')
       setIsWaitingForTurnstile(false)
       
-      // Clear any pending timeout
+      // Clear any pending timeouts
       if (waitingTimeoutRef.current) {
         clearTimeout(waitingTimeoutRef.current)
         waitingTimeoutRef.current = null
+      }
+      if (gracePeriodTimeoutRef.current) {
+        clearTimeout(gracePeriodTimeoutRef.current)
+        gracePeriodTimeoutRef.current = null
       }
       
       // Trigger form submission after token is received
@@ -253,7 +258,6 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
         setIsWaitingForTurnstile(true)
         setLoginError(null) // Clear any previous errors
         
-        // Only reset if we don't already have a token being generated
         // Check if Turnstile widget exists and try to get current response first
         const currentToken = turnstileRef.current?.getToken()
         if (currentToken) {
@@ -264,20 +268,43 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
           return
         }
         
-        // Only reset if no token is available
-        console.log('No existing token found, requesting new one')
-        turnstileRef.current?.reset()
+        // Implement 3-second grace period: wait for token before resetting
+        console.log('No token available, waiting 3 seconds for token generation...')
         
-        // Set a timeout in case Turnstile never responds
-        if (waitingTimeoutRef.current) {
-          clearTimeout(waitingTimeoutRef.current)
+        // Clear any existing grace period timeout
+        if (gracePeriodTimeoutRef.current) {
+          clearTimeout(gracePeriodTimeoutRef.current)
         }
-        waitingTimeoutRef.current = setTimeout(() => {
-          console.log('Turnstile verification timeout reached')
-          setIsWaitingForTurnstile(false)
-          setLoginError('Security verification timed out. Please try again.')
-          waitingTimeoutRef.current = null
-        }, 10000) // 10 second timeout
+        
+        // Wait 3 seconds for token to be generated naturally
+        gracePeriodTimeoutRef.current = setTimeout(() => {
+          // After 3 seconds, check again for token
+          const delayedToken = turnstileRef.current?.getToken()
+          if (delayedToken) {
+            console.log('Token found after grace period, using it')
+            setTurnstileToken(delayedToken)
+            setIsWaitingForTurnstile(false)
+            proceedWithSubmission(delayedToken)
+            gracePeriodTimeoutRef.current = null
+            return
+          }
+          
+          // Still no token after grace period, reset to generate new one
+          console.log('No token found after grace period, resetting widget')
+          turnstileRef.current?.reset()
+          gracePeriodTimeoutRef.current = null
+          
+          // Set main timeout for reset attempt
+          if (waitingTimeoutRef.current) {
+            clearTimeout(waitingTimeoutRef.current)
+          }
+          waitingTimeoutRef.current = setTimeout(() => {
+            console.log('Turnstile verification timeout reached after reset')
+            setIsWaitingForTurnstile(false)
+            setLoginError('Security verification timed out. Please try again.')
+            waitingTimeoutRef.current = null
+          }, 10000) // 10 second timeout for reset attempt
+        }, 3000) // 3 second grace period
       }
       return
     }
