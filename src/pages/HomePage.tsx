@@ -132,11 +132,26 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const handleTurnstileError = () => {
     setTurnstileToken(null)
     console.error('Turnstile verification failed')
+    // Auto-retry after a short delay
+    setTimeout(() => {
+      turnstileRef.current?.reset()
+    }, 2000)
   }
 
   const handleTurnstileExpire = () => {
     setTurnstileToken(null)
     console.log('Turnstile token expired')
+    // Auto-retry immediately on expiration
+    turnstileRef.current?.reset()
+  }
+
+  const handleTurnstileTimeout = () => {
+    setTurnstileToken(null)
+    console.error('Turnstile timeout - taking too long')
+    // Reset and try again
+    setTimeout(() => {
+      turnstileRef.current?.reset()
+    }, 1000)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -152,10 +167,16 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     // Turnstile check - ensure we have a valid token
     if (!turnstileToken) {
       console.log('No Turnstile token available')
-      setLoginError('Security verification required. Please wait a moment and try again.')
-      // Try to reset Turnstile to get a new token
-      turnstileRef.current?.reset()
-      return
+      
+      // In development, be more lenient with Turnstile
+      if (import.meta.env.DEV || window.location.hostname === 'localhost') {
+        console.warn('Development mode: Proceeding without Turnstile token')
+      } else {
+        setLoginError('Security verification in progress. Please wait a moment and try again.')
+        // Try to reset Turnstile to get a new token
+        turnstileRef.current?.reset()
+        return
+      }
     }
     
     // Check if email is empty
@@ -166,7 +187,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
         const success = await login('sample@beeylo.com', {
           fingerprint, // Voeg fingerprint toe
           submission_time: Date.now() - pageLoadTime.current, // Voeg submission time toe
-          turnstile_token: turnstileToken // Voeg Turnstile token toe
+          turnstile_token: turnstileToken || undefined // Voeg Turnstile token toe
         });
         if (!success) {
           setLoginError(error || 'Login failed. Please try again.');
@@ -184,7 +205,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     const success = await login(email.trim(), {
       fingerprint, // Voeg fingerprint toe
       submission_time: Date.now() - pageLoadTime.current, // Voeg submission time toe
-      turnstile_token: turnstileToken // Voeg Turnstile token toe
+      turnstile_token: turnstileToken || undefined // Voeg Turnstile token toe
     })
     if (!success) {
       setLoginError(error || 'Login failed. Please try again.')
@@ -332,6 +353,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                       onVerify={handleTurnstileVerify}
                       onError={handleTurnstileError}
                       onExpire={handleTurnstileExpire}
+                      onTimeout={handleTurnstileTimeout}
                       theme="light"
                       className="turnstile-invisible"
                       id="turnstile-homepage"

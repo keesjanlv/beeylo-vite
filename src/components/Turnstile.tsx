@@ -82,18 +82,46 @@ export const Turnstile = forwardRef<TurnstileRef, TurnstileProps>(({
     try {
       const widgetId = window.turnstile.render(containerRef.current, {
         sitekey: siteKey,
-        callback: onVerify,
-        'error-callback': onError,
-        'expired-callback': onExpire,
-        'timeout-callback': onTimeout,
+        callback: (token: string) => {
+          console.log('Turnstile verification successful')
+          onVerify?.(token)
+        },
+        'error-callback': () => {
+          console.error('Turnstile verification failed')
+          onError?.()
+        },
+        'expired-callback': () => {
+          console.log('Turnstile token expired')
+          onExpire?.()
+        },
+        'timeout-callback': () => {
+          console.error('Turnstile timeout - widget took too long')
+          onTimeout?.()
+        },
         theme,
         size,
-        appearance: 'execute', // This makes it invisible
-        execution: 'render'
+        appearance: 'execute', // Invisible mode
+        execution: 'execute', // Execute immediately
+        retry: 'auto',
+        'retry-interval': 8000,
+        'refresh-expired': 'auto'
       })
 
       widgetIdRef.current = widgetId
       isRenderedRef.current = true
+      
+      // Set a fallback timeout in case Turnstile hangs
+      setTimeout(() => {
+        if (widgetIdRef.current && !onVerify) {
+          console.warn('Turnstile taking too long, attempting reset')
+          try {
+            window.turnstile?.reset(widgetIdRef.current)
+          } catch (resetError) {
+            console.error('Failed to reset Turnstile:', resetError)
+          }
+        }
+      }, 10000) // 10 second fallback timeout
+      
     } catch (error) {
       console.error('Failed to render Turnstile:', error)
       onError?.()
