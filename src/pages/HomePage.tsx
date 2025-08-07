@@ -106,6 +106,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const [fingerprint, setFingerprint] = useState('')
   const [honeypot, setHoneypot] = useState('') // Honeypot veld
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const [isWaitingForTurnstile, setIsWaitingForTurnstile] = useState(false)
   const turnstileRef = useRef<TurnstileRef>(null)
   const pageLoadTime = useRef<number>(Date.now())
   
@@ -127,11 +128,22 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const handleTurnstileVerify = (token: string) => {
     setTurnstileToken(token)
     console.log('Turnstile verified:', token)
+    
+    // If we were waiting for Turnstile, proceed with form submission
+    if (isWaitingForTurnstile) {
+      setIsWaitingForTurnstile(false)
+      // Trigger form submission after token is received
+      setTimeout(() => {
+        proceedWithSubmission(token)
+      }, 100)
+    }
   }
 
   const handleTurnstileError = () => {
     setTurnstileToken(null)
+    setIsWaitingForTurnstile(false)
     console.error('Turnstile verification failed')
+    setLoginError('Security verification failed. Please try again.')
     // Auto-retry after a short delay
     setTimeout(() => {
       turnstileRef.current?.reset()
@@ -140,6 +152,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
 
   const handleTurnstileExpire = () => {
     setTurnstileToken(null)
+    setIsWaitingForTurnstile(false)
     console.log('Turnstile token expired')
     // Auto-retry immediately on expiration
     turnstileRef.current?.reset()
@@ -147,11 +160,50 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
 
   const handleTurnstileTimeout = () => {
     setTurnstileToken(null)
+    setIsWaitingForTurnstile(false)
     console.error('Turnstile timeout - taking too long')
+    setLoginError('Security verification timed out. Please try again.')
     // Reset and try again
     setTimeout(() => {
       turnstileRef.current?.reset()
     }, 1000)
+  }
+
+  // Function to proceed with submission once we have a Turnstile token
+  const proceedWithSubmission = async (token?: string) => {
+    const tokenToUse = token || turnstileToken
+    
+    // Check if email is empty
+    if (!email.trim()) {
+      // In development, use a sample account for quick testing
+      if (import.meta.env.DEV || window.location.hostname === 'localhost') {
+        setLoginError(null);
+        const success = await login('sample@beeylo.com', {
+          fingerprint, // Voeg fingerprint toe
+          submission_time: Date.now() - pageLoadTime.current, // Voeg submission time toe
+          turnstile_token: tokenToUse || undefined // Voeg Turnstile token toe
+        });
+        if (!success) {
+          setLoginError(error || 'Login failed. Please try again.');
+        }
+      } else {
+        // In production, if the email is empty, just show an error and do nothing.
+        // This prevents the accidental API call on page load.
+        setLoginError('Please enter your email address');
+      }
+      return; // Crucially, we exit the function here for empty emails in production.
+    }
+    
+    // Process valid email
+    setLoginError(null)
+    const success = await login(email.trim(), {
+      fingerprint, // Voeg fingerprint toe
+      submission_time: Date.now() - pageLoadTime.current, // Voeg submission time toe
+      turnstile_token: tokenToUse || undefined // Voeg Turnstile token toe
+    })
+    if (!success) {
+      setLoginError(error || 'Login failed. Please try again.')
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -171,45 +223,29 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
       // In development, be more lenient with Turnstile
       if (import.meta.env.DEV || window.location.hostname === 'localhost') {
         console.warn('Development mode: Proceeding without Turnstile token')
+        await proceedWithSubmission()
       } else {
-        setLoginError('Security verification in progress. Please wait a moment and try again.')
-        // Try to reset Turnstile to get a new token
+        // In production, wait for Turnstile token
+        console.log('Waiting for Turnstile token...')
+        setIsWaitingForTurnstile(true)
+        setLoginError(null) // Clear any previous errors
+        
+        // Try to reset Turnstile to get a new token if needed
         turnstileRef.current?.reset()
-        return
+        
+        // Set a timeout in case Turnstile never responds
+        setTimeout(() => {
+          if (isWaitingForTurnstile) {
+            setIsWaitingForTurnstile(false)
+            setLoginError('Security verification timed out. Please try again.')
+          }
+        }, 10000) // 10 second timeout
       }
+      return
     }
     
-    // Check if email is empty
-    if (!email.trim()) {
-      // In development, use a sample account for quick testing
-      if (import.meta.env.DEV || window.location.hostname === 'localhost') {
-        setLoginError(null);
-        const success = await login('sample@beeylo.com', {
-          fingerprint, // Voeg fingerprint toe
-          submission_time: Date.now() - pageLoadTime.current, // Voeg submission time toe
-          turnstile_token: turnstileToken || undefined // Voeg Turnstile token toe
-        });
-        if (!success) {
-          setLoginError(error || 'Login failed. Please try again.');
-        }
-      } else {
-        // In production, if the email is empty, just show an error and do nothing.
-        // This prevents the accidental API call on page load.
-        setLoginError('Please enter your email address');
-      }
-      return; // Crucially, we exit the function here for empty emails in production.
-    }
-    
-    // Process valid email
-    setLoginError(null)
-    const success = await login(email.trim(), {
-      fingerprint, // Voeg fingerprint toe
-      submission_time: Date.now() - pageLoadTime.current, // Voeg submission time toe
-      turnstile_token: turnstileToken || undefined // Voeg Turnstile token toe
-    })
-    if (!success) {
-      setLoginError(error || 'Login failed. Please try again.')
-    }
+    // If we have a token, proceed immediately
+    await proceedWithSubmission()
   }
 
   if (isLoggedIn) {
@@ -375,11 +411,16 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                         variant="brand" 
                         size="lg" 
                         fullWidth
-                        loading={isLoading}
-                        disabled={isLoading}
+                        loading={isLoading || isWaitingForTurnstile}
+                        disabled={isLoading || isWaitingForTurnstile}
                         className="no-scroll-button buttonv2 buttonv2-yellow"
                       >
-                        {isLoading ? (loadingMessage || 'Loading...') : 'Discover Beeylo'}
+                        {isWaitingForTurnstile 
+                          ? 'Verifying security...' 
+                          : isLoading 
+                            ? (loadingMessage || 'Loading...') 
+                            : 'Discover Beeylo'
+                        }
                       </Button>
                     </div>
                     {(loginError || error) && (
