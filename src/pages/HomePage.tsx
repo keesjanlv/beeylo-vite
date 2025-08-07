@@ -6,6 +6,7 @@ import { Button, Typography } from '../components/ui'
 import { TermsOfServiceModal } from '../components/TermsOfServiceModal'
 import { PrivacyPolicyModal } from '../components/PrivacyPolicyModal'
 import { Logo } from '../components/Logo'
+import { Turnstile, type TurnstileRef } from '../components/Turnstile'
 import beeyloLogo from '../assets/beeylologo.png'
 import tripleScreenImg from '../assets/triplescreenhomedef.webp'
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
@@ -104,6 +105,8 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false)
   const [fingerprint, setFingerprint] = useState('')
   const [honeypot, setHoneypot] = useState('') // Honeypot veld
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const turnstileRef = useRef<TurnstileRef>(null)
   const pageLoadTime = useRef<number>(Date.now())
   
   // Genereer fingerprint bij het laden van de pagina
@@ -120,6 +123,22 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     generateFingerprint()
   }, [])
 
+  // Turnstile event handlers
+  const handleTurnstileVerify = (token: string) => {
+    setTurnstileToken(token)
+    console.log('Turnstile verified:', token)
+  }
+
+  const handleTurnstileError = () => {
+    setTurnstileToken(null)
+    console.error('Turnstile verification failed')
+  }
+
+  const handleTurnstileExpire = () => {
+    setTurnstileToken(null)
+    console.log('Turnstile token expired')
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
@@ -130,6 +149,15 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
       return // Stop hier, geen API call
     }
     
+    // Turnstile check - ensure we have a valid token
+    if (!turnstileToken) {
+      console.log('No Turnstile token available')
+      setLoginError('Security verification required. Please wait a moment and try again.')
+      // Try to reset Turnstile to get a new token
+      turnstileRef.current?.reset()
+      return
+    }
+    
     // Check if email is empty
     if (!email.trim()) {
       // In development, use a sample account for quick testing
@@ -137,7 +165,8 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
         setLoginError(null);
         const success = await login('sample@beeylo.com', {
           fingerprint, // Voeg fingerprint toe
-          submission_time: Date.now() - pageLoadTime.current // Voeg submission time toe
+          submission_time: Date.now() - pageLoadTime.current, // Voeg submission time toe
+          turnstile_token: turnstileToken // Voeg Turnstile token toe
         });
         if (!success) {
           setLoginError(error || 'Login failed. Please try again.');
@@ -154,7 +183,8 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     setLoginError(null)
     const success = await login(email.trim(), {
       fingerprint, // Voeg fingerprint toe
-      submission_time: Date.now() - pageLoadTime.current // Voeg submission time toe
+      submission_time: Date.now() - pageLoadTime.current, // Voeg submission time toe
+      turnstile_token: turnstileToken // Voeg Turnstile token toe
     })
     if (!success) {
       setLoginError(error || 'Login failed. Please try again.')
@@ -294,6 +324,19 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                       tabIndex={-1}
                       autoComplete="off"
                     />
+                    
+                    {/* Invisible Turnstile Widget */}
+                    <Turnstile
+                      ref={turnstileRef}
+                      siteKey="0x4AAAAAABgSmPaCXn1R_VSk"
+                      onVerify={handleTurnstileVerify}
+                      onError={handleTurnstileError}
+                      onExpire={handleTurnstileExpire}
+                      theme="light"
+                      className="turnstile-invisible"
+                      id="turnstile-homepage"
+                    />
+                    
                     <div className="no-scroll-input-group">
                       <input
                         type="email"

@@ -38,6 +38,7 @@ interface SecurityData {
   submission_time?: number;
   form_version?: string;
   session_id?: string;
+  turnstile_token?: string;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);

@@ -4136,3 +4136,35 @@
   outline-offset: 2px;
   border-radius: 2px;
 }
+
+/* === TURNSTILE COMPONENT STYLES === */
+.turnstile-invisible {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* For visible Turnstile widgets (if needed in future) */
+.turnstile-widget {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: var(--space-4) 0;
+}
+
+/* Ensure Turnstile doesn't interfere with form layout */
+.no-scroll-form .turnstile-invisible {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -1;
+}
