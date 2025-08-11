@@ -100,14 +100,12 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
     
     try {
       // Using explicit rendering with element ID
-      // Temporary fix for Error 600010: Try different configurations
-      const isProduction = window.location.hostname === 'www.beeylo.com' || window.location.hostname === 'beeylo.com'
-      
+      // Enhanced Turnstile configuration with better error handling
       const widgetConfig: TurnstileOptions = {
         sitekey: siteKey,
         theme: theme,
-        // Try 'normal' size first to debug Error 600010
-        size: isProduction ? 'normal' : 'invisible',
+        // Use invisible mode for automatic token generation
+        size: 'invisible',
         // Add execution mode to fix configuration issues
         execution: 'execute',
         retry: 'auto',
