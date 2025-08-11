@@ -113,6 +113,11 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
         'refresh-expired': 'auto',
         callback: (token: string) => {
           console.log('✅ Turnstile token received:', token.substring(0, 20) + '...')
+          console.log('🔍 Token details:', { 
+            length: token.length, 
+            domain: window.location.hostname,
+            timestamp: new Date().toISOString()
+          })
           onVerify?.(token)
         },
         'error-callback': (error?: any) => {
