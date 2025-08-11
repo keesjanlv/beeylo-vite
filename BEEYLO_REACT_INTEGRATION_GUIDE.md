@@ -20,7 +20,7 @@ React + Vite + TS ──→ Laravel API (Existing)
         ↓                    ↓
    Local Development    Production VPS
         ↓                    ↓
-   Environment Config   217.154.218.85
+   Environment Config   217.154.80.125
 ```
 
 ## 🔑 Required Environment Variables

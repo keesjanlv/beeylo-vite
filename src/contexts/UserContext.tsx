@@ -125,6 +125,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         // Add security data for behavioral analysis and fingerprinting
         ...(securityData?.fingerprint && { fingerprint: securityData.fingerprint }),
         ...(securityData?.submission_time && { submission_time: securityData.submission_time }),
+        // Add Turnstile token if available
+        ...(securityData?.turnstile_token && { turnstile_token: securityData.turnstile_token }),
         // Add user agent info for better backend processing
         ...(typeof navigator !== 'undefined' && {
           user_agent: navigator.userAgent

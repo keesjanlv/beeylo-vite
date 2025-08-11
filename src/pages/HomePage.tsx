@@ -153,10 +153,30 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     }
   }
 
-  const handleTurnstileError = () => {
+  const handleTurnstileError = (error?: any) => {
     setTurnstileToken(null)
     setIsWaitingForTurnstile(false)
-    console.error('Turnstile verification failed')
+    console.error('Turnstile verification failed:', error)
+    
+    // Check for specific Error 600010 (Invalid widget configuration)
+    if (error === 600010 || error === '600010') {
+      console.warn('Turnstile Error 600010 detected - Configuration issue, proceeding with bypass')
+      setLoginError('Security system temporarily unavailable. Proceeding with login...')
+      
+      // Clear any pending timeout
+      if (waitingTimeoutRef.current) {
+        clearTimeout(waitingTimeoutRef.current)
+        waitingTimeoutRef.current = null
+      }
+      
+      // Proceed with submission without Turnstile token (bypass mode)
+      setTimeout(() => {
+        proceedWithSubmission()
+      }, 1000)
+      return
+    }
+    
+    // Handle other Turnstile errors normally
     setLoginError('Security verification failed. Please try again.')
     
     // Clear any pending timeout
@@ -483,7 +503,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                         className="no-scroll-button buttonv2 buttonv2-yellow"
                       >
                         {isWaitingForTurnstile 
-                          ? 'Verifying security...' 
+                          ? 'Looking for your reservation...' 
                           : isLoading 
                             ? (loadingMessage || 'Loading...') 
                             : 'Discover Beeylo'
