@@ -4,10 +4,11 @@ import { useEffect, useState, forwardRef, useImperativeHandle } from 'react'
 declare global {
   interface Window {
     turnstile?: {
-      render: (container: string, options: TurnstileOptions) => string
+      render: (container: string | HTMLElement, options: TurnstileOptions) => string
       reset: (widgetId: string) => void
       remove: (widgetId: string) => void
       getResponse: (widgetId: string) => string | undefined
+      execute?: (widgetId?: string) => void
     }
   }
 }
@@ -34,7 +35,7 @@ interface TurnstileOptions {
 export interface TurnstileProps {
   siteKey: string
   onVerify?: (token: string) => void
-  onError?: () => void
+  onError?: (error?: any) => void
   onExpire?: () => void
   onTimeout?: () => void
   theme?: 'light' | 'dark'
@@ -98,16 +99,23 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
       return
     }
     
+    // Check if DOM element exists
+    const element = document.getElementById(id)
+    if (!element) {
+      console.error('Turnstile container element not found:', id)
+      setTimeout(() => initializeTurnstile(), 100) // Retry after 100ms
+      return
+    }
+    
     try {
-      // Using explicit rendering with element ID
       // Enhanced Turnstile configuration with better error handling
       const widgetConfig: TurnstileOptions = {
         sitekey: siteKey,
         theme: theme,
         // Use invisible mode for automatic token generation
         size: 'invisible',
-        // Add execution mode to fix configuration issues
-        execution: 'execute',
+        // Remove execution mode - this can cause issues in invisible mode
+        // execution: 'execute', // REMOVED - causes hanging in invisible mode
         retry: 'auto',
         'retry-interval': 8000,
         'refresh-expired': 'auto',
@@ -123,7 +131,7 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
         'error-callback': (error?: any) => {
           console.error('❌ Turnstile error:', error)
           console.error('Error details:', { error, sitekey: siteKey, hostname: window.location.hostname })
-          onError?.()
+          onError?.(error)
         },
         'expired-callback': () => {
           console.log('⚠️ Turnstile token expired')
@@ -136,13 +144,30 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
       }
       
       console.log('Turnstile config:', widgetConfig)
-      const newWidgetId = window.turnstile.render(`#${id}`, widgetConfig)
+      console.log('Rendering Turnstile widget on element:', element)
+      
+      // Use element directly instead of selector
+      const newWidgetId = window.turnstile.render(element, widgetConfig)
       
       console.log('Turnstile widget initialized with ID:', newWidgetId)
       setWidgetId(newWidgetId)
+      
+      // Force execute after render for invisible mode
+      setTimeout(() => {
+        if (window.turnstile && newWidgetId) {
+          console.log('Force executing Turnstile widget...')
+          try {
+            // For invisible widgets, we need to manually trigger execution
+            window.turnstile.execute?.()
+          } catch (executeError) {
+            console.warn('Execute method not available or failed:', executeError)
+          }
+        }
+      }, 500)
+      
     } catch (error) {
       console.error('Failed to initialize Turnstile:', error)
-      onError?.()
+      onError?.(error)
     }
   }
   
