@@ -24,6 +24,10 @@ interface TurnstileOptions {
   tabindex?: number
   action?: string
   cData?: string
+  execution?: string
+  retry?: string
+  'retry-interval'?: number
+  'refresh-expired'?: string
 }
 
 // Define Turnstile component props
@@ -96,16 +100,26 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
     
     try {
       // Using explicit rendering with element ID
-      const newWidgetId = window.turnstile.render(`#${id}`, {
+      // Temporary fix for Error 600010: Try different configurations
+      const isProduction = window.location.hostname === 'www.beeylo.com' || window.location.hostname === 'beeylo.com'
+      
+      const widgetConfig: TurnstileOptions = {
         sitekey: siteKey,
         theme: theme,
-        size: 'invisible',
-        callback: (token) => {
+        // Try 'normal' size first to debug Error 600010
+        size: isProduction ? 'normal' : 'invisible',
+        // Add execution mode to fix configuration issues
+        execution: 'execute',
+        retry: 'auto',
+        'retry-interval': 8000,
+        'refresh-expired': 'auto',
+        callback: (token: string) => {
           console.log('✅ Turnstile token received:', token.substring(0, 20) + '...')
           onVerify?.(token)
         },
-        'error-callback': (error) => {
+        'error-callback': (error?: any) => {
           console.error('❌ Turnstile error:', error)
+          console.error('Error details:', { error, sitekey: siteKey, hostname: window.location.hostname })
           onError?.()
         },
         'expired-callback': () => {
@@ -116,7 +130,10 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
           console.error('⏱️ Turnstile timed out')
           onTimeout?.()
         }
-      })
+      }
+      
+      console.log('Turnstile config:', widgetConfig)
+      const newWidgetId = window.turnstile.render(`#${id}`, widgetConfig)
       
       console.log('Turnstile widget initialized with ID:', newWidgetId)
       setWidgetId(newWidgetId)
