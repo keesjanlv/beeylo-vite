@@ -158,16 +158,20 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     setIsWaitingForTurnstile(false)
     console.error('Turnstile verification failed:', error)
     
+    // Clear any pending timeouts
+    if (waitingTimeoutRef.current) {
+      clearTimeout(waitingTimeoutRef.current)
+      waitingTimeoutRef.current = null
+    }
+    if (gracePeriodTimeoutRef.current) {
+      clearTimeout(gracePeriodTimeoutRef.current)
+      gracePeriodTimeoutRef.current = null
+    }
+    
     // Check for specific Error 600010 (Invalid widget configuration)
     if (error === 600010 || error === '600010') {
       console.warn('Turnstile Error 600010 detected - Configuration issue, proceeding with bypass')
       setLoginError('Security system temporarily unavailable. Proceeding with login...')
-      
-      // Clear any pending timeout
-      if (waitingTimeoutRef.current) {
-        clearTimeout(waitingTimeoutRef.current)
-        waitingTimeoutRef.current = null
-      }
       
       // Proceed with submission without Turnstile token (bypass mode)
       setTimeout(() => {
@@ -176,13 +180,13 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
       return
     }
     
-    // Handle other Turnstile errors normally
-    setLoginError('Security verification failed. Please try again.')
-    
-    // Clear any pending timeout
-    if (waitingTimeoutRef.current) {
-      clearTimeout(waitingTimeoutRef.current)
-      waitingTimeoutRef.current = null
+    // Handle network-related errors
+    if (error === 600020 || error === '600020') {
+      console.warn('Turnstile network error detected')
+      setLoginError('Network error during security verification. Please check your connection and try again.')
+    } else {
+      // Handle other Turnstile errors normally
+      setLoginError('Security verification failed. Please try again.')
     }
     
     // Auto-retry after a short delay
@@ -288,17 +292,17 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
           return
         }
         
-        // Implement 3-second grace period: wait for token before resetting
-        console.log('No token available, waiting 3 seconds for token generation...')
+        // Implement 5-second grace period: wait for token before resetting
+        console.log('No token available, waiting 5 seconds for token generation...')
         
         // Clear any existing grace period timeout
         if (gracePeriodTimeoutRef.current) {
           clearTimeout(gracePeriodTimeoutRef.current)
         }
         
-        // Wait 3 seconds for token to be generated naturally
+        // Wait 5 seconds for token to be generated naturally
         gracePeriodTimeoutRef.current = setTimeout(() => {
-          // After 3 seconds, check again for token
+          // After 5 seconds, check again for token
           const delayedToken = turnstileRef.current?.getToken()
           if (delayedToken) {
             console.log('Token found after grace period, using it')
@@ -325,7 +329,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
             setLoginError('Security verification timed out. Please try again.')
             waitingTimeoutRef.current = null
           }, 15000) // 15 second timeout for reset attempt (longer to allow for token generation)
-        }, 3000) // 3 second grace period
+        }, 5000) // 5 second grace period
       }
       return
     }

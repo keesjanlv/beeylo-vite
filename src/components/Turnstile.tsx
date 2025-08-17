@@ -152,18 +152,8 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
       console.log('Turnstile widget initialized with ID:', newWidgetId)
       setWidgetId(newWidgetId)
       
-      // Force execute after render for invisible mode
-      setTimeout(() => {
-        if (window.turnstile && newWidgetId) {
-          console.log('Force executing Turnstile widget...')
-          try {
-            // For invisible widgets, we need to manually trigger execution
-            window.turnstile.execute?.()
-          } catch (executeError) {
-            console.warn('Execute method not available or failed:', executeError)
-          }
-        }
-      }, 500)
+      // For invisible widgets, let Cloudflare handle execution automatically
+      console.log('Invisible widget will auto-execute when ready')
       
     } catch (error) {
       console.error('Failed to initialize Turnstile:', error)
@@ -227,10 +217,14 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
       className={className} 
       data-testid="turnstile-container" 
       style={{ 
-        minHeight: '1px',
-        opacity: 0,
-        position: 'absolute',
-        left: '-9999px'
+        width: '100%',
+        height: '65px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+        zIndex: 1000,
+        minHeight: '65px'
       }}
     />
   )
