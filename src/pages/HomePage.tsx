@@ -9,6 +9,7 @@ import { Logo } from '../components/Logo'
 import Turnstile, { type TurnstileRef } from '../components/Turnstile'
 import beeyloLogo from '../assets/beeylologo.png'
 import tripleScreenImg from '../assets/triplescreenhomedef.webp'
+import cloudflareIcon from '../assets/cloudflare-icon.svg'
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
 
 // Enhanced Glass Button Component with custom styling
@@ -106,11 +107,10 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const [fingerprint, setFingerprint] = useState('')
   const [honeypot, setHoneypot] = useState('') // Honeypot veld
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
-  const [isWaitingForTurnstile, setIsWaitingForTurnstile] = useState(false)
+  const [isTurnstileReady, setIsTurnstileReady] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const turnstileRef = useRef<TurnstileRef>(null)
   const pageLoadTime = useRef<number>(Date.now())
-  const waitingTimeoutRef = useRef<number | null>(null)
-  const gracePeriodTimeoutRef = useRef<number | null>(null)
   
   // Genereer fingerprint bij het laden van de pagina
   useEffect(() => {
@@ -128,45 +128,22 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
 
   // Turnstile event handlers
   const handleTurnstileVerify = (token: string) => {
-    setTurnstileToken(token)
-    console.log('Turnstile verified:', token)
+    console.log('✅ Turnstile token received:', token.substring(0, 20) + '...')
+    console.log('🔍 Token details:', {
+      length: token.length,
+      domain: window.location.hostname,
+      timestamp: new Date().toISOString()
+    })
     
-    // If we were waiting for Turnstile, proceed with form submission
-    if (isWaitingForTurnstile) {
-      console.log('Turnstile token received while waiting, proceeding with submission')
-      setIsWaitingForTurnstile(false)
-      
-      // Clear any pending timeouts
-      if (waitingTimeoutRef.current) {
-        clearTimeout(waitingTimeoutRef.current)
-        waitingTimeoutRef.current = null
-      }
-      if (gracePeriodTimeoutRef.current) {
-        clearTimeout(gracePeriodTimeoutRef.current)
-        gracePeriodTimeoutRef.current = null
-      }
-      
-      // Trigger form submission after token is received
-      setTimeout(() => {
-        proceedWithSubmission(token)
-      }, 100)
-    }
+    setTurnstileToken(token)
+    setIsTurnstileReady(true)
+    setLoginError(null)
   }
 
   const handleTurnstileError = (error?: any) => {
     setTurnstileToken(null)
-    setIsWaitingForTurnstile(false)
+    setIsTurnstileReady(false)
     console.error('Turnstile verification failed:', error)
-    
-    // Clear any pending timeouts
-    if (waitingTimeoutRef.current) {
-      clearTimeout(waitingTimeoutRef.current)
-      waitingTimeoutRef.current = null
-    }
-    if (gracePeriodTimeoutRef.current) {
-      clearTimeout(gracePeriodTimeoutRef.current)
-      gracePeriodTimeoutRef.current = null
-    }
     
     // Check for specific Error 600010 (Invalid widget configuration)
     if (error === 600010 || error === '600010') {
@@ -198,28 +175,23 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   }
 
   const handleTurnstileExpire = () => {
+    console.log('⏰ Turnstile token expired')
     setTurnstileToken(null)
-    setIsWaitingForTurnstile(false)
-    console.log('Turnstile token expired')
-    // Auto-retry immediately on expiration
-    turnstileRef.current?.reset()
+    setIsTurnstileReady(false)
+    
+    // Reset the widget after a short delay
+    setTimeout(() => {
+      turnstileRef.current?.reset()
+    }, 2000)
   }
 
   const handleTurnstileTimeout = () => {
+    console.log('⏱️ Turnstile timeout occurred')
     setTurnstileToken(null)
-    setIsWaitingForTurnstile(false)
-    console.error('Turnstile timeout - taking too long')
-    setLoginError('Security verification timed out. Please try again.')
+    setIsTurnstileReady(false)
     
-    // Clear any pending timeout
-    if (waitingTimeoutRef.current) {
-      clearTimeout(waitingTimeoutRef.current)
-      waitingTimeoutRef.current = null
-    }
-    
-    // Reset and try again immediately for timeouts
+    // Reset the widget after a short delay
     setTimeout(() => {
-      console.log('Retrying Turnstile after timeout')
       turnstileRef.current?.reset()
     }, 500)
   }
@@ -264,82 +236,38 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    // Honeypot check - als dit veld is ingevuld, is het een bot
-    if (honeypot.trim() !== '') {
-      console.log('Bot detected via honeypot')
-      setLoginError('Security check failed. Please try again.')
-      return // Stop hier, geen API call
-    }
-    
-    // Turnstile check - ensure we have a valid token
-    if (!turnstileToken) {
-      console.log('No Turnstile token available')
-      
-      // In development, be more lenient with Turnstile
-      if (import.meta.env.DEV || window.location.hostname === 'localhost') {
-        console.warn('Development mode: Proceeding without Turnstile token')
-        await proceedWithSubmission()
-      } else {
-        // In production, wait for Turnstile token
-        console.log('Waiting for Turnstile token...')
-        setIsWaitingForTurnstile(true)
-        setLoginError(null) // Clear any previous errors
-        
-        // Check if Turnstile widget exists and try to get current response first
-        const currentToken = turnstileRef.current?.getToken()
-        if (currentToken) {
-          console.log('Found existing token, using it')
-          setTurnstileToken(currentToken)
-          setIsWaitingForTurnstile(false)
-          await proceedWithSubmission(currentToken)
-          return
-        }
-        
-        // Implement 10-second grace period: wait for token before resetting
-        console.log('No token available, waiting 10 seconds for token generation...')
-        
-        // Clear any existing grace period timeout
-        if (gracePeriodTimeoutRef.current) {
-          clearTimeout(gracePeriodTimeoutRef.current)
-        }
-        
-        // Wait 10 seconds for token to be generated naturally
-        gracePeriodTimeoutRef.current = setTimeout(() => {
-          // After 10 seconds, check again for token
-          const delayedToken = turnstileRef.current?.getToken()
-          if (delayedToken) {
-            console.log('Token found after grace period, using it')
-            setTurnstileToken(delayedToken)
-            setIsWaitingForTurnstile(false)
-            proceedWithSubmission(delayedToken)
-            gracePeriodTimeoutRef.current = null
-            return
-          }
-          
-          // Still no token after grace period, reset to generate new one
-          console.log('No token found after grace period, resetting widget')
-          turnstileRef.current?.reset()
-          gracePeriodTimeoutRef.current = null
-          
-          // DON'T clear isWaitingForTurnstile here - keep waiting for the token from reset
-          // Set main timeout for reset attempt (but keep waiting state active)
-          if (waitingTimeoutRef.current) {
-            clearTimeout(waitingTimeoutRef.current)
-          }
-          waitingTimeoutRef.current = setTimeout(() => {
-            console.log('Turnstile verification timeout reached after reset')
-            setIsWaitingForTurnstile(false)
-            setLoginError('Security verification timed out. Please try again.')
-            waitingTimeoutRef.current = null
-          }, 20000) // 20 second timeout for reset attempt (longer to allow for token generation)
-        }, 10000) // 10 second grace period
-      }
+    // Honeypot check
+    if (honeypot) {
+      console.log('🍯 Honeypot triggered - potential bot detected')
       return
     }
     
-    // If we have a token, proceed immediately
-    console.log('Using existing Turnstile token for submission')
-    await proceedWithSubmission()
+    if (!email) {
+      setLoginError('Please enter your email address')
+      return
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      setLoginError('Please enter a valid email address')
+      return
+    }
+    
+    // Check if Turnstile is ready and we have a token
+    if (!isTurnstileReady || !turnstileToken) {
+      setLoginError('Security verification not ready. Please wait a moment.')
+      return
+    }
+    
+    setLoginError(null)
+    setIsSubmitting(true)
+    
+    try {
+      await proceedWithSubmission(turnstileToken)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (isLoggedIn) {
@@ -505,16 +433,22 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                         variant="brand" 
                         size="lg" 
                         fullWidth
-                        loading={isLoading || isWaitingForTurnstile}
-                        disabled={isLoading || isWaitingForTurnstile}
+                        loading={!isTurnstileReady || isSubmitting || isLoading}
+                        disabled={!isTurnstileReady || isSubmitting || isLoading}
                         className="no-scroll-button buttonv2 buttonv2-yellow"
                       >
-                        {isWaitingForTurnstile 
-                          ? 'Looking for your reservation...' 
-                          : isLoading 
-                            ? (loadingMessage || 'Loading...') 
-                            : 'Discover Beeylo'
-                        }
+                        {!isTurnstileReady ? (
+                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                             Verifying secure connection...
+                             <img src={cloudflareIcon} alt="Cloudflare" style={{ width: '16px', height: '16px' }} />
+                           </div>
+                        ) : isSubmitting ? (
+                          'Looking for your reservation...'
+                        ) : isLoading ? (
+                          loadingMessage || 'Loading...'
+                        ) : (
+                          'Discover Beeylo'
+                        )}
                       </Button>
                     </div>
                     {(loginError || error) && (
