@@ -110,6 +110,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const [isTurnstileReady, setIsTurnstileReady] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isWaitingForTurnstile, setIsWaitingForTurnstile] = useState(false)
+  const [pendingSubmission, setPendingSubmission] = useState(false)
   const turnstileRef = useRef<TurnstileRef>(null)
   const pageLoadTime = useRef<number>(Date.now())
   
@@ -140,9 +141,10 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     setIsTurnstileReady(true)
     setLoginError(null)
     
-    // If we were waiting for Turnstile, now proceed with submission
-    if (isWaitingForTurnstile) {
-      console.log('🚀 Proceeding with submission after Turnstile verification')
+    // If we have a pending submission, now proceed with it
+    if (pendingSubmission) {
+      console.log('🚀 Proceeding with pending submission after Turnstile verification')
+      setPendingSubmission(false)
       setIsWaitingForTurnstile(false)
       setIsSubmitting(true)
       
@@ -150,6 +152,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
         await proceedWithSubmission(token)
       } catch (error) {
         console.error('Submission failed:', error)
+        setLoginError('Submission failed. Please try again.')
       } finally {
         setIsSubmitting(false)
       }
@@ -245,8 +248,9 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     
     setLoginError(null)
     
-    // If Turnstile is not ready yet, start waiting for it
+    // If Turnstile is not ready yet, mark as pending submission and wait for it
     if (!isTurnstileReady || !turnstileToken) {
+      setPendingSubmission(true)
       setIsWaitingForTurnstile(true)
       console.log('Waiting for Turnstile verification...')
       return
