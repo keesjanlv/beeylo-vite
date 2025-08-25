@@ -9,7 +9,7 @@ import { Logo } from '../components/Logo'
 import Turnstile, { type TurnstileRef } from '../components/Turnstile'
 import beeyloLogo from '../assets/beeylologo.png'
 import tripleScreenImg from '../assets/triplescreenhomedef.webp'
-import cloudflareIcon from '../assets/cloudflare-icon.svg'
+
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
 
 // Enhanced Glass Button Component with custom styling
@@ -98,7 +98,7 @@ interface HomePageProps {
 }
 
 export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighlight = false, onTabChange }) => {
-  const { login, isLoading, error, loadingMessage } = useUser()
+  const { login, isLoading, error } = useUser()
 
   const [email, setEmail] = useState('')
   const [loginError, setLoginError] = useState<string | null>(null)
@@ -108,7 +108,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const [honeypot, setHoneypot] = useState('') // Honeypot veld
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
   const [isTurnstileReady, setIsTurnstileReady] = useState(false)
-  const [submitState, setSubmitState] = useState<'idle' | 'waiting_turnstile' | 'submitting'>('idle')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const turnstileRef = useRef<TurnstileRef>(null)
   const pageLoadTime = useRef<number>(Date.now())
   
@@ -128,35 +128,10 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
 
   // Turnstile event handlers
   const handleTurnstileVerify = async (token: string) => {
-    console.log('✅ Turnstile token received:', token.substring(0, 20) + '...')
-    console.log('🔍 Token details:', {
-      length: token.length,
-      domain: window.location.hostname,
-      timestamp: new Date().toISOString()
-    })
-    console.log('🔍 Current submitState:', submitState)
-    
+    console.log('✅ Turnstile token received')
     setTurnstileToken(token)
     setIsTurnstileReady(true)
     setLoginError(null)
-    
-    // Only proceed with submission if we were specifically waiting for Turnstile
-    if (submitState === 'waiting_turnstile') {
-      console.log('🚀 Auto-submitting after Turnstile verification')
-      setSubmitState('submitting')
-      
-      try {
-        await proceedWithSubmission(token)
-      } catch (error) {
-        console.error('Auto-submission failed:', error)
-        setLoginError('Submission failed. Please try again.')
-      } finally {
-        setSubmitState('idle')
-      }
-    } else {
-      console.log('ℹ️ Turnstile token received but not auto-submitting (current state:', submitState, ')')
-      // Token received but no pending submission - don't change state
-    }
   }
 
   const handleTurnstileError = (error?: any) => {
@@ -229,8 +204,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     e.preventDefault()
     
     // Prevent multiple submissions
-    if (submitState !== 'idle') {
-      console.log('🚫 Submission already in progress, ignoring click')
+    if (isSubmitting) {
       return
     }
     
@@ -254,15 +228,14 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     
     setLoginError(null)
     
-    // If Turnstile is not ready yet, wait for it
+    // Check if Turnstile is ready
     if (!isTurnstileReady || !turnstileToken) {
-      setSubmitState('waiting_turnstile')
-      console.log('Waiting for Turnstile verification...')
+      setLoginError('Please complete the security verification first')
       return
     }
     
-    // If we have Turnstile token, proceed immediately
-    setSubmitState('submitting')
+    // Proceed with submission
+    setIsSubmitting(true)
     
     try {
       await proceedWithSubmission(turnstileToken)
@@ -270,7 +243,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
       console.error('Submission failed:', error)
       setLoginError('Submission failed. Please try again.')
     } finally {
-      setSubmitState('idle')
+      setIsSubmitting(false)
     }
   }
 
@@ -437,22 +410,11 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                         variant="brand" 
                         size="lg" 
                         fullWidth
-                        loading={submitState !== 'idle' || isLoading}
-                        disabled={submitState !== 'idle' || isLoading}
+                        loading={isSubmitting || isLoading}
+                        disabled={isSubmitting || isLoading}
                         className="no-scroll-button buttonv2 buttonv2-yellow"
                       >
-                        {submitState === 'submitting' ? (
-                          'Looking for your reservation...'
-                        ) : isLoading ? (
-                          loadingMessage || 'Loading...'
-                        ) : submitState === 'waiting_turnstile' ? (
-                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                             Verifying secure connection...
-                             <img src={cloudflareIcon} alt="Cloudflare" style={{ width: '16px', height: '16px' }} />
-                           </div>
-                        ) : (
-                          'Get early access'
-                        )}
+                        {isSubmitting ? 'Processing...' : 'Join Waitlist'}
                       </Button>
                     </div>
                     {(loginError || error) && (
