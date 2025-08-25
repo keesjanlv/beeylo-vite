@@ -142,11 +142,14 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     
     // If we were waiting for Turnstile, now proceed with submission
     if (isWaitingForTurnstile) {
+      console.log('🚀 Proceeding with submission after Turnstile verification')
       setIsWaitingForTurnstile(false)
       setIsSubmitting(true)
       
       try {
         await proceedWithSubmission(token)
+      } catch (error) {
+        console.error('Submission failed:', error)
       } finally {
         setIsSubmitting(false)
       }
