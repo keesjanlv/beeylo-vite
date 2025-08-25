@@ -109,6 +109,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
   const [isTurnstileReady, setIsTurnstileReady] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isWaitingForTurnstile, setIsWaitingForTurnstile] = useState(false)
   const turnstileRef = useRef<TurnstileRef>(null)
   const pageLoadTime = useRef<number>(Date.now())
   
@@ -132,6 +133,21 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     setTurnstileToken(token)
     setIsTurnstileReady(true)
     setLoginError(null)
+    
+    // If we were waiting for Turnstile, proceed with submission
+    if (isWaitingForTurnstile) {
+      setIsWaitingForTurnstile(false)
+      setIsSubmitting(true)
+      
+      try {
+        await proceedWithSubmission(token)
+      } catch (error) {
+        console.error('Submission failed:', error)
+        setLoginError('Submission failed. Please try again.')
+      } finally {
+        setIsSubmitting(false)
+      }
+    }
   }
 
   const handleTurnstileError = (error?: any) => {
@@ -230,7 +246,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     
     // Check if Turnstile is ready
     if (!isTurnstileReady || !turnstileToken) {
-      setLoginError('Please complete the security verification first')
+      setIsWaitingForTurnstile(true)
       return
     }
     
@@ -410,11 +426,11 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                         variant="brand" 
                         size="lg" 
                         fullWidth
-                        loading={isSubmitting || isLoading}
-                        disabled={isSubmitting || isLoading}
+                        loading={isSubmitting || isLoading || isWaitingForTurnstile}
+                        disabled={isSubmitting || isLoading || isWaitingForTurnstile}
                         className="no-scroll-button buttonv2 buttonv2-yellow"
                       >
-                        {isSubmitting ? 'Processing...' : 'Join Waitlist'}
+                        {isWaitingForTurnstile ? 'Verifying security...' : isSubmitting ? 'Processing...' : 'Join Waitlist'}
                       </Button>
                     </div>
                     {(loginError || error) && (
