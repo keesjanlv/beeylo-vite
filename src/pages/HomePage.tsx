@@ -420,7 +420,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                         ) : isLoading ? (
                           loadingMessage || 'Loading...'
                         ) : (
-                          'Discover Beeylo'
+                          'Get early access'
                         )}
                       </Button>
                     </div>

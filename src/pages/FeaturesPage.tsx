@@ -30,7 +30,7 @@ const features: Feature[] = [
     id: 3,
     image: ticketButtonsImg,
     title: 'No more switching apps',
-    description: 'Beeylo lets you take action the moment you see a message. Return an item, download a receipt, check your warranty, ask a question and all from one place.'
+    description: 'Beeylo lets you take action the moment you see a message. Return an item, download a receipt, check your warranty or ask a question, all from one place.'
   },
   {
     id: 4,
