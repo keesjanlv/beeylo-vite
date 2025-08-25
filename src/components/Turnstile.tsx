@@ -103,7 +103,7 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
     const element = document.getElementById(id)
     if (!element) {
       console.error('Turnstile container element not found:', id)
-      setTimeout(() => initializeTurnstile(), 10) // Retry after 10ms for faster initialization
+      setTimeout(() => initializeTurnstile(), 50) // Retry after 50ms
       return
     }
     
@@ -117,7 +117,7 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
         // Remove execution mode - this can cause issues in invisible mode
         // execution: 'execute', // REMOVED - causes hanging in invisible mode
         retry: 'auto',
-        'retry-interval': 1000, // Reduced from 8000ms to 1000ms for faster retries
+        'retry-interval': 2000, // Balanced retry interval
         'refresh-expired': 'auto',
         callback: (token: string) => {
           console.log('✅ Turnstile token received:', token.substring(0, 20) + '...')
@@ -178,7 +178,7 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
           if (window.turnstile) {
             setIsLoaded(true)
           } else {
-            setTimeout(checkTurnstile, 10) // Check every 10ms for faster loading
+            setTimeout(checkTurnstile, 100) // Check every 100ms
           }
         }
         checkTurnstile()

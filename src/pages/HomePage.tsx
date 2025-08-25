@@ -149,59 +149,24 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     if (typeof error === 'string' && error.includes('Script loading failed')) {
       console.warn('Turnstile script blocked - likely by ad blocker or network restrictions')
       setLoginError('Security verification is required but blocked. Please disable ad blockers and refresh the page.')
-      // Don't retry for script loading failures
       return
     }
     
-    // Check for specific Error 600010 (Invalid widget configuration)
-    if (error === 600010 || error === '600010') {
-      console.warn('Turnstile Error 600010 detected - Configuration issue, attempting immediate retry')
-      setLoginError('Security verification initializing...')
-      
-      // Immediate retry for 600010 errors - often resolves on second attempt
-      setTimeout(() => {
-        console.log('Retrying Turnstile after 600010 error')
-        turnstileRef.current?.reset()
-      }, 500)
-      return
-    }
-    
-    // Handle network-related errors
-    if (error === 600020 || error === '600020') {
-      console.warn('Turnstile network error detected')
-      setLoginError('Network error during security verification. Please check your connection and try again.')
-    } else {
-      // Handle other Turnstile errors normally
-      setLoginError('Security verification failed. Please try again.')
-    }
-    
-    // Auto-retry after a short delay
-    setTimeout(() => {
-      console.log('Auto-retrying Turnstile after error')
-      turnstileRef.current?.reset()
-    }, 1000)
+    // Simplified error handling
+    setLoginError('Security verification failed. Please try again.')
   }
 
   const handleTurnstileExpire = () => {
     console.log('⏰ Turnstile token expired')
     setTurnstileToken(null)
     setIsTurnstileReady(false)
-    
-    // Reset the widget after a short delay
-    setTimeout(() => {
-      turnstileRef.current?.reset()
-    }, 2000)
   }
 
   const handleTurnstileTimeout = () => {
     console.log('⏱️ Turnstile timeout occurred')
     setTurnstileToken(null)
     setIsTurnstileReady(false)
-    
-    // Reset the widget after a short delay
-    setTimeout(() => {
-      turnstileRef.current?.reset()
-    }, 500)
+    setLoginError('Security verification timed out. Please try again.')
   }
 
   // Function to proceed with submission once we have a Turnstile token
@@ -216,7 +181,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
         const success = await login('sample@beeylo.com', {
           fingerprint, // Voeg fingerprint toe
            submission_time: Date.now() - pageLoadTime.current, // Voeg submission time toe
-           turnstile_token: tokenToUse // Turnstile token is verplicht
+           turnstile_token: tokenToUse || undefined // Turnstile token is verplicht
         });
         if (!success) {
           setLoginError(error || 'Login failed. Please try again.');
@@ -234,7 +199,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     const success = await login(email.trim(), {
       fingerprint, // Voeg fingerprint toe
        submission_time: Date.now() - pageLoadTime.current, // Voeg submission time toe
-       turnstile_token: tokenToUse // Turnstile token is verplicht
+       turnstile_token: tokenToUse || undefined // Turnstile token is verplicht
     })
     if (!success) {
       setLoginError(error || 'Login failed. Please try again.')

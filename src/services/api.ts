@@ -174,7 +174,7 @@ class BeeyloAPI {
 
   // Track retry attempts for rate limiting
   private retryCount = 0;
-  private maxRetries = 2; // Allow up to 2 automatic retries
+  private maxRetries = 1; // Allow up to 1 automatic retry
   
   private async request<T>(
     endpoint: string, 
@@ -213,13 +213,12 @@ class BeeyloAPI {
             waitTime = retryAfter ? parseInt(retryAfter, 10) : 10;
           }
           
-          // Try to automatically retry a few times with exponential backoff
+          // Simple retry for rate limiting
           if (this.retryCount < this.maxRetries) {
             this.retryCount++;
-            const backoffTime = Math.min(waitTime, Math.pow(2, this.retryCount) * 2); // Exponential backoff, but respect server limits
-            console.log(`Rate limited. Retrying in ${backoffTime} seconds (attempt ${this.retryCount}/${this.maxRetries})`);
+            const backoffTime = Math.min(waitTime, 5); // Max 5 seconds wait
+            console.log(`Rate limited. Retrying in ${backoffTime} seconds`);
             
-            // Wait and retry
             await new Promise(resolve => setTimeout(resolve, backoffTime * 1000));
             return this.request<T>(endpoint, options);
           }
@@ -244,14 +243,12 @@ class BeeyloAPI {
             errorMessage = response.statusText || 'Internal server error';
           }
           
-          // Retry 500 errors automatically for registration endpoints
+          // Simple retry for server errors
           if (endpoint.includes('/waitlist/register') && this.retryCount < this.maxRetries) {
             this.retryCount++;
-            const backoffTime = Math.pow(2, this.retryCount); // 2, 4, 8 seconds
-            console.log(`Server error (500). Retrying in ${backoffTime} seconds (attempt ${this.retryCount}/${this.maxRetries})`);
+            console.log(`Server error (500). Retrying once...`);
             
-            // Wait and retry
-            await new Promise(resolve => setTimeout(resolve, backoffTime * 1000));
+            await new Promise(resolve => setTimeout(resolve, 2000));
             return this.request<T>(endpoint, options);
           }
           
