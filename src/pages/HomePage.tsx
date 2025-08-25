@@ -109,6 +109,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
   const [isTurnstileReady, setIsTurnstileReady] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isWaitingForTurnstile, setIsWaitingForTurnstile] = useState(false)
   const turnstileRef = useRef<TurnstileRef>(null)
   const pageLoadTime = useRef<number>(Date.now())
   
@@ -127,7 +128,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   }, [])
 
   // Turnstile event handlers
-  const handleTurnstileVerify = (token: string) => {
+  const handleTurnstileVerify = async (token: string) => {
     console.log('✅ Turnstile token received:', token.substring(0, 20) + '...')
     console.log('🔍 Token details:', {
       length: token.length,
@@ -138,6 +139,18 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     setTurnstileToken(token)
     setIsTurnstileReady(true)
     setLoginError(null)
+    
+    // If we were waiting for Turnstile, now proceed with submission
+    if (isWaitingForTurnstile) {
+      setIsWaitingForTurnstile(false)
+      setIsSubmitting(true)
+      
+      try {
+        await proceedWithSubmission(token)
+      } finally {
+        setIsSubmitting(false)
+      }
+    }
   }
 
   const handleTurnstileError = (error?: any) => {
@@ -227,13 +240,16 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
       return
     }
     
-    // Check if Turnstile is ready and we have a token
+    setLoginError(null)
+    
+    // If Turnstile is not ready yet, start waiting for it
     if (!isTurnstileReady || !turnstileToken) {
-      setLoginError('Security verification required. Please wait for verification to complete.')
+      setIsWaitingForTurnstile(true)
+      console.log('Waiting for Turnstile verification...')
       return
     }
     
-    setLoginError(null)
+    // If we have Turnstile token, proceed immediately
     setIsSubmitting(true)
     
     try {
@@ -406,11 +422,11 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                         variant="brand" 
                         size="lg" 
                         fullWidth
-                        loading={!isTurnstileReady || isSubmitting || isLoading}
-                        disabled={!isTurnstileReady || isSubmitting || isLoading}
+                        loading={isWaitingForTurnstile || isSubmitting || isLoading}
+                        disabled={isSubmitting || isLoading}
                         className="no-scroll-button buttonv2 buttonv2-yellow"
                       >
-                        {!isTurnstileReady ? (
+                        {isWaitingForTurnstile ? (
                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                              Verifying secure connection...
                              <img src={cloudflareIcon} alt="Cloudflare" style={{ width: '16px', height: '16px' }} />
