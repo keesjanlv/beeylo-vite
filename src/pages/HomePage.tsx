@@ -129,29 +129,34 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   // Turnstile event handlers
   const handleTurnstileVerify = async (token: string) => {
     console.log('✅ Turnstile token received:', token.substring(0, 20) + '...')
+    console.log('🔍 Token details:', {
+      length: token.length,
+      domain: window.location.hostname,
+      timestamp: new Date().toISOString()
+    })
     console.log('🔍 Current submitState:', submitState)
     
     setTurnstileToken(token)
     setIsTurnstileReady(true)
     setLoginError(null)
     
-    // If we were waiting for Turnstile, proceed with submission immediately
-     if (submitState === 'waiting_turnstile') {
-       console.log('🚀 Auto-submitting after Turnstile verification')
-       setSubmitState('submitting')
-       
-       try {
-         await proceedWithSubmission(token)
-       } catch (error) {
-         console.error('Submission failed:', error)
-         setLoginError('Submission failed. Please try again.')
-       } finally {
-         setSubmitState('idle')
-       }
-     } else {
-       // Token received but no pending submission
-       setSubmitState('idle')
-     }
+    // Only proceed with submission if we were specifically waiting for Turnstile
+    if (submitState === 'waiting_turnstile') {
+      console.log('🚀 Auto-submitting after Turnstile verification')
+      setSubmitState('submitting')
+      
+      try {
+        await proceedWithSubmission(token)
+      } catch (error) {
+        console.error('Auto-submission failed:', error)
+        setLoginError('Submission failed. Please try again.')
+      } finally {
+        setSubmitState('idle')
+      }
+    } else {
+      console.log('ℹ️ Turnstile token received but not auto-submitting (current state:', submitState, ')')
+      // Token received but no pending submission - don't change state
+    }
   }
 
   const handleTurnstileError = (error?: any) => {
@@ -222,6 +227,12 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Prevent multiple submissions
+    if (submitState !== 'idle') {
+      console.log('🚫 Submission already in progress, ignoring click')
+      return
+    }
     
     // Honeypot check
     if (honeypot) {
