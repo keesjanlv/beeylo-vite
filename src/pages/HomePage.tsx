@@ -129,7 +129,6 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
 
   // Turnstile event handlers
   const handleTurnstileVerify = async (token: string) => {
-    console.log('✅ Turnstile token received')
     setTurnstileToken(token)
     setIsTurnstileLoading(false)
     setLoginError(null)
@@ -163,13 +162,11 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   }
 
   const handleTurnstileExpire = () => {
-    console.log('⏰ Turnstile token expired')
     setTurnstileToken(null)
     setIsTurnstileLoading(false)
   }
 
   const handleTurnstileTimeout = () => {
-    console.log('⏱️ Turnstile timeout occurred')
     setTurnstileToken(null)
     setIsTurnstileLoading(false)
     setIsSubmitting(false)
@@ -223,7 +220,6 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     
     // Honeypot check
     if (honeypot) {
-      console.log('🍯 Honeypot triggered - potential bot detected')
       return
     }
     

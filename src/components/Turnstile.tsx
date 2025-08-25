@@ -70,23 +70,19 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
   
   // Initialize Turnstile widget
   const initializeTurnstile = useCallback(() => {
-    console.log('Initializing Turnstile...')
-    
     if (!window.turnstile) {
-      console.warn('Turnstile not available yet')
       return
     }
     
     // Check if DOM element exists
     const element = document.getElementById(id)
     if (!element) {
-      console.error('Turnstile container element not found:', id)
       setTimeout(() => initializeTurnstile(), 50) // Retry after 50ms
       return
     }
     
     try {
-      // Enhanced Turnstile configuration with better error handling
+      // Enhanced Turnstile configuration with minimal logging
       const widgetConfig: TurnstileOptions = {
         sitekey: siteKey,
         theme: theme,
@@ -95,21 +91,14 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
         'retry-interval': 2000,
         'refresh-expired': 'auto',
         callback: (token: string) => {
-          console.log('✅ Turnstile token received:', token.substring(0, 20) + '...')
-          console.log('🔍 Token details:', { 
-            length: token.length, 
-            domain: window.location.hostname,
-            timestamp: new Date().toISOString()
-          })
+          // Silent success to reduce console noise
           onVerify?.(token)
         },
         'error-callback': (error?: any) => {
           console.error('❌ Turnstile error:', error)
-          console.error('Error details:', { error, sitekey: siteKey, hostname: window.location.hostname })
           onError?.(error)
         },
         'expired-callback': () => {
-          console.log('⚠️ Turnstile token expired')
           onExpire?.()
         },
         'timeout-callback': () => {
@@ -118,10 +107,8 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
         }
       }
       
-      console.log('Rendering Turnstile widget with config:', { sitekey: siteKey, theme, id })
       const newWidgetId = window.turnstile.render(element, widgetConfig)
       setWidgetId(newWidgetId)
-      console.log('Turnstile widget rendered with ID:', newWidgetId)
       
     } catch (error) {
       console.error('Failed to initialize Turnstile:', error)
@@ -132,16 +119,13 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
   // Expose methods via ref
   useImperativeHandle(ref, () => ({
     reset: () => {
-      console.log('Resetting Turnstile widget')
       if (window.turnstile && widgetId) {
         try {
           window.turnstile.reset(widgetId)
-          console.log('Turnstile widget reset successfully')
         } catch (error) {
           console.error('Failed to reset Turnstile:', error)
         }
       } else {
-        console.warn('Cannot reset Turnstile: widget not initialized')
         // Try to re-initialize
         initializeTurnstile()
       }
@@ -192,14 +176,12 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
       return
     }
     
-    console.log('Loading Turnstile script...')
     const script = document.createElement('script')
     script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
     script.async = true
     script.defer = true
     
     script.onload = () => {
-      console.log('Turnstile script loaded successfully')
       setIsLoaded(true)
     }
     
@@ -220,7 +202,6 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
   // Initialize widget when script is loaded and execute was called
   useEffect(() => {
     if (isLoaded && window.turnstile && initializeOnLoad) {
-      console.log('Turnstile script loaded, initializing widget...')
       initializeTurnstile()
       setInitializeOnLoad(false)
     }
