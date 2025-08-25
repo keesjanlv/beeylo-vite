@@ -1,4 +1,4 @@
-import { useEffect, useState, forwardRef, useImperativeHandle } from 'react'
+import { useEffect, useState, forwardRef, useImperativeHandle, useCallback } from 'react'
 
 // Define the Turnstile window object
 declare global {
@@ -47,6 +47,7 @@ export interface TurnstileProps {
 export interface TurnstileRef {
   reset: () => void
   getToken: () => string | undefined
+  execute: () => void
 }
 
 // Turnstile component using explicit rendering approach
@@ -65,33 +66,10 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
 ) => {
   const [widgetId, setWidgetId] = useState<string>('')
   const [isLoaded, setIsLoaded] = useState(false)
+  const [initializeOnLoad, setInitializeOnLoad] = useState(false)
   
-  // Expose methods via ref
-  useImperativeHandle(ref, () => ({
-    reset: () => {
-      console.log('Resetting Turnstile widget')
-      if (window.turnstile && widgetId) {
-        try {
-          window.turnstile.reset(widgetId)
-          console.log('Turnstile widget reset successfully')
-        } catch (error) {
-          console.error('Failed to reset Turnstile:', error)
-        }
-      } else {
-        console.warn('Cannot reset Turnstile: widget not initialized')
-        // Try to re-initialize
-        initializeTurnstile()
-      }
-    },
-    getToken: () => {
-      if (window.turnstile && widgetId) {
-        return window.turnstile.getResponse(widgetId)
-      }
-      return undefined
-    }
-  }))
-
-  const initializeTurnstile = () => {
+  // Initialize Turnstile widget
+  const initializeTurnstile = useCallback(() => {
     console.log('Initializing Turnstile...')
     
     if (!window.turnstile) {
@@ -112,12 +90,9 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
       const widgetConfig: TurnstileOptions = {
         sitekey: siteKey,
         theme: theme,
-        // Use invisible mode for automatic token generation
         size: 'invisible',
-        // Remove execution mode - this can cause issues in invisible mode
-        // execution: 'execute', // REMOVED - causes hanging in invisible mode
         retry: 'auto',
-        'retry-interval': 2000, // Balanced retry interval
+        'retry-interval': 2000,
         'refresh-expired': 'auto',
         callback: (token: string) => {
           console.log('✅ Turnstile token received:', token.substring(0, 20) + '...')
@@ -143,50 +118,81 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
         }
       }
       
-      console.log('Turnstile config:', widgetConfig)
-      console.log('Rendering Turnstile widget on element:', element)
-      
-      // Use element directly instead of selector
+      console.log('Rendering Turnstile widget with config:', { sitekey: siteKey, theme, id })
       const newWidgetId = window.turnstile.render(element, widgetConfig)
-      
-      console.log('Turnstile widget initialized with ID:', newWidgetId)
       setWidgetId(newWidgetId)
-      
-      // For invisible widgets, let Cloudflare handle execution automatically
-      console.log('Invisible widget will auto-execute when ready')
+      console.log('Turnstile widget rendered with ID:', newWidgetId)
       
     } catch (error) {
       console.error('Failed to initialize Turnstile:', error)
       onError?.(error)
     }
-  }
+  }, [siteKey, theme, id, onVerify, onError, onExpire, onTimeout])
   
+  // Expose methods via ref
+  useImperativeHandle(ref, () => ({
+    reset: () => {
+      console.log('Resetting Turnstile widget')
+      if (window.turnstile && widgetId) {
+        try {
+          window.turnstile.reset(widgetId)
+          console.log('Turnstile widget reset successfully')
+        } catch (error) {
+          console.error('Failed to reset Turnstile:', error)
+        }
+      } else {
+        console.warn('Cannot reset Turnstile: widget not initialized')
+        // Try to re-initialize
+        initializeTurnstile()
+      }
+    },
+    getToken: () => {
+      if (window.turnstile && widgetId) {
+        return window.turnstile.getResponse(widgetId)
+      }
+      return undefined
+    },
+    execute: () => {
+      if (!isLoaded) {
+        // If not loaded yet, initialize when ready
+        setInitializeOnLoad(true)
+        return
+      }
+      
+      if (window.turnstile && widgetId) {
+        // Reset and execute existing widget
+        window.turnstile.reset(widgetId)
+      } else {
+        // Initialize new widget
+        initializeTurnstile()
+      }
+    }
+  }), [isLoaded, widgetId, initializeTurnstile])
+
   // Load Turnstile script
   useEffect(() => {
-    console.log('Loading Turnstile script...')
-    
-    // Check if script already exists
-    const existingScript = document.querySelector('script[src*="turnstile/v0/api.js"]')
-    if (existingScript) {
-      console.log('Turnstile script already exists in the DOM')
-      // Check if window.turnstile is available
-      if (window.turnstile) {
-        setIsLoaded(true)
-      } else {
-        // Wait for the existing script to load
-        const checkTurnstile = () => {
-          if (window.turnstile) {
-            setIsLoaded(true)
-          } else {
-            setTimeout(checkTurnstile, 100) // Check every 100ms
-          }
-        }
-        checkTurnstile()
-      }
+    // Check if script is already loaded
+    if (window.turnstile) {
+      setIsLoaded(true)
       return
     }
     
-    // Create and load script
+    // Check if script element already exists
+    const existingScript = document.querySelector('script[src*="challenges.cloudflare.com/turnstile"]')
+    if (existingScript) {
+      // Script exists but window.turnstile might not be ready yet
+      const checkTurnstile = () => {
+        if (window.turnstile) {
+          setIsLoaded(true)
+        } else {
+          setTimeout(checkTurnstile, 100)
+        }
+      }
+      checkTurnstile()
+      return
+    }
+    
+    console.log('Loading Turnstile script...')
     const script = document.createElement('script')
     script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
     script.async = true
@@ -199,48 +205,37 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
     
     script.onerror = (error) => {
       console.error('Failed to load Turnstile script:', error)
-      console.warn('Turnstile script blocked - this may be due to ad blockers or network restrictions')
-      // Call error callback to inform parent component
-      onError?.('Script loading failed - possibly blocked by ad blocker')
+      onError?.('Script loading failed')
     }
     
-    document.body.appendChild(script)
+    document.head.appendChild(script)
     
-    // Cleanup
+    // Cleanup function
     return () => {
-      if (widgetId && window.turnstile) {
-        console.log('Cleaning up Turnstile widget')
-        try {
-          window.turnstile.remove(widgetId)
-        } catch (error) {
-          console.error('Error removing Turnstile widget:', error)
-        }
-      }
+      // Don't remove the script as it might be used by other components
+      // script.remove()
     }
   }, [])
   
-  // Initialize widget when script is loaded
+  // Initialize widget when script is loaded and execute was called
   useEffect(() => {
-    if (isLoaded && window.turnstile) {
+    if (isLoaded && window.turnstile && initializeOnLoad) {
       console.log('Turnstile script loaded, initializing widget...')
       initializeTurnstile()
+      setInitializeOnLoad(false)
     }
-  }, [isLoaded, siteKey])
+  }, [isLoaded, siteKey, initializeOnLoad, initializeTurnstile])
 
   return (
     <div 
       id={id} 
-      className={className} 
-      data-testid="turnstile-container" 
+      className={className}
       style={{ 
-        width: '100%',
-        height: '65px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
-        zIndex: 1000,
-        minHeight: '65px'
+        width: '0px', 
+        height: '0px', 
+        overflow: 'hidden',
+        position: 'absolute',
+        left: '-9999px'
       }}
     />
   )
