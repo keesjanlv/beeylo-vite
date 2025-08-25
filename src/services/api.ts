@@ -203,21 +203,27 @@ class BeeyloAPI {
           try {
             const errorData = await response.json();
             // Backend documentation shows retry_after in response body
-            if (errorData.retry_after) {
+            if (errorData.retry_after && typeof errorData.retry_after === 'number') {
               waitTime = errorData.retry_after;
             } else if (retryAfter) {
-              waitTime = parseInt(retryAfter, 10);
+              const parsedRetryAfter = parseInt(retryAfter, 10);
+              waitTime = isNaN(parsedRetryAfter) ? 10 : parsedRetryAfter;
             }
           } catch (e) {
             // If we can't parse the response, use header or default
-            waitTime = retryAfter ? parseInt(retryAfter, 10) : 10;
+            if (retryAfter) {
+              const parsedRetryAfter = parseInt(retryAfter, 10);
+              waitTime = isNaN(parsedRetryAfter) ? 10 : parsedRetryAfter;
+            } else {
+              waitTime = 10;
+            }
           }
           
           // Simple retry for rate limiting
           if (this.retryCount < this.maxRetries) {
             this.retryCount++;
             const backoffTime = Math.min(waitTime, 5); // Max 5 seconds wait
-            console.log(`Rate limited. Retrying in ${backoffTime} seconds`);
+            console.log(`Rate limited. Retrying in ${backoffTime} seconds (waitTime: ${waitTime})`);
             
             await new Promise(resolve => setTimeout(resolve, backoffTime * 1000));
             return this.request<T>(endpoint, options);
@@ -225,6 +231,7 @@ class BeeyloAPI {
           
           // If we've exhausted retries, store the rate limit info
           const adjustedWaitTime = Math.max(5, waitTime); // Ensure minimum 5 seconds wait
+          console.log(`Rate limit exhausted. waitTime: ${waitTime}, adjustedWaitTime: ${adjustedWaitTime}`);
           sessionStorage.setItem('beeylo_rate_limited', 'true');
           sessionStorage.setItem('beeylo_rate_limit_reset', String(Date.now() + adjustedWaitTime * 1000));
           

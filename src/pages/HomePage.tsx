@@ -9,6 +9,7 @@ import { Logo } from '../components/Logo'
 import Turnstile, { type TurnstileRef } from '../components/Turnstile'
 import beeyloLogo from '../assets/beeylologo.png'
 import tripleScreenImg from '../assets/triplescreenhomedef.webp'
+import cloudflareIcon from '../assets/cloudflare-icon.svg'
 
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
 
@@ -110,6 +111,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const [isTurnstileReady, setIsTurnstileReady] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isWaitingForTurnstile, setIsWaitingForTurnstile] = useState(false)
+  const [isTurnstileLoading, setIsTurnstileLoading] = useState(true)
   const turnstileRef = useRef<TurnstileRef>(null)
   const pageLoadTime = useRef<number>(Date.now())
   
@@ -127,11 +129,39 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     generateFingerprint()
   }, [])
 
+  // Preload Turnstile script on page load for faster initialization
+  useEffect(() => {
+    const preloadTurnstile = () => {
+      // Check if script is already loaded
+      if (document.querySelector('script[src*="challenges.cloudflare.com/turnstile"]')) {
+        setIsTurnstileLoading(false)
+        return
+      }
+      
+      // Preload the script
+      const script = document.createElement('script')
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
+      script.async = true
+      script.onload = () => {
+        setIsTurnstileLoading(false)
+      }
+      script.onerror = () => {
+        setIsTurnstileLoading(false)
+        console.warn('Turnstile script failed to load - likely blocked by ad blocker')
+      }
+      document.head.appendChild(script)
+    }
+    
+    // Start preloading immediately
+    preloadTurnstile()
+  }, [])
+
   // Turnstile event handlers
   const handleTurnstileVerify = async (token: string) => {
     console.log('✅ Turnstile token received')
     setTurnstileToken(token)
     setIsTurnstileReady(true)
+    setIsTurnstileLoading(false)
     setLoginError(null)
     
     // If we were waiting for Turnstile, proceed with submission
@@ -153,6 +183,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const handleTurnstileError = (error?: any) => {
     setTurnstileToken(null)
     setIsTurnstileReady(false)
+    setIsTurnstileLoading(false)
     console.error('Turnstile verification failed:', error)
     
     // Check for script loading failures (ad blocker, network issues)
@@ -170,12 +201,14 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     console.log('⏰ Turnstile token expired')
     setTurnstileToken(null)
     setIsTurnstileReady(false)
+    setIsTurnstileLoading(false)
   }
 
   const handleTurnstileTimeout = () => {
     console.log('⏱️ Turnstile timeout occurred')
     setTurnstileToken(null)
     setIsTurnstileReady(false)
+    setIsTurnstileLoading(false)
     setLoginError('Security verification timed out. Please try again.')
   }
 
@@ -426,11 +459,20 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                         variant="brand" 
                         size="lg" 
                         fullWidth
-                        loading={isSubmitting || isLoading || isWaitingForTurnstile}
-                        disabled={isSubmitting || isLoading || isWaitingForTurnstile}
+                        loading={isSubmitting || isLoading || isWaitingForTurnstile || (isTurnstileLoading && !isTurnstileReady)}
+                        disabled={isSubmitting || isLoading || isWaitingForTurnstile || (isTurnstileLoading && !isTurnstileReady)}
                         className="no-scroll-button buttonv2 buttonv2-yellow"
                       >
-                        {isWaitingForTurnstile ? 'Verifying security...' : isSubmitting ? 'Processing...' : 'Join Waitlist'}
+                        {(isTurnstileLoading && !isTurnstileReady) ? (
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            No bots allowed..
+                            <img 
+                              src={cloudflareIcon} 
+                              alt="Cloudflare" 
+                              style={{ width: '16px', height: '16px', opacity: 0.8 }}
+                            />
+                          </span>
+                        ) : isWaitingForTurnstile ? 'Verifying security...' : isSubmitting ? 'Processing...' : 'Join Waitlist'}
                       </Button>
                     </div>
                     {(loginError || error) && (
