@@ -108,9 +108,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   const [honeypot, setHoneypot] = useState('') // Honeypot veld
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
   const [isTurnstileReady, setIsTurnstileReady] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isWaitingForTurnstile, setIsWaitingForTurnstile] = useState(false)
-  const [pendingSubmission, setPendingSubmission] = useState(false)
+  const [submitState, setSubmitState] = useState<'idle' | 'waiting_turnstile' | 'submitting'>('idle')
   const turnstileRef = useRef<TurnstileRef>(null)
   const pageLoadTime = useRef<number>(Date.now())
   
@@ -131,32 +129,29 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
   // Turnstile event handlers
   const handleTurnstileVerify = async (token: string) => {
     console.log('✅ Turnstile token received:', token.substring(0, 20) + '...')
-    console.log('🔍 Token details:', {
-      length: token.length,
-      domain: window.location.hostname,
-      timestamp: new Date().toISOString()
-    })
+    console.log('🔍 Current submitState:', submitState)
     
     setTurnstileToken(token)
     setIsTurnstileReady(true)
     setLoginError(null)
     
-    // If we have a pending submission, now proceed with it
-    if (pendingSubmission) {
-      console.log('🚀 Proceeding with pending submission after Turnstile verification')
-      setPendingSubmission(false)
-      setIsWaitingForTurnstile(false)
-      setIsSubmitting(true)
-      
-      try {
-        await proceedWithSubmission(token)
-      } catch (error) {
-        console.error('Submission failed:', error)
-        setLoginError('Submission failed. Please try again.')
-      } finally {
-        setIsSubmitting(false)
-      }
-    }
+    // If we were waiting for Turnstile, proceed with submission immediately
+     if (submitState === 'waiting_turnstile') {
+       console.log('🚀 Auto-submitting after Turnstile verification')
+       setSubmitState('submitting')
+       
+       try {
+         await proceedWithSubmission(token)
+       } catch (error) {
+         console.error('Submission failed:', error)
+         setLoginError('Submission failed. Please try again.')
+       } finally {
+         setSubmitState('idle')
+       }
+     } else {
+       // Token received but no pending submission
+       setSubmitState('idle')
+     }
   }
 
   const handleTurnstileError = (error?: any) => {
@@ -248,21 +243,23 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     
     setLoginError(null)
     
-    // If Turnstile is not ready yet, mark as pending submission and wait for it
+    // If Turnstile is not ready yet, wait for it
     if (!isTurnstileReady || !turnstileToken) {
-      setPendingSubmission(true)
-      setIsWaitingForTurnstile(true)
+      setSubmitState('waiting_turnstile')
       console.log('Waiting for Turnstile verification...')
       return
     }
     
     // If we have Turnstile token, proceed immediately
-    setIsSubmitting(true)
+    setSubmitState('submitting')
     
     try {
       await proceedWithSubmission(turnstileToken)
+    } catch (error) {
+      console.error('Submission failed:', error)
+      setLoginError('Submission failed. Please try again.')
     } finally {
-      setIsSubmitting(false)
+      setSubmitState('idle')
     }
   }
 
@@ -429,19 +426,19 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                         variant="brand" 
                         size="lg" 
                         fullWidth
-                        loading={isWaitingForTurnstile || isSubmitting || isLoading}
-                        disabled={isSubmitting || isLoading}
+                        loading={submitState !== 'idle' || isLoading}
+                        disabled={submitState !== 'idle' || isLoading}
                         className="no-scroll-button buttonv2 buttonv2-yellow"
                       >
-                        {isWaitingForTurnstile ? (
+                        {submitState === 'submitting' ? (
+                          'Looking for your reservation...'
+                        ) : isLoading ? (
+                          loadingMessage || 'Loading...'
+                        ) : submitState === 'waiting_turnstile' ? (
                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                              Verifying secure connection...
                              <img src={cloudflareIcon} alt="Cloudflare" style={{ width: '16px', height: '16px' }} />
                            </div>
-                        ) : isSubmitting ? (
-                          'Looking for your reservation...'
-                        ) : isLoading ? (
-                          loadingMessage || 'Loading...'
                         ) : (
                           'Get early access'
                         )}
