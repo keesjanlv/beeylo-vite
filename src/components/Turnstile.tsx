@@ -103,7 +103,7 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
     const element = document.getElementById(id)
     if (!element) {
       console.error('Turnstile container element not found:', id)
-      setTimeout(() => initializeTurnstile(), 100) // Retry after 100ms
+      setTimeout(() => initializeTurnstile(), 10) // Retry after 10ms for faster initialization
       return
     }
     
@@ -117,7 +117,7 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
         // Remove execution mode - this can cause issues in invisible mode
         // execution: 'execute', // REMOVED - causes hanging in invisible mode
         retry: 'auto',
-        'retry-interval': 8000,
+        'retry-interval': 1000, // Reduced from 8000ms to 1000ms for faster retries
         'refresh-expired': 'auto',
         callback: (token: string) => {
           console.log('✅ Turnstile token received:', token.substring(0, 20) + '...')
@@ -169,7 +169,20 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
     const existingScript = document.querySelector('script[src*="turnstile/v0/api.js"]')
     if (existingScript) {
       console.log('Turnstile script already exists in the DOM')
-      setIsLoaded(true)
+      // Check if window.turnstile is available
+      if (window.turnstile) {
+        setIsLoaded(true)
+      } else {
+        // Wait for the existing script to load
+        const checkTurnstile = () => {
+          if (window.turnstile) {
+            setIsLoaded(true)
+          } else {
+            setTimeout(checkTurnstile, 10) // Check every 10ms for faster loading
+          }
+        }
+        checkTurnstile()
+      }
       return
     }
     
@@ -186,6 +199,9 @@ const Turnstile = forwardRef<TurnstileRef, TurnstileProps>((
     
     script.onerror = (error) => {
       console.error('Failed to load Turnstile script:', error)
+      console.warn('Turnstile script blocked - this may be due to ad blockers or network restrictions')
+      // Call error callback to inform parent component
+      onError?.('Script loading failed - possibly blocked by ad blocker')
     }
     
     document.body.appendChild(script)

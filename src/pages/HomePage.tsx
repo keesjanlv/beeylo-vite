@@ -145,6 +145,14 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     setIsTurnstileReady(false)
     console.error('Turnstile verification failed:', error)
     
+    // Check for script loading failures (ad blocker, network issues)
+    if (typeof error === 'string' && error.includes('Script loading failed')) {
+      console.warn('Turnstile script blocked - likely by ad blocker or network restrictions')
+      setLoginError('Security verification is required but blocked. Please disable ad blockers and refresh the page.')
+      // Don't retry for script loading failures
+      return
+    }
+    
     // Check for specific Error 600010 (Invalid widget configuration)
     if (error === 600010 || error === '600010') {
       console.warn('Turnstile Error 600010 detected - Configuration issue, attempting immediate retry')
@@ -207,8 +215,8 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
         setLoginError(null);
         const success = await login('sample@beeylo.com', {
           fingerprint, // Voeg fingerprint toe
-          submission_time: Date.now() - pageLoadTime.current, // Voeg submission time toe
-          turnstile_token: tokenToUse || undefined // Voeg Turnstile token toe
+           submission_time: Date.now() - pageLoadTime.current, // Voeg submission time toe
+           turnstile_token: tokenToUse // Turnstile token is verplicht
         });
         if (!success) {
           setLoginError(error || 'Login failed. Please try again.');
@@ -225,8 +233,8 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     setLoginError(null)
     const success = await login(email.trim(), {
       fingerprint, // Voeg fingerprint toe
-      submission_time: Date.now() - pageLoadTime.current, // Voeg submission time toe
-      turnstile_token: tokenToUse || undefined // Voeg Turnstile token toe
+       submission_time: Date.now() - pageLoadTime.current, // Voeg submission time toe
+       turnstile_token: tokenToUse // Turnstile token is verplicht
     })
     if (!success) {
       setLoginError(error || 'Login failed. Please try again.')
@@ -256,7 +264,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     
     // Check if Turnstile is ready and we have a token
     if (!isTurnstileReady || !turnstileToken) {
-      setLoginError('Security verification not ready. Please wait a moment.')
+      setLoginError('Security verification required. Please wait for verification to complete.')
       return
     }
     
@@ -407,7 +415,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                     {/* Invisible Turnstile Widget */}
                     <Turnstile
                       ref={turnstileRef}
-                      siteKey="0x4AAAAAABgSmPaCXn1R_VSk"
+                      siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY || "0x4AAAAAABgSmPaCXn1R_VSk"}
                       onVerify={handleTurnstileVerify}
                       onError={handleTurnstileError}
                       onExpire={handleTurnstileExpire}
