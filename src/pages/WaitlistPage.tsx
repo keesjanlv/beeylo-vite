@@ -202,7 +202,8 @@ export const WaitlistPage: FC<WaitlistPageProps> = ({ onTabChange: _onTabChange 
     return defaultIcon
   }
 
-  const shareUrl = 'https://www.beeylo.com';
+  // Share URL for social media - use user's referral URL if available, otherwise fallback to main site
+  const shareUrl = userData?.referral_url || 'https://www.beeylo.com';
 
   const renderContent = () => {
     switch (activeContent) {
