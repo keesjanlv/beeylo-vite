@@ -22,17 +22,17 @@
 /* Add padding on mobile breakpoints with top navigation */
 @media (max-width: 768px) {
   .no-scroll-page {
-    padding-top: clamp(8px, 1vh, 16px); /* Add top padding to prevent content from being hidden behind navigation */
+    padding-top: clamp(16px, 3vh, 32px); /* Increased top padding for more space */
     padding-left: clamp(16px, 4vw, 24px); /* Increased side padding */
     padding-right: clamp(16px, 4vw, 24px); /* Increased side padding */
-    padding-bottom: clamp(8px, 1vh, 16px);
+    padding-bottom: clamp(16px, 3vh, 32px); /* Increased bottom padding for more space */
   }
 }
 
 /* Apply padding only to iPhone SE resolution (smallest height) */
 @media (max-height: 668px) {
   .no-scroll-page {
-    padding: 5vh 5vw;
+    padding: 6vh 5vw; /* Increased vertical padding */
   }
 }
 
@@ -41,7 +41,7 @@
   .no-scroll-page {
     height: 100vh;
     min-height: 100vh;
-    padding: clamp(16px, 2vw, 32px); /* Add adaptive padding for desktop */
+    padding: clamp(24px, 4vh, 48px) clamp(16px, 2vw, 32px); /* Increased vertical padding for desktop */
   }
 }
 

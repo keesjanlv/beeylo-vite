@@ -171,41 +171,37 @@ export const VideoPage: FC<VideoPageProps> = ({ onTabChange }) => {
     <div className="no-scroll-page video">
       <div className="no-scroll-content">
         <div className="no-scroll-stack">
-          {/* Welcome Section */}
-          <div className="no-scroll-welcome video2">
-            <Typography 
-              variant="h2" 
-              className="no-scroll-title text-center"
-            >
-              Get to know Beeylo
-            </Typography>
-            
-            <Typography 
-              variant="body" 
-              color="secondary" 
-              className="no-scroll-body text-center"
-            >
-              And secure your spot right now.
-            </Typography>
-          </div>
+          {/* Video and Content Section */}
+          <div className="video-content-wrapper">
+            {/* Video Section */}
+            <div className="video-section">
+              <video 
+                controls 
+                className="video-player"
+              >
+                <source src={explainerVideoWebm} type="video/webm" />
+                <source src={explainerVideoOptimized} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
 
-          {/* Video Section */}
-          <div className="video-section">
-            <video 
-              controls 
-              className="video-player"
-              style={{
-                width: '100%',
-                maxWidth: '800px',
-                height: 'auto',
-                borderRadius: '12px',
-                boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.15)'
-              }}
-            >
-              <source src={explainerVideoWebm} type="video/webm" />
-              <source src={explainerVideoOptimized} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            {/* Text Section - Now under video */}
+            <div className="video-text-section">
+              <Typography 
+                variant="h2" 
+                className="video-title text-center"
+              >
+                Get to know Beeylo
+              </Typography>
+              
+              <Typography 
+                variant="body" 
+                color="secondary" 
+                className="video-subtitle text-center"
+              >
+                And secure your spot right now.
+              </Typography>
+            </div>
           </div>
 
           {/* Sign-up Form Section */}

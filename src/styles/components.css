@@ -4214,6 +4214,17 @@
   }
 }
 
+/* Video content wrapper for responsive scaling */
+.video-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: min(90vw, 800px);
+  margin: 0 auto;
+  gap: var(--space-4);
+}
+
 /* Video section with responsive scaling */
 .video-section {
   display: flex;
@@ -4227,23 +4238,90 @@
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 4px 10px -4px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   background: #000;
-  max-width: 100%;
+  width: 100%;
   height: auto;
-  /* Responsive sizing based on viewport height */
+  /* Responsive sizing based on viewport dimensions */
   max-height: clamp(200px, 40vh, 450px);
+  aspect-ratio: 16/9;
+  object-fit: contain;
+}
+
+/* Video text section */
+.video-text-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  text-align: center;
+}
+
+.video-title {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.video-subtitle {
+  font-size: clamp(0.75rem, 2vw, 0.95rem);
+  line-height: 1.4;
 }
 
 /* Responsive adjustments for video page */
+@media (max-width: 768px) {
+  .video-content-wrapper {
+    max-width: 95vw;
+    gap: var(--space-3);
+  }
+  
+  .video-player {
+    border-radius: 8px;
+  }
+  
+  .video-title {
+    font-size: clamp(1.1rem, 4vw, 1.5rem);
+  }
+  
+  .video-subtitle {
+    font-size: clamp(0.7rem, 2.5vw, 0.85rem);
+  }
+}
+
+@media (min-width: 769px) {
+  .video-content-wrapper {
+    max-width: min(80vw, 700px);
+    gap: var(--space-5);
+  }
+}
+
+@media (min-width: 1200px) {
+  .video-content-wrapper {
+    max-width: min(70vw, 800px);
+    gap: var(--space-6);
+  }
+}
+
 @media (max-height: 600px) {
   .video-player {
     max-height: clamp(150px, 30vh, 300px);
-    border-radius: 8px;
+  }
+  
+  .video-content-wrapper {
+    gap: var(--space-2);
   }
 }
 
 @media (max-height: 450px) {
   .video-player {
     max-height: clamp(120px, 25vh, 200px);
+  }
+  
+  .video-title {
+    font-size: clamp(1rem, 3vw, 1.25rem);
+  }
+  
+  .video-subtitle {
+    font-size: clamp(0.65rem, 1.8vw, 0.75rem);
   }
 }
 
@@ -4252,12 +4330,9 @@
   .video-player {
     max-height: clamp(100px, 20vh, 150px);
   }
-}
-
-/* Mobile-specific adjustments */
-@media (max-width: 768px) {
-  .video-player {
-    border-radius: 8px;
+  
+  .video-content-wrapper {
+    gap: var(--space-1);
   }
 }
 
