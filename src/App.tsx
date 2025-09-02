@@ -112,31 +112,31 @@ const AppContent: FC = () => {
     switch (activeTab) {
       case 'home':
         return {
-          title: 'Beeylo - Smart Email Management & Waitlist Competition',
-          description: 'Join Beeylo\'s exclusive waitlist and compete for early access! Smart email management that transforms your inbox into an organized, efficient workspace.',
+          title: 'Beeylo - Your new inbox',
+          description: 'Join Beeylo\'s exclusive waitlist for early access! Smart email management that transforms your inbox into an organized, efficient workspace.',
           url: '/'
         }
       case 'dashboard':
         return {
           title: 'Dashboard - Beeylo',
-          description: 'Your personal Beeylo dashboard. Track your waitlist position, referrals, and competition progress.',
+          description: 'Your personal Beeylo dashboard. Track your waitlist position, referrals and progress.',
           url: '/dashboard'
         }
       case 'benefits':
         return {
           title: 'Benefits - Beeylo Email Management',
-          description: 'Discover Beeylo\'s powerful email management benefits. No spam, no ads, no useless updates - just pure productivity.',
+          description: 'Discover Beeylo\'s powerful benefits. No spam, no ads, no useless updates - just pure calm.',
           url: '/benefits'
         }
       case 'giveaway':
         return {
           title: 'Giveaway Competition - Beeylo',
-          description: 'Join Beeylo\'s exclusive giveaway competition! Refer friends and climb the leaderboard for early access and amazing prizes.',
+          description: 'Join Beeylo\'s exclusive giveaway competition! Refer friends and climb the leaderboard for early access and crazy rewards.',
           url: '/giveaway'
         }
       case 'waitlist':
         return {
-          title: 'Join the Waitlist - Beeylo',
+          title: 'Waitlist Dashboard - Beeylo',
           description: 'Your new free inbox, without the noise. No more spam, ads and useless updates. Join the waitlist today and claim your chance at early access.',
           url: '/waitlist'
         }
@@ -149,14 +149,14 @@ const AppContent: FC = () => {
 
       case 'about':
         return {
-          title: 'About Beeylo - Smart Email Management',
-          description: 'Learn about Beeylo\'s mission to revolutionize email management and productivity for modern professionals.',
+          title: 'About Beeylo',
+          description: 'Learn about Beeylo\'s mission to revolutionize communication between you and your favorite brands.',
           url: '/about'
         }
       case 'faq':
         return {
           title: 'FAQ - Beeylo',
-          description: 'Find answers to frequently asked questions about Beeylo email management platform.',
+          description: 'Find answers to frequently asked questions about Beeylo.',
           url: '/faq'
         }
       case 'learn-more':
@@ -168,19 +168,19 @@ const AppContent: FC = () => {
       case 'thank-you':
         return {
           title: 'Welcome to Beeylo!',
-          description: 'Thank you for joining Beeylo! Share with friends and participate in our exclusive giveaway.',
+          description: 'Thank you for joining Beeylo! Share with friends and get early access.',
           url: '/thank-you'
         }
       case 'video':
         return {
-          title: 'See Beeylo in Action - Video Demo',
-          description: 'Watch our explainer video to see how Beeylo transforms your email experience from chaotic to organized.',
+          title: 'Get to know Beeylo - Video Explainer',
+          description: 'Watch our explainer video to see how Beeylo transforms your experience.',
           url: '/video'
         }
       default:
         return {
-          title: 'Beeylo - Smart Email Management & Waitlist Competition',
-          description: 'Join Beeylo\'s exclusive waitlist and compete for early access! Smart email management that transforms your inbox into an organized, efficient workspace.',
+          title: 'Beeylo - Your new inbox',
+          description: 'Join Beeylo\'s exclusive waitlist for early access! Smart email management that transforms your inbox into an organized, efficient workspace.',
           url: '/'
         }
     }
