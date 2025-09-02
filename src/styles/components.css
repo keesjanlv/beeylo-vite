@@ -4340,7 +4340,7 @@
   }
 }
 
-/* Container query adjustments for video section */
+/*
 @container no-scroll-container (height < 500px) {
   .video-section {
     flex-shrink: 1;
@@ -4362,3 +4362,4 @@
     max-height: clamp(300px, 45vh, 500px);
   }
 }
+*/
