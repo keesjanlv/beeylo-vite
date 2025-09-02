@@ -168,37 +168,34 @@ export const VideoPage: FC<VideoPageProps> = () => {
     <div className="no-scroll-page video">
       <div className="no-scroll-content">
         <div className="no-scroll-stack">
-          {/* Video and Content Section */}
-          <div className="video-content-wrapper">
-            {/* Video Section */}
-            <div className="video-section">
-              <video 
-                controls 
-                className="video-player"
-              >
-                <source src={explainerVideoWebm} type="video/webm" />
-                <source src={explainerVideoOptimized} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
+          {/* Video Section */}
+          <div className="video-section">
+            <video 
+              controls 
+              className="video-player"
+            >
+              <source src={explainerVideoWebm} type="video/webm" />
+              <source src={explainerVideoOptimized} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
 
-            {/* Text Section - Now under video */}
-            <div className="video-text-section">
-              <Typography 
-                variant="h2" 
-                className="video-title text-center"
-              >
-                Get to know Beeylo
-              </Typography>
-              
-              <Typography 
-                variant="body" 
-                color="secondary" 
-                className="video-subtitle text-center"
-              >
-                And secure your spot right now.
-              </Typography>
-            </div>
+          {/* Text Section - Separate section for equal spacing */}
+          <div className="video-text-section">
+            <Typography 
+              variant="h2" 
+              className="video-title text-center"
+            >
+              Get to know Beeylo
+            </Typography>
+            
+            <Typography 
+              variant="body" 
+              color="secondary" 
+              className="video-subtitle text-center"
+            >
+              And secure your spot right now.
+            </Typography>
           </div>
 
           {/* Sign-up Form Section */}
