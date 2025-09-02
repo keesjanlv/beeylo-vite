@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react'
 import type { FC } from 'react'
-import type { TabType } from '../types'
 import { Button, Typography } from '../components/ui'
 import { TermsOfServiceModal } from '../components/TermsOfServiceModal'
 import { PrivacyPolicyModal } from '../components/PrivacyPolicyModal'
@@ -12,11 +11,9 @@ import cloudflareIcon from '../assets/cloudflare-icon.svg'
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
 import { useEffect } from 'react'
 
-interface VideoPageProps {
-  onTabChange: (tab: TabType) => void
-}
+interface VideoPageProps {}
 
-export const VideoPage: FC<VideoPageProps> = ({ onTabChange }) => {
+export const VideoPage: FC<VideoPageProps> = () => {
   const { login, isLoading, error } = useUser()
   
   const [email, setEmail] = useState('')

@@ -226,7 +226,7 @@ const AppContent: FC = () => {
       case 'component-demo':
         return <ComponentDemoPage />
       case 'video':
-        return <VideoPage onTabChange={handleTabChange} />
+        return <VideoPage />
       default:
         return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
     }
