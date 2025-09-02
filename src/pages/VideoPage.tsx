@@ -6,7 +6,6 @@ import { TermsOfServiceModal } from '../components/TermsOfServiceModal'
 import { PrivacyPolicyModal } from '../components/PrivacyPolicyModal'
 import { useUser } from '../contexts/UserContext'
 import Turnstile, { type TurnstileRef } from '../components/Turnstile'
-import explainerVideo from '../assets/explainer.mp4'
 import explainerVideoWebm from '../assets/explainer.webm'
 import explainerVideoOptimized from '../assets/explainer_optimized.mp4'
 import cloudflareIcon from '../assets/cloudflare-icon.svg'
@@ -205,7 +204,6 @@ export const VideoPage: FC<VideoPageProps> = ({ onTabChange }) => {
             >
               <source src={explainerVideoWebm} type="video/webm" />
               <source src={explainerVideoOptimized} type="video/mp4" />
-              <source src={explainerVideo} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>
