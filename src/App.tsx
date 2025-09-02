@@ -19,7 +19,8 @@ import {
   FAQPage,
   LearnMorePage,
   ThankYouPage,
-  ComponentDemoPage
+  ComponentDemoPage,
+  VideoPage
 } from './pages'
 import { UserProvider, useUser } from './contexts/UserContext'
 import './index.css'
@@ -170,6 +171,12 @@ const AppContent: FC = () => {
           description: 'Thank you for joining Beeylo! Share with friends and participate in our exclusive giveaway.',
           url: '/thank-you'
         }
+      case 'video':
+        return {
+          title: 'See Beeylo in Action - Video Demo',
+          description: 'Watch our explainer video to see how Beeylo transforms your email experience from chaotic to organized.',
+          url: '/video'
+        }
       default:
         return {
           title: 'Beeylo - Smart Email Management & Waitlist Competition',
@@ -218,6 +225,8 @@ const AppContent: FC = () => {
         />
       case 'component-demo':
         return <ComponentDemoPage />
+      case 'video':
+        return <VideoPage onTabChange={handleTabChange} />
       default:
         return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
     }

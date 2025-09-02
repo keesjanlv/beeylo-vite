@@ -4183,3 +4183,103 @@
   overflow: hidden !important;
   z-index: -1 !important;
 }
+
+/* ===== VIDEO PAGE STYLES ===== */
+/* Uses no-scroll system for responsive height scaling */
+
+/* Page-specific styles */
+.video {
+  width: 100%;
+}
+
+/* Video2 minimum width for desktop - matches waitlist2 pattern */
+@media (min-width: 769px) {
+  .video2 {
+    min-width: 600px; /* Tablet minimum width */
+    max-width: 700px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .video2 {
+    min-width: 800px; /* Desktop minimum width */
+    max-width: 900px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .video2 {
+    min-width: 1000px; /* Large desktop minimum width */
+    max-width: 1100px;
+  }
+}
+
+/* Video section with responsive scaling */
+.video-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.video-player {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 4px 10px -4px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  background: #000;
+  max-width: 100%;
+  height: auto;
+  /* Responsive sizing based on viewport height */
+  max-height: clamp(200px, 40vh, 450px);
+}
+
+/* Responsive adjustments for video page */
+@media (max-height: 600px) {
+  .video-player {
+    max-height: clamp(150px, 30vh, 300px);
+    border-radius: 8px;
+  }
+}
+
+@media (max-height: 450px) {
+  .video-player {
+    max-height: clamp(120px, 25vh, 200px);
+  }
+}
+
+/* Very constrained heights */
+@media (max-height: 400px) {
+  .video-player {
+    max-height: clamp(100px, 20vh, 150px);
+  }
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  .video-player {
+    border-radius: 8px;
+  }
+}
+
+/* Container query adjustments for video section */
+@container no-scroll-container (height < 500px) {
+  .video-section {
+    flex-shrink: 1;
+  }
+  
+  .video-player {
+    max-height: clamp(100px, 20vh, 180px);
+  }
+}
+
+@container no-scroll-container (height >= 500px) and (height < 700px) {
+  .video-player {
+    max-height: clamp(180px, 35vh, 350px);
+  }
+}
+
+@container no-scroll-container (height >= 700px) {
+  .video-player {
+    max-height: clamp(300px, 45vh, 500px);
+  }
+}

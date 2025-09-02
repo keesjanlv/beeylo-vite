@@ -424,27 +424,36 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                       />
                     </div>
                     <div className="no-scroll-button-group">
-                      <Button 
-                        type="submit" 
-                        variant="brand" 
-                        size="lg" 
-                        fullWidth
-                        loading={isSubmitting || isLoading || isTurnstileLoading}
-                        disabled={isSubmitting || isLoading || isTurnstileLoading}
-                        className="no-scroll-button buttonv2 buttonv2-yellow"
-                      >
-                        {isTurnstileLoading ? (
-                          <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            Verifying security..
-                            <img 
-                              src={cloudflareIcon} 
-                              alt="Cloudflare" 
-                              style={{ width: '16px', height: '16px', opacity: 0.8 }}
-                            />
-                          </span>
-                        ) : isSubmitting ? 'Processing...' : 'Get early access'}
-                      </Button>
-                    </div>
+                    <Button 
+                      type="submit" 
+                      variant="brand" 
+                      size="lg" 
+                      fullWidth
+                      loading={isSubmitting || isLoading || isTurnstileLoading}
+                      disabled={isSubmitting || isLoading || isTurnstileLoading}
+                      className="no-scroll-button buttonv2 buttonv2-yellow"
+                    >
+                      {isTurnstileLoading ? (
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          Verifying security..
+                          <img 
+                            src={cloudflareIcon} 
+                            alt="Cloudflare" 
+                            style={{ width: '16px', height: '16px', opacity: 0.8 }}
+                          />
+                        </span>
+                      ) : isSubmitting ? 'Processing...' : 'Get early access'}
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      size="lg"
+                      onClick={() => onTabChange('video')}
+                      className="no-scroll-button buttonv2"
+                      fullWidth
+                    >
+                      Learn More
+                    </Button>
+                  </div>
                     {(loginError || error) && (
                       <Typography variant="small" color="error" className="no-scroll-error">
                         {loginError || error}
