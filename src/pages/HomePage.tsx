@@ -453,7 +453,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                       className="no-scroll-button buttonv2"
                       fullWidth
                     >
-                      Learn More (90 sec)
+                      Preview
                     </Button>
                   </div>
                     {(loginError || error) && (
