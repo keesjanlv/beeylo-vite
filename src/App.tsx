@@ -225,9 +225,9 @@ const AppContent: FC = () => {
   const renderPage = () => {
     switch (activeTab) {
       case 'home':
-        return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} onShowVideoModal={() => setIsVideoModalOpen(true)} />
+        return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
       case 'dashboard':
-        return isLoggedIn ? <DashboardPage userData={userData} onLogout={handleLogout} onTabChange={handleTabChange} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} onShowVideoModal={() => setIsVideoModalOpen(true)} />
+        return isLoggedIn ? <DashboardPage userData={userData} onLogout={handleLogout} onTabChange={handleTabChange} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
       case 'benefits':
         return <BenefitsPage onTabChange={handleTabChange} />
       case 'giveaway':
@@ -237,7 +237,7 @@ const AppContent: FC = () => {
       case 'how-it-works':
         return <HowItWorksPage onTabChange={handleTabChange} />
       case 'actions':
-        return isLoggedIn ? <ActionsPage onBack={handleBackToDashboard} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} onShowVideoModal={() => setIsVideoModalOpen(true)} />
+        return isLoggedIn ? <ActionsPage onBack={handleBackToDashboard} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
 
       case 'feedback':
         return <FeedbackPage onBack={() => setActiveTab('menu')} />
@@ -264,7 +264,7 @@ const AppContent: FC = () => {
       case 'video':
         return <VideoPage />
       default:
-        return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} onShowVideoModal={() => setIsVideoModalOpen(true)} />
+        return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
     }
   }
 

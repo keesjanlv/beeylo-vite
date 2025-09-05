@@ -96,10 +96,9 @@ interface HomePageProps {
   isLoggedIn?: boolean
   emailFormHighlight?: boolean
   onTabChange: (tab: TabType) => void
-  onShowVideoModal?: () => void
 }
 
-export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighlight = false, onTabChange, onShowVideoModal }) => {
+export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighlight = false, onTabChange }) => {
   const { login, isLoading, error } = useUser()
 
   const [email, setEmail] = useState('')
@@ -454,7 +453,7 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
                       className="no-scroll-button buttonv2"
                       fullWidth
                     >
-                      Learn More
+                      Learn More (90 sec)
                     </Button>
                   </div>
                     {(loginError || error) && (
