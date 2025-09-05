@@ -320,7 +320,7 @@ const AppContent: FC = () => {
             className="video-player" 
             controls 
             autoPlay
-            muted
+
             onClick={(e) => e.stopPropagation()}
           >
             <source src={explainerVideoWebm} type="video/webm" />
