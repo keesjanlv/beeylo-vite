@@ -96,9 +96,10 @@ interface HomePageProps {
   isLoggedIn?: boolean
   emailFormHighlight?: boolean
   onTabChange: (tab: TabType) => void
+  onShowVideoModal?: () => void
 }
 
-export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighlight = false, onTabChange }) => {
+export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighlight = false, onTabChange, onShowVideoModal }) => {
   const { login, isLoading, error } = useUser()
 
   const [email, setEmail] = useState('')
@@ -126,6 +127,8 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
     }
     generateFingerprint()
   }, [])
+
+
 
   // Turnstile event handlers
   const handleTurnstileVerify = async (token: string) => {
@@ -508,6 +511,8 @@ export const HomePage: FC<HomePageProps> = ({ isLoggedIn = false, emailFormHighl
         isOpen={isPrivacyModalOpen} 
         onClose={() => setIsPrivacyModalOpen(false)} 
       />
+      
+
     </div>
   )
 }

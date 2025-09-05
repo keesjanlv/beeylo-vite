@@ -5,6 +5,9 @@ import type { TabType } from './types'
 import SEO from './components/SEO'
 import { Sidebar, TopNavigation } from './components/Navigation'
 import formbricks from '@formbricks/js'
+import { X } from 'lucide-react'
+import explainerVideoWebm from './assets/explainer.webm'
+import explainerVideoOptimized from './assets/explainer_optimized.mp4'
 import {
   HomePage,
   DashboardPage,
@@ -30,6 +33,7 @@ type StyleType = 'enhanced' | 'minimal'
 
 const AppContent: FC = () => {
   const { isLoggedIn, userData, logout } = useUser()
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<TabType>(() => {
     const path = window.location.pathname;
     switch (path) {
@@ -89,6 +93,17 @@ const AppContent: FC = () => {
       setActiveTab('thank-you');
       // Clear the flag after navigating to thank you page
       sessionStorage.removeItem('beeylo_form_submitted');
+    }
+  }, [isLoggedIn, activeTab])
+
+  // Show video modal for logged out users
+  useEffect(() => {
+    if (!isLoggedIn && activeTab === 'home') {
+      const timer = setTimeout(() => {
+        setIsVideoModalOpen(true)
+      }, 1000) // Show after 1 second
+      
+      return () => clearTimeout(timer)
     }
   }, [isLoggedIn, activeTab])
 
@@ -210,9 +225,9 @@ const AppContent: FC = () => {
   const renderPage = () => {
     switch (activeTab) {
       case 'home':
-        return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
+        return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} onShowVideoModal={() => setIsVideoModalOpen(true)} />
       case 'dashboard':
-        return isLoggedIn ? <DashboardPage userData={userData} onLogout={handleLogout} onTabChange={handleTabChange} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
+        return isLoggedIn ? <DashboardPage userData={userData} onLogout={handleLogout} onTabChange={handleTabChange} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} onShowVideoModal={() => setIsVideoModalOpen(true)} />
       case 'benefits':
         return <BenefitsPage onTabChange={handleTabChange} />
       case 'giveaway':
@@ -222,7 +237,7 @@ const AppContent: FC = () => {
       case 'how-it-works':
         return <HowItWorksPage onTabChange={handleTabChange} />
       case 'actions':
-        return isLoggedIn ? <ActionsPage onBack={handleBackToDashboard} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
+        return isLoggedIn ? <ActionsPage onBack={handleBackToDashboard} /> : <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} onShowVideoModal={() => setIsVideoModalOpen(true)} />
 
       case 'feedback':
         return <FeedbackPage onBack={() => setActiveTab('menu')} />
@@ -249,7 +264,7 @@ const AppContent: FC = () => {
       case 'video':
         return <VideoPage />
       default:
-        return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} />
+        return <HomePage isLoggedIn={isLoggedIn} emailFormHighlight={emailFormHighlight} onTabChange={handleTabChange} onShowVideoModal={() => setIsVideoModalOpen(true)} />
     }
   }
 
@@ -289,6 +304,31 @@ const AppContent: FC = () => {
           </motion.div>
         </AnimatePresence>
       </main>
+      
+      {/* Video Modal - Rendered outside main-content to appear above sidebar/topnav */}
+      {isVideoModalOpen && (
+        <div className="video-modal-overlay" onClick={() => setIsVideoModalOpen(false)}>
+          <button 
+            className="video-modal-return-btn"
+            onClick={() => setIsVideoModalOpen(false)}
+          >
+            <X size={16} />
+                <span>Close</span>
+          </button>
+          
+          <video 
+            className="video-player" 
+            controls 
+            autoPlay
+            muted
+            onClick={(e) => e.stopPropagation()}
+          >
+            <source src={explainerVideoWebm} type="video/webm" />
+            <source src={explainerVideoOptimized} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      )}
     </div>
   )
 }
