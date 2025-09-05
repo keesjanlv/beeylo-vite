@@ -30,7 +30,26 @@ type StyleType = 'enhanced' | 'minimal'
 
 const AppContent: FC = () => {
   const { isLoggedIn, userData, logout } = useUser()
-  const [activeTab, setActiveTab] = useState<TabType>('home')
+  const [activeTab, setActiveTab] = useState<TabType>(() => {
+    const path = window.location.pathname;
+    switch (path) {
+      case '/dashboard': return 'dashboard';
+      case '/benefits': return 'benefits';
+      case '/giveaway': return 'giveaway';
+      case '/waitlist': return 'waitlist';
+      case '/how-it-works': return 'how-it-works';
+      case '/about': return 'about';
+      case '/faq': return 'faq';
+      case '/learn-more': return 'learn-more';
+      case '/thank-you': return 'thank-you';
+      case '/video': return 'video';
+      case '/actions': return 'actions';
+      case '/feedback': return 'feedback';
+      case '/menu': return 'menu';
+      case '/component-demo': return 'component-demo';
+      default: return 'home';
+    }
+  });
   const [emailFormHighlight, setEmailFormHighlight] = useState(false)
 
   const [theme, setTheme] = useState<ThemeType>(() => {
@@ -98,8 +117,10 @@ const AppContent: FC = () => {
       setActiveTab('home')
       setEmailFormHighlight(true)
       setTimeout(() => setEmailFormHighlight(false), 2000) // Remove highlight after 2 seconds
+      window.history.pushState({}, '', '/'); // Update URL to home
     } else {
       setActiveTab(tab)
+      window.history.pushState({}, '', tab === 'home' ? '/' : `/${tab}`); // Update URL based on activeTab
     }
   }
 
